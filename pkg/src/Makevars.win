@@ -1,0 +1,10 @@
+# If libgsl and libgslcblas are instlalled use them
+ MY_GSL_DIR = C:/MSYS/1.0/local
+ PKG_LIBS = $(BLAS_LIBS) $(FLIBS) $(LAPACK_LIBS) -L$(MY_GSL_DIR)/lib -lgsl -lgslcblas -lm
+ PKG_CXXFLAGS =  -I$(R_HOME)/include -I$(MY_GSL_DIR)/include -O2 -w -D_RDLL_ -D_GSL_ 
+
+
+#if libgsl and libgslcblas are note installed
+
+# PKG_LIBS = $(BLAS_LIBS) $(FLIBS) $(LAPACK_LIBS) 
+# PKG_CXXFLAGS = -I$(R_HOME)/include -O2 -w -D_RDLL_
