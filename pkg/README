@@ -1,0 +1,22 @@
+RHmm package version 0.9.0
+
+Make instructions
+-----------------
+
+Since I don't know how to use autoconf, I don't know how to test if the gnu gsl library is present and where are the gsl/include and gsl/lib directories.
+If you have this library installed
+	1) open the RHmm/src/Makevars or RHmm/src/Makevars.win files.
+	2) change the definitions of PKG_LIBS and PKG_CXXFLAGS 
+
+
+There are two Preprocessor directives :
+	_RDLL_ : to create the shared library used by R
+	_GSL_ : if the program uses the gnu gsl library
+
+Somme source and headers files are used only for the shared library use by R (for example, RHmm.cpp or RUtil.cpp) 
+other are uses to be used outside R (for instance R_EQuivalents.hpp)
+ 
+
+
+Ollivier TARAMASCO
+Ollivier.Taramasco@imag.fr
