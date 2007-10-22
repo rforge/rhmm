@@ -1,0 +1,9 @@
+# If libgsl and libgslcblas are installed
+# BLAS_LIBS = -lgslcblas
+# PKG_LIBS = $(BLAS_LIBS) $(FLIBS) $(LAPACK_LIBS) -lgsl 
+# PKG_CXXFLAGS =  -I$(R_HOME)/include -D_RDLL_ -D_AVECGSL_ --no-warn
+#
+# if not use the two last lines
+PKG_LIBS = $(BLAS_LIBS) $(FLIBS) $(LAPACK_LIBS) 
+PKG_CXXFLAGS = -I$(R_HOME)/include -O2 -w -D_RDLL_
+
