@@ -1,0 +1,86 @@
+<html><head><title>Plot univariates series in each estimated states</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="Rchm.css">
+</head>
+<body>
+
+<table width="100%"><tr><td>HMMPlotSerie(RHmm)</td><td align="right">R Documentation</td></tr></table><object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="keyword" value="R:   HMMPlotSerie">
+<param name="keyword" value=" Plot univariates series in each estimated states">
+</object>
+
+
+<h2>Plot univariates series in each estimated states</h2>
+
+
+<h3>Description</h3>
+
+<p>
+This function plots the time series in each hidden state.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+    HMMPlotSerie(obs, states, dis="NORMAL", color="green")
+    </pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>obs</code></td>
+<td>
+the vector, list of vectors of observations</td></tr>
+<tr valign="top"><td><code>states</code></td>
+<td>
+a ViterbiClass object which gives the hidden states or a vector or a lis of vectors of integer 1 to the number of hidden states</td></tr>
+<tr valign="top"><td><code>dis</code></td>
+<td>
+Distribution name = 'NORMAL', 'DISCRETE', 'MIXTURE'. Default 'NORMAL'.</td></tr>
+<tr valign="top"><td><code>color</code></td>
+<td>
+color for the kernel density plot</td></tr>
+</table>
+
+<h3>Value</h3>
+
+<p>
+none</p>
+
+<h3>Note</h3>
+
+<p>
+HMMPlotSerie is not implemented for multivariate distributions.<br>
+</p>
+<p>
+The time series of observations for each hidden states of the model are plotted using:<br>
+plot(obs[states=i])) and i in 1..max(States)
+</p>
+
+
+<h3>See Also</h3>
+
+<p>
+viterbi, plot
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+data(geyser)
+obs &lt;- geyser$duration
+#Fits an 3 states gaussian model for geyser duration
+ResFitGeyser &lt;- HMMFit(obs, nStates=3)
+VitGeyser &lt;- viterbi(ResFitGeyser, obs)
+#plot the series
+HMMPlotSerie(obs, VitGeyser)
+</pre>
+
+
+
+<hr><div align="center">[Package <em>RHmm</em> version 1.0.1 <a href="00Index.html">Index]</a></div>
+
+</body></html>

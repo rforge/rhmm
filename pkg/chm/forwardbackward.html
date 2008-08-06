@@ -1,0 +1,129 @@
+<html><head><title>forward-backward procedure</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="Rchm.css">
+</head>
+<body>
+
+<table width="100%"><tr><td>forwardbackward(RHmm)</td><td align="right">R Documentation</td></tr></table><object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="keyword" value="R:   forwardbackward">
+<param name="keyword" value=" forward-backward procedure">
+</object>
+
+
+<h2>forward-backward procedure</h2>
+
+
+<h3>Description</h3>
+
+<p>
+The forward-backward procedure is used to compute quantities used in the Baum-Welch algorithm.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+forwardbackward(HMM, obs)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>HMM</code></td>
+<td>
+a HMMClass or a HMMFitClass object</td></tr>
+<tr valign="top"><td><code>obs</code></td>
+<td>
+a vector (matrix) of observations, or a list of vectors (or matrices) if there are more than one samples</td></tr>
+</table>
+
+<h3>Value</h3>
+
+<p>
+If obs is one sample, a list of following elements, if obs is a list of samples, a
+list of list of following elements. See <B>note</B> for mathematical definitions.   
+</p>
+<table summary="R argblock">
+<tr valign="top"><td><code>Alpha</code></td>
+<td>
+The matrix of 'forward' probabilities (size: number of obs. times number of hidden states)</td></tr>
+<tr valign="top"><td><code>Beta</code></td>
+<td>
+The matrix of 'backward' probabilities (size: number of obs. times number of hidden states)</td></tr>
+<tr valign="top"><td><code>Gamma</code></td>
+<td>
+The matrix of probabilities of being at time t in state i (size: number of obs. times number of hidden states)</td></tr>
+<tr valign="top"><td><code>Xsi</code></td>
+<td>
+The matrix of probabilities of being in state i at time t and being in state j at time t + 1 (size: number of obs. times number of hidden states)</td></tr>
+<tr valign="top"><td><code>Rho</code></td>
+<td>
+The vector of probabilities of seeing the partial sequence obs[1] ... obs[t] (size number of obs.)</td></tr>
+<tr valign="top"><td><code>LLH</code></td>
+<td>
+Log-likelihood</td></tr>
+</table>
+
+<h3>Note</h3>
+
+<p>
+Let <i>obs=(obs[1], ... obs[T])</i> be the 
+vector of observations, and <i>O=(O[t], 
+1, ..., T)</i>, the corresponding random variables. Let <i>(Q[t], t=1, ..., T)</i> 
+be the hidden Markov chain whose values are in <i>{1, ..., nStates}</i> 
+We have the 
+following definitions:<br>
+</p>
+<p>
+<i>Alpha[i][t] = 
+P(O[1]=obs[1],,...,,O[t]=obs[t],,Q[t]=i | HMM)</i> which is 
+the probability of seeing the partial sequence 
+<i>obs[1], ..., obs[t]</i> and ending up 
+in state i at time t.<br>
+</p>
+<p>
+<i>Beta[i][t] = 
+P(O[t+1]=obs[t+1],,...,,O[T]=obs[T],,Q[t]=i | HMM)</i> which 
+is the probability of the ending partial sequence <i>obs[t+1], ..., obs[T]</i> 
+given that we started at state i at time t.<br>
+</p>
+<p>
+<i>Gamma[i][t] = P(Q[t]=i | O=obs, HMM)</i> which is the probability of being in state i 
+at time t for the state sequence <i>O=obs</i>. <br>
+<i>Xsi[i][t]=P(Q[t]=i, Q[t+1]=j | O=obs, HMM)</i> which is the probability of being 
+in state i at time t and being in state j at time t + 1.<br>
+</p>
+<p>
+<i>Rho[t] = P(O[1]=obs[1], ..., O[t]=obs(t) | HMM)</i> witch is probabilities of seeing 
+the partial sequence <i>obs[1] ... obs[t]</i>.<br>
+</p>
+<p>
+<i>LLH=ln(Rho[T])</i>
+</p>
+
+
+<h3>References</h3>
+
+<p>
+Jeff A. Bilmes (1997) <EM> A Gentle Tutorial of the EM Algorithm and its Application to Parameter
+Estimation for Gaussian Mixture and Hidden Markov Models</EM> <a href="http://ssli.ee.washington.edu/people/bilmes/mypapers/em.ps.gz">http://ssli.ee.washington.edu/people/bilmes/mypapers/em.ps.gz</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+    data(geyser)
+    obs &lt;- geyser$duration
+    #Fits an 2 states gaussian model for geyser duration
+    ResFitGeyser &lt;- HMMFit(obs)
+    #Forward-backward procedure
+   fb &lt;- forwardbackward(ResFitGeyser, obs)
+</pre>
+
+
+
+<hr><div align="center">[Package <em>RHmm</em> version 1.0.1 <a href="00Index.html">Index]</a></div>
+
+</body></html>

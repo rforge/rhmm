@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HEAD></HEAD><HTML><BODY>
+<UL>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Package RHmm:  Contents">
+<param name="Local" value="00Index.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Package RHmm:  R objects">
+</OBJECT>
+<UL>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="data_mixture">
+<param name="Local" value="data_mixture.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="distributionClass">
+<param name="Local" value="distributionSet.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="distributionSet">
+<param name="Local" value="distributionSet.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="forwardbackward">
+<param name="Local" value="forwardbackward.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="HMMClass">
+<param name="Local" value="HMMSet.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="HMMFit">
+<param name="Local" value="HMMFit.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="HMMFitClass">
+<param name="Local" value="HMMFit.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="HMMGraphicDiag">
+<param name="Local" value="HMMGraphicDiag.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="HMMPlotSerie">
+<param name="Local" value="HMMPlotSerie.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="HMMSet">
+<param name="Local" value="HMMSet.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="HMMSim">
+<param name="Local" value="HMMSim.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="print.summary.HMMFitClass">
+<param name="Local" value="HMMFit.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="summary.HMMFitClass">
+<param name="Local" value="HMMFit.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="viterbi">
+<param name="Local" value="viterbi.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="weather">
+<param name="Local" value="weather.html">
+</OBJECT>
+</UL>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Package RHmm:  Titles">
+</OBJECT>
+<UL>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Fit a Hidden Markov Model">
+<param name="Local" value="HMMFit.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="forward-backward procedure">
+<param name="Local" value="forwardbackward.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Graphic diagnostic of the HMM estimation">
+<param name="Local" value="HMMGraphicDiag.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Plot univariates series in each estimated states">
+<param name="Local" value="HMMPlotSerie.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Set the parameters for the distributions of observations">
+<param name="Local" value="distributionSet.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Set the parameters for the hidden Markov models">
+<param name="Local" value="HMMSet.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Simulated discrete HMM">
+<param name="Local" value="weather.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Simulated univariate mixture of 3 gausssian distributions">
+<param name="Local" value="data_mixture.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Simulation of an Hidden Markov Model">
+<param name="Local" value="HMMSim.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+<param name="Name" value="Viterbi algorithm">
+<param name="Local" value="viterbi.html">
+</OBJECT>
+</UL>
+</UL>
+</BODY></HTML>
