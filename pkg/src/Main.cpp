@@ -23,7 +23,7 @@
 #include "RHmm.h"
 using namespace std;
 
-#define FIC_NAME  "Geyser.txt" /*"data_mixture.txt" "DISCRETEb.txt" "DISCRETE.txt"  "CAC40.txt"   "Geyser.txt" "SimulMultiMixt.txt"*/
+#define FIC_NAME  "Geyser.txt" /*"data_mixture.txt" "DISCRETEb.txt" "DISCRETE.txt"  "Geyser.txt" "SimulMultiMixt.txt"*/
 #define DIM_OBS 2
 #define NB_SAMPLE 1
 int main(void)
