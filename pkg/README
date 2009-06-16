@@ -13,7 +13,7 @@ RHmm can be used as a standalone library. if R_HOME is R directory, go into RHmm
 3) To execute the main program,
 	on unix system: copy R_HOME/lib/libRlapack.so and R_HOME/lib/libRblas.so in RHmm/src directory
 	on windows system: copy R_HOME/bin/*.dll in Rhmm/src directory
-then you can execute the main program by doing ./main in RHmm/src directory. Main.cpp is an example of the main program.
+then you can execute the main program by doing ./main in RHmm/src directory. Main.cpp is an example of the main program. At the end of Main.cpp file, you will find some samples used for testing the library.
 
 
 Thanks to: 
