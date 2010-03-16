@@ -38,7 +38,9 @@ setStorageMode.paramAlgoBW <- function(object)
 setStorageMode.HMMClass <- function(object)
 {   x <- object
     storage.mode(x$initProb) <- "double"
-    storage.mode(x$transMat) <- "double"
+
+	if (is.list(x$transMat)) lapply(x$transMat,function(x){storage.mode(x) <- "double"})
+	else storage.mode(x$transMat) <- "double"
     x$distribution <- setStorageMode(object$distribution)
     class(x$distribution) <- class(object$distribution)
     storage.mode(x) <- "list"

@@ -80,10 +80,10 @@ cOTMatrix*	myProbaCond = new cOTMatrix[theInParam.mNSample] ;
 					myDenominateur += mGamma[n][i][t] ;
 			}
 			for (j = 0 ; j < theInParam.mNClass ; j++)
-			{	mTransMat[i][j] = 0.0 ;
+			{	mTransMatVector[0][i][j] = 0.0 ;/* FIXME */
 				for (n = 0 ; n < theInParam.mNSample ; n++)
-					mTransMat[i][j] += mSumXsi[n][i][j] ;
-				mTransMat[i][j] /= myDenominateur ;
+					mTransMatVector[0][i][j] += mSumXsi[n][i][j] ;
+				mTransMatVector[0][i][j] /= myDenominateur ;
 			}
 		}
 		
@@ -106,9 +106,9 @@ cOTMatrix*	myProbaCond = new cOTMatrix[theInParam.mNSample] ;
 	for (i = 0 ; i < theInParam.mNClass ; i++)
 	{	double mySomme = 0.0 ;
 		for (j = 0 ; j < theInParam.mNClass ; j++)
-			mySomme += mTransMat[i][j] ;
+			mySomme += mTransMatVector[0][i][j] ;
 		for (j = 0 ; j < theInParam.mNClass ; j++)
-			mTransMat[i][j] /= mySomme ;
+			mTransMatVector[0][i][j] /= mySomme ; /* FIXME */
 	}
 	
 	mBic = myLogVraisCour ;
@@ -184,11 +184,11 @@ register uint	t											;
 		for (i = 0 ; i < myParamEntree.mNClass ; i++)
 		{	mySum = 0.0 ;
 			for (j = 0 ; j < myParamEntree.mNClass ; j++)
-			{	myHMMFitCour.mTransMat[i][j] = unif_rand() ;
-				mySum += myHMMFitCour.mTransMat[i][j] ;
+			{	myHMMFitCour.mTransMatVector[0][i][j] = unif_rand() ; // FIXME
+				mySum += myHMMFitCour.mTransMatVector[0][i][j] ;
 			}
 			for (j = 0 ; j < myParamEntree.mNClass ; j++)
-				myHMMFitCour.mTransMat[i][j] /= mySum ;
+				myHMMFitCour.mTransMatVector[0][i][j] /= mySum ;
 		}
 		
 		myHMMFitCour.mDistrParam->InitParameters(myParamEntree) ;

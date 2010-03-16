@@ -115,32 +115,29 @@ double			myLogAlpha,
 				myAux,
 				mySum	;
 uint myNClass = theHMM.mInitProba.mSize ;
-cOTMatrix myLogTransMat = cOTMatrix(myNClass, myNClass) ;
-cOTVector myLogInitProba = cOTVector(myNClass) ;
-	
-	for ( i = 0 ; i < myNClass ; i++)
-	{	myLogInitProba[i] = eln(theHMM.mInitProba[i]) ;
-		for (j = 0 ; j < myNClass ; j++)
-			myLogTransMat[i][j] = eln(theHMM.mTransMat[i][j]) ;
-	}
 
 	for (register uint n = 0 ; n < mvNSample ; n++)
 	{
-	int myT = (int)mvT[n] ;
+		int myT = (int)mvT[n] ;
+
 		mLogRho[n][0] = LOGZERO ;
+
 		for (i = 0 ; i < myNClass ; i++)
-		{	mLogAlpha[n][i][0] = elnproduct(myLogInitProba[i], eln(theCondProba[n][i][0])) ;
+		{
+			mLogAlpha[n][i][0] = elnproduct(eln(theHMM.mInitProba[i]), eln(theCondProba[n][i][0])) ;
 			mLogRho[n][0] = elnsum(mLogRho[n][0], mLogAlpha[n][i][0]) ;	
 		}
 
 		mLogVrais[n] = mLogRho[n][0] ;
 		//forward
 		for (t = 0 ; t < myT-1 ; t++)
-		{	mLogRho[n][t+1] = LOGZERO ;
+		{
+			mLogRho[n][t+1] = LOGZERO ;
 			for (j = 0 ; j < myNClass ; j++)
-			{	myLogAlpha = LOGZERO ;
+			{
+				myLogAlpha = LOGZERO ;
 				for (i = 0 ; i < myNClass ; i++)
-					myLogAlpha = elnsum(myLogAlpha, elnproduct(mLogAlpha[n][i][t], myLogTransMat[i][j])) ;
+					myLogAlpha = elnsum(myLogAlpha, elnproduct(mLogAlpha[n][i][t], eln(theHMM.mTransMatVector[t][i][j]))) ;
 				
 				mLogAlpha[n][j][t+1] = elnproduct(myLogAlpha, eln(theCondProba[n][j][t+1])) ;
 				mLogRho[n][t+1] = elnsum(mLogRho[n][t+1], mLogAlpha[n][j][t+1]) ;
@@ -149,13 +146,14 @@ cOTVector myLogInitProba = cOTVector(myNClass) ;
 
 		// backward
 		for (i = 0 ; i < myNClass ; i++)
-			mLogBeta[n][i][myT-1] = 0.0L ;
+			mLogBeta[n][i][myT-1] = 0.0L ;  // log(1)
 
 		for (t = myT-2 ; t >= 0 ; t--)
-		{	for (i = 0 ; i < myNClass ; i++)
+		{
+			for (i = 0 ; i < myNClass ; i++)
 			{	myAux = LOGZERO ;
 				for (j = 0 ; j < myNClass ; j++)
-					myAux =  elnsum(myAux, elnproduct(theHMM.mTransMat[i][j], elnproduct(theCondProba[n][j][t+1], mLogBeta[n][j][t+1]))) ;
+					myAux =  elnsum(myAux, elnproduct(eln(theHMM.mTransMatVector[t+1][i][j]), elnproduct(eln(theCondProba[n][j][t+1]), mLogBeta[n][j][t+1]))) ; // FIXME: mTransMatVector just t instead of t+1?
 				mLogBeta[n][i][t] = myAux ;
 			}
 		}
@@ -179,7 +177,7 @@ cOTVector myLogInitProba = cOTVector(myNClass) ;
 			for (j = 0 ; j < myNClass ; j++)
 			{	mSumLogXsi[n][i][j] = LOGZERO ;
 				for (t = 0 ; t < myT - 1 ; t++)
-				{	mLogXsi[n][t][i][j] = elnproduct(mLogAlpha[n][i][t], elnproduct(theHMM.mTransMat[i][j], elnproduct(theCondProba[n][j][t+1], mLogBeta[n][j][t+1]))) ;
+				{	mLogXsi[n][t][i][j] = elnproduct(mLogAlpha[n][i][t], elnproduct(theHMM.mTransMatVector[0][i][j], elnproduct(theCondProba[n][j][t+1], mLogBeta[n][j][t+1]))) ;/* FIXME */
 					mSumLogXsi[n][i][j] = elnsum(mSumLogXsi[n][i][j],mLogXsi[n][t][i][j]) ;
 				}
 			}
