@@ -16,6 +16,7 @@
 #include <R.h>
 #include <Rinternals.h>
 #include <Rmath.h>
+#include <vector>
 
 #ifndef uint
 	typedef unsigned int uint ;
@@ -50,6 +51,7 @@ class cRUtil
 		void GetMatSexp(SEXP theSEXP, uint theNum, uint theLigne, uint theCol, uint** theMat) ;
 		void GetMatSexp(SEXP theSEXP, uint theNum, uint theLigne, uint theCol, double** theMat) ;
 		void GetMatSexp(SEXP theSEXP, uint theNum, cOTMatrix& theMat) ;
+		void GetMatListSexp(SEXP theSEXP, uint theNum, std::vector<cOTMatrix> &theList);
 		/*
 		*	Récupérer l'ensemble des nombres dans une liste de nombres
 		*/

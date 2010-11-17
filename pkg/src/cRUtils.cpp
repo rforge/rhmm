@@ -103,6 +103,37 @@ SEXP myAux = VECTOR_ELT(theSEXP, theNum) ;
 		{	theMat.mMat[i][j] = REAL(myAux)[i+j*theMat.mNRow] ;
 		}
 }
+
+/**
+ * Retrieves the list of matrix and stores it in theList.
+ * We assume that at least one element has been stored before.
+ */
+void cRUtil::GetMatListSexp(SEXP theSEXP, uint theNum, std::vector<cOTMatrix> &theList)
+{
+	SEXP myAux = VECTOR_ELT(theSEXP, theNum) ;
+
+	if (isMatrix(myAux))
+	{
+		/* Fill as first matrix */
+		GetMatSexp(theSEXP,theNum,theList[0]);
+	} else
+	{
+		uint i;
+		uint nrow = theList.at(0).mNRow;
+		uint ncol = theList.at(0).mNCol;
+
+		for (i=0;i<length(myAux);i++)
+		{
+			if (theList.size() <= i)
+			{
+				cOTMatrix *mat = new cOTMatrix(nrow,ncol,0.0);
+				theList.push_back(*mat);
+			}
+			GetMatSexp(myAux, i, theList.at(i) );
+		}
+	}
+}
+
 /*
  *	Récupérer l'ensemble des nombres dans une liste de nombres
  */

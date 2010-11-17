@@ -70,15 +70,26 @@ cOTMatrix::cOTMatrix(uint theNRow, uint theNCol, double theVal)
 	}
 }
 
+cOTMatrix :: cOTMatrix(const cOTMatrix &m)
+{
+	uint i,j;
+
+//	printf("%s\n",__PRETTY_FUNCTION__);
+
+	mNRow = 0;
+	mNCol = 0;
+	mMat = NULL;
+	ReAlloc(m.mNRow, m.mNCol, 0);
+
+	for (i = 0 ; i < mNRow ; i++)
+		for (j = 0 ; j < mNCol ; j++)
+			mMat[i][j] = m.mMat[i][j] ;
+
+}
+
 cOTMatrix::~cOTMatrix()
 {
-	if (mNRow > 0)
-	{	for (register uint i = 0 ; i < mNRow ; i++)
-			delete [] mMat[i] ;
-		delete [] mMat ;
-		mMat = (double **)NULL ;
-	}
-	mNRow = mNCol = 0 ;
+	Delete();
 }
 
 void cOTMatrix::Delete(void)
@@ -122,7 +133,6 @@ cOTMatrix& cOTMatrix::operator =(cOTMatrix& theSrcMatrix)
 {
 register uint	i,
 				j	;
-	
 	if (mNRow == 0)
 	{	if ( (mMat = new double*[theSrcMatrix.mNRow]) == NULL)
 			throw cOTError("memory allocation problem") ;

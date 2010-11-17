@@ -39,7 +39,7 @@ uint				myNbClasses,
 					myNbMixt,
 					myNbProba		;
 cRUtil				myRUtil			;
-// Récupération des paramètres d'entrée
+// Retrieve parameters for given HMM
 	myRUtil.GetValSexp(theParamHMM, eNClasses, myNbClasses) ;
 	myRUtil.GetValSexp(theParamHMM, eObsDim, myDimObs) ;
 	myRUtil.GetValSexp(theParamHMM, eNMixt, myNbMixt) ;
@@ -116,7 +116,7 @@ cHmmFit myParamSortie = cHmmFit(myParamEntree) ;
 	SEXP myAux1 ;
 		myRUtil.GetValSexp(theParamBW, eInitPoint, myAux1) ;
 		myRUtil.GetVectSexp(myAux1, 0, myHMM.mInitProba) ;
-		myRUtil.GetMatSexp(myAux1, 1, myHMM.mTransMat) ;
+		myRUtil.GetMatSexp(myAux1, 1, myHMM.mTransMatVector[0]) ; /* FIXME */
 		SEXP myAux ;
 		myRUtil.GetValSexp(myAux1, 2, myAux) ; // $distribution
 		switch (myDistrType)
@@ -196,7 +196,7 @@ SEXP myRes,
 	 myAux[6]	;
 
 	myRUtil.SetVectSexp(myParamSortie.mInitProba, myAux[0]) ;
-	myRUtil.SetMatSexp(myParamSortie.mTransMat, myAux[1]) ;
+	myRUtil.SetMatSexp(myParamSortie.mTransMatVector[0], myAux[1]) ; // TODO: Do it for the real list
 	switch (myDistrType)
 	{	case eNormalDistr :
 		{	cUnivariateNormal* myParam =  dynamic_cast<cUnivariateNormal *>(myParamSortie.mDistrParam) ;
@@ -339,7 +339,7 @@ for (register uint n = 0 ; n < myNbSample ; n++)
 cHmm	myHMM = cHmm(myDistrType, myNbClasses, myDimObs, myNbMixt, myNbProba) ;
 
 	myRUtil.GetVectSexp(theHMM, fInitProba, myHMM.mInitProba) ;
-	myRUtil.GetMatSexp(theHMM, fTransMat, myHMM.mTransMat) ;
+	myRUtil.GetMatListSexp(theHMM, fTransMat, myHMM.mTransMatVector) ;
 	
 	switch (myDistrType)
 	{	case eNormalDistr :
@@ -461,7 +461,7 @@ cOTVector* myY = new cOTVector[myNbSample] ;
 
 cHmm myHMM = cHmm(myDistrType, myNbClasses, myDimObs, myNbMixt, myNbProba) ;
 	myRUtil.GetVectSexp(theHMM, fInitProba, myHMM.mInitProba) ;
-	myRUtil.GetMatSexp(theHMM, fTransMat, myHMM.mTransMat) ;
+	myRUtil.GetMatListSexp(theHMM, fTransMat, myHMM.mTransMatVector) ;
 
 	switch (myDistrType)
 	{	case eNormalDistr :
@@ -619,7 +619,7 @@ cOTVector* myY = new cOTVector[myNbSample] ;
 
 cHmm myHMM = cHmm(myDistrType, myNbClasses, myDimObs, myNbMixt, myNbProba) ;
 	myRUtil.GetVectSexp(theHMM, fInitProba, myHMM.mInitProba) ;
-	myRUtil.GetMatSexp(theHMM, fTransMat, myHMM.mTransMat) ;
+	myRUtil.GetMatListSexp(theHMM, fTransMat, myHMM.mTransMatVector) ;
 
 	switch (myDistrType)
 	{	case eNormalDistr :

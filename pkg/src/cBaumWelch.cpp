@@ -131,7 +131,7 @@ uint myNClass = theHMM.mInitProba.mSize ;
 			for (j = 0 ; j < myNClass ; j++)
 			{	myAux = 0.0 ;
 				for (i = 0 ; i < myNClass ; i++)
-					myAux += mAlpha[n][i][t] * theHMM.mTransMat[i][j] ;
+					myAux += mAlpha[n][i][t] * theHMM.mTransMatVector[t][i][j] ; /* FIXME: Is t correct or should we shift? */
 				mAlpha[n][j][t+1] = myAux * theCondProba[n][j][t+1] ;
 				mRho[n][t+1] += mAlpha[n][j][t+1] ;
 			}
@@ -147,7 +147,7 @@ uint myNClass = theHMM.mInitProba.mSize ;
 		{	for (i = 0 ; i < myNClass ; i++)
 			{	myAux = 0.0 ;
 				for (j = 0 ; j < myNClass ; j++)
-					myAux +=  theHMM.mTransMat[i][j] * theCondProba[n][j][t+1] * mBeta[n][j][t+1] ;
+					myAux +=  theHMM.mTransMatVector[t][i][j] * theCondProba[n][j][t+1] * mBeta[n][j][t+1] ; /* FIXME: Is t correct or should we shift? */
 				mBeta[n][i][t] = myAux ;
 			}
 			for (i = 0 ; i < myNClass ; i++)
@@ -172,7 +172,7 @@ uint myNClass = theHMM.mInitProba.mSize ;
 			for (j = 0 ; j < myNClass ; j++)
 			{	mSumXsi[n][i][j] = 0.0 ;
 				for (t = 0 ; t < myT - 1 ; t++)
-				{	mXsi[n][t][i][j] = mAlpha[n][i][t] * theHMM.mTransMat[i][j] * theCondProba[n][j][t+1] * mBeta[n][j][t+1] ;
+				{	mXsi[n][t][i][j] = mAlpha[n][i][t] * theHMM.mTransMatVector[t][i][j] * theCondProba[n][j][t+1] * mBeta[n][j][t+1] ;
 					mSumXsi[n][i][j] += mXsi[n][t][i][j] ;
 				}
 			}

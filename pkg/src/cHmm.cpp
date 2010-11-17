@@ -12,12 +12,17 @@
 #include "cHmm.h"
 #include "AllDistributions.h"
 
+#include <vector>
+
 
 cHmm::cHmm(distrDefinitionEnum theDistrType, uint theNClass, uint theDimObs, uint theNMixture, uint theNProba)
 {	MESS_CREAT("cHmm")
 	mDistrType = theDistrType ;
 	mInitProba.ReAlloc(theNClass) ;
-	mTransMat.ReAlloc(theNClass, theNClass) ;
+
+	cOTMatrix *transMat = new cOTMatrix(theNClass,theNClass,0);
+	mTransMatVector.push_back(*transMat);
+//	mTransMat.ReAlloc(theNClass, theNClass) ;
 
 	switch(mDistrType)
 	{	case eNormalDistr :
@@ -43,7 +48,11 @@ cHmm::cHmm(distrDefinitionEnum theDistrType, uint theNClass, uint theDimObs, uin
 cHmm::cHmm(const cInParam &theInParam)
 {	MESS_CREAT("cHmm")
 	mInitProba.ReAlloc(theInParam.mNClass);
-	mTransMat.ReAlloc(theInParam.mNClass, theInParam.mNClass) ;
+//	mTransMat.ReAlloc(theInParam.mNClass, theInParam.mNClass) ;
+
+	cOTMatrix *transMat = new cOTMatrix(theInParam.mNClass,theInParam.mNClass,0);
+	mTransMatVector.push_back(*transMat);
+
 	mDistrType = theInParam.mDistrType ;
 	switch(mDistrType)
 	{	case eNormalDistr :
@@ -68,8 +77,14 @@ cHmm::cHmm(const cInParam &theInParam)
 }
 cHmm::~cHmm()
 {	MESS_DESTR("cHmm")
+
+	std::vector<cOTMatrix>::iterator it;
+	for (it = mTransMatVector.begin(); it < mTransMatVector.end(); it++ )
+		it->Delete();
+	// Probably more to free here
+
 	mInitProba.Delete() ;
-	mTransMat.Delete() ;
+
 	delete mDistrParam ;	
 /*	if (mDistrParam != NULL)
 	{	switch(mDistrType)
@@ -119,7 +134,9 @@ cHmm & cHmm::operator = (cHmm &theSrc)
 	mvNProba = theSrc.mvNProba ;
 	*/
 	mInitProba = theSrc.mInitProba ;
-	mTransMat = theSrc.mTransMat ;
+	printf("********** Copy constructor\n");
+
+	//mTransMatVector = theSrc.mTransMatVector ; // FIXME
 
 	/*for (register uint i = 0 ; i < mvQ ; i++)
 	{	mInitProba[i] = theSrc.mInitProba[i] ;
@@ -133,17 +150,23 @@ cHmm & cHmm::operator = (cHmm &theSrc)
 
 void cHmm::Print(void)
 {
-register uint	i,
-				j	;
+register uint	i, j, k;
 
 	Rprintf("ProbInit :\n") ;
 	for (i = 0 ; i < mInitProba.mSize ; i++)
 		Rprintf("\t%f", mInitProba[i]) ;
-	Rprintf("\nMatrice de transition : \n") ;
-	for (i = 0 ; i < mInitProba.mSize ; i++)
-	{	for (j = 0 ; j < mInitProba.mSize ; j++)
-			Rprintf("\t%f", mTransMat[i][j]) ;
-		Rprintf("\n") ;
+
+
+	for (k = 0 ; k < mTransMatVector.size(); k++)
+	{
+		Rprintf("\nMatrice de transition %u: \n", k) ;
+
+		for (i = 0 ; i < mInitProba.mSize ; i++)
+		{
+			for (j = 0 ; j < mInitProba.mSize ; j++)
+				Rprintf("\t%f", mTransMatVector[k][i][j]) ;
+			Rprintf("\n") ;
+		}
 	}
 	Rprintf("\nParameters:\n") ;
 	mDistrParam->Print() ;
@@ -167,10 +190,10 @@ register uint k = 0 ;
 	}
 
 	for (register uint n = 0 ; n < myNClass ; n++)
-	{	mTransMat[n][myNClass-1] = 1.0L ;
+	{	mTransMatVector[0][n][myNClass-1] = 1.0L ;
 		for (register uint p = 0 ; p < myNClass - 1 ; p++)
-		{	mTransMat[n][p] = theParam[k++] ;
-			mTransMat[n][myNClass-1] -= mTransMat[n][p] ;
+		{	mTransMatVector[0][n][p] = theParam[k++] ;
+			mTransMatVector[0][n][myNClass-1] -= mTransMatVector[0][n][p] ; // FIXME
 		}
 	}
 	mDistrParam->SetParam(k, theParam) ;
@@ -184,7 +207,7 @@ register uint k = 0 ;
 		theParam[k++] = mInitProba[n] ;
 	for (register uint n = 0 ; n < myNClass ; n++)
 		for (register uint p = 0 ; p < myNClass - 1 ; p++)
-			theParam[k++] = mTransMat[n][p] ;
+			theParam[k++] = mTransMatVector[0][n][p] ; // FIXME
 	mDistrParam->GetParam(k, theParam) ;
 }
 

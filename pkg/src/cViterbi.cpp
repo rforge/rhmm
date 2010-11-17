@@ -34,8 +34,8 @@ cViterbi::~cViterbi()
 {	MESS_DESTR("cViterbi")
 	if (mLogProb.mSize > 0)
 	{	for (register uint n = 0 ; n < mLogProb.mSize ; n++)
-			delete mSeq[n] ;
-		delete mSeq ;
+			delete [] mSeq[n] ;
+		delete [] mSeq ;
 		mLogProb.Delete() ;
 	}
 }
@@ -46,7 +46,7 @@ int		myIndAux						;
 double	myAux,
 		myAux1							;
 uint	myNSample = theInParam.mNSample ;
-	
+
 cOTMatrix* myProbaCond = new cOTMatrix[myNSample] ;
 	for (register uint n = 0 ; n < myNSample ; n++)
 	{	
@@ -64,19 +64,21 @@ int** myPsi = new int*[theInParam.mNClass] ;
 		{	myPsi[j] = new int[mySize] ;
 			myDelta[j].ReAlloc(mySize) ;
 		}
-	// Initialisation
+	// Initialization
 		for (register uint i = 0 ; i < theInParam.mNClass  ; i++)
 		{	myDelta[i][0] = log(theHMM.mInitProba[i]) + log(myProbaCond[n][i][0]) ;
 			myPsi[i][0] = 0 ;
 		}
 
-	// Récursion
+	// Recursion
 		for (register int t = 0 ; t < (int)mySize -1 ; t++)
-		{	for (register uint j = 0 ; j < theInParam.mNClass  ; j++)
-			{	myAux = myDelta[0][t] + log(theHMM.mTransMat[0][j]) ;
+		{
+			for (register uint j = 0 ; j < theInParam.mNClass  ; j++)
+			{	myAux = myDelta[0][t] + log(theHMM.mTransMatVector[t][0][j]) ;
 				myIndAux = 0 ;
 				for (register uint i = 1 ; i < theInParam.mNClass ; i++)
-				{	if ((myAux1 = myDelta[i][t] + log(theHMM.mTransMat[i][j])) > myAux)
+				{
+					if ((myAux1 = myDelta[i][t] + log(theHMM.mTransMatVector[t][i][j])) > myAux)
 					{	myAux = myAux1 ;
 						myIndAux = i ;
 					}
@@ -104,7 +106,8 @@ int** myPsi = new int*[theInParam.mNClass] ;
 		}
 */		
 		for (register uint j = 0 ; j < theInParam.mNClass ; j++)
-		{	delete myPsi[j] ;
+		{
+			delete [] myPsi[j] ;
 			myDelta[j].Delete() ;
 		}
 	}

@@ -11,16 +11,18 @@
 
 #ifndef _CHMM_H_
 #define _CHMM_H_
+
 #include "Hmm.h"
 #include "cInParam.h"
+#include "cCyclicVector.h"
 
 class cDistribution ;
 class cHmm
 {	public :
-		distrDefinitionEnum	mDistrType	;
-		cOTVector			mInitProba	;
-		cOTMatrix			mTransMat	;	
-		cDistribution*		mDistrParam	;
+		distrDefinitionEnum			mDistrType			;
+		cOTVector					mInitProba			;
+		cCyclicVector<cOTMatrix>	mTransMatVector		;
+		cDistribution*				mDistrParam			;
 	public :
 		cHmm(distrDefinitionEnum theDistrType, uint theNClass , uint theDimObs=1 , uint theNMixt=0, uint theNProba=0) ;
 		cHmm(const cInParam &theInParam) ;
