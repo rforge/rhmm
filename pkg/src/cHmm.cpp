@@ -131,7 +131,7 @@ cHmm & cHmm::operator = (cHmm &theSrc)
 {       
         mInitProba = theSrc.mInitProba ;
 
-		mTransMatVector = theSrc.mTransMatVector ;
+//		mTransMatVector = theSrc.mTransMatVector ;	FIXME
 
 		/*      for (register uint i = 0 ; i < mvQ ; i++)
         {       mInitProba[i] = theSrc.mInitProba[i] ;
