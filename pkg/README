@@ -1,5 +1,4 @@
-RHmm package version 1.3.4
-
+RHmm package version 1.4.0
 
 Make instructions
 -----------------
@@ -23,5 +22,4 @@ Thanks to:
 - Vince Melfi who found a bug in the ForwardBackward procedure.
 
 
-Ollivier TARAMASCO
-Ollivier.Taramasco@imag.fr
+Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> and Sebastian Bauer <mail@sebastianbauer.info>
