@@ -27,8 +27,11 @@ public:
     	if (this == &rhs)      // Same object?
     		return *this;
 
-    	/* Not sure whether the copying should not be more sophicticated... */
-    	*this = rhs;
+    	this->clear();
+
+    	for (int i=0;i<rhs.size();i++)
+    		this->push_back(rhs.at(i));
+
     	return *this;
     }
 };
