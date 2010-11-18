@@ -22,6 +22,13 @@ public:
     	return std::vector<T>::at(__n % std::vector<T>::size());
     }
 
- /* operator = ?
- */
+    cCyclicVector & operator=(const cCyclicVector &rhs)
+    {
+    	if (this == &rhs)      // Same object?
+    		return *this;
+
+    	/* Not sure whether the copying should not be more sophicticated... */
+    	*this = rhs;
+    	return *this;
+    }
 };
