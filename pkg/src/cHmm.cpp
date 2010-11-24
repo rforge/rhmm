@@ -1,11 +1,11 @@
 /**************************************************************
- *** RHmm version 1.4.0                                      
+ *** RHmm version 1.4.1                                      
  ***                                                         
  *** File: cHmm.cpp 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2010/11/14                                      
+ *** Date: 2010/11/27                                      
  ***                                                         
  **************************************************************/
 
@@ -131,9 +131,9 @@ cHmm & cHmm::operator = (cHmm &theSrc)
 {       
         mInitProba = theSrc.mInitProba ;
 
-		mTransMatVector = theSrc.mTransMatVector ;
+                mTransMatVector = theSrc.mTransMatVector ;
 
-		/*      for (register uint i = 0 ; i < mvQ ; i++)
+                /*      for (register uint i = 0 ; i < mvQ ; i++)
         {       mInitProba[i] = theSrc.mInitProba[i] ;
                 for (register uint j = 0 ; j < mvQ ; j++)
                         mTransMat[i][j] = theSrc.mTransMat[i][j] ;

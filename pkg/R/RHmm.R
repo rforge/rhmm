@@ -1,11 +1,11 @@
  ###############################################################
- #### RHmm version 1.4.0                                      
+ #### RHmm version 1.4.1                                      
  ####                                                         
  #### File: RHmm.R 
  ####                                                         
- #### Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
- #### Author: Sebastian BAUER <sebastian.bauer@charite.de>                                                        
- #### Date: 2010/11/18                                       
+ #### Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr>
+ #### Author: Sebastian BAUER <sebastian.bauer@charite.de>
+ #### Date: 2010/11/27                                       
  ####                                                         
  ###############################################################
 
@@ -514,28 +514,28 @@ HMMSet <- function(initProb, transMat, ...)
     if (!is.vector(initProb))
         stop('initProb must be a vector\n')
 
-	
-	if (is.list(transMat))
-	{
-		if (!all(sapply(transMat,is.matrix)))
-			stop('MatTrans must be a matrix or list of matrices\n')
-		
-		nColTransMat <- ncol(transMat[[1]]);
-		nRowTransMat <- nrow(transMat[[1]]);
-		
-		if (!all(sapply(transMat, function(x) ncol(x)== nColTransMat)))
-			stop('Number of colums of matrix must match.\n')
-		
-		if (!all(sapply(transMat, function(x) nrow(x)== nRowTransMat)))
-			stop('Number of rows of matrix must match.\n')
-	} else
-	{
-    	if (!is.matrix(transMat))
-        	stop('MatTrans must be a matrix or list of matrices\n')
-		
-		nColTransMat <- ncol(transMat);
-		nRowTransMat <- nrow(transMat);
-	}
+    
+    if (is.list(transMat))
+    {
+        if (!all(sapply(transMat,is.matrix)))
+            stop('MatTrans must be a matrix or list of matrices\n')
+        
+        nColTransMat <- ncol(transMat[[1]]);
+        nRowTransMat <- nrow(transMat[[1]]);
+        
+        if (!all(sapply(transMat, function(x) ncol(x)== nColTransMat)))
+            stop('Number of colums of matrix must match.\n')
+        
+        if (!all(sapply(transMat, function(x) nrow(x)== nRowTransMat)))
+            stop('Number of rows of matrix must match.\n')
+    } else
+    {
+        if (!is.matrix(transMat))
+            stop('MatTrans must be a matrix or list of matrices\n')
+        
+        nColTransMat <- ncol(transMat);
+        nRowTransMat <- nrow(transMat);
+    }
     nStates <- length(initProb)
     if ( (nColTransMat != nStates) || (nRowTransMat != nStates) || (distribution$nStates != nStates) )
         stop('length of initProb, dim of transMat or dim of distribution parameters do not match\n')
@@ -593,27 +593,27 @@ print.HMMClass <- function(x, ...)
     row.names(Aux) <- " "
     print.data.frame(Aux, quote=FALSE, right=TRUE)
     
-	
-	print.mat<-function(mat)
-	{
-		Aux <- as.data.frame(mat)
-		cnames <- as.character(gl(x$distribution$nStates, 1, labels="State "))
-		names(Aux) <- cnames
-		rownames(Aux) <- cnames
-		print.data.frame(Aux, quote=FALSE, right=TRUE)
-		
-	}
-	
-	if (is.list(x$transMat))
-	{
-		cat("\nTransition matrices:\n", sep="")
-		lapply(x$transMat,print.mat)
-	}	else
-	{
-		cat("\nTransition matrix:\n", sep="")
-		print.mat(x$transMat)
-	}
-	
+    
+    print.mat<-function(mat)
+    {
+        Aux <- as.data.frame(mat)
+        cnames <- as.character(gl(x$distribution$nStates, 1, labels="State "))
+        names(Aux) <- cnames
+        rownames(Aux) <- cnames
+        print.data.frame(Aux, quote=FALSE, right=TRUE)
+        
+    }
+    
+    if (is.list(x$transMat))
+    {
+        cat("\nTransition matrices:\n", sep="")
+        lapply(x$transMat,print.mat)
+    }   else
+    {
+        cat("\nTransition matrix:\n", sep="")
+        print.mat(x$transMat)
+    }
+    
     cat("\nConditionnal distribution parameters:\n", sep="")
     print(x$distribution, quote=FALSE, right=TRUE, doNotAffiche=TRUE)
 }
@@ -758,30 +758,30 @@ sim.markovChainClass <- function(object, nSim, lastState)
         k <- 1
     }
     
-	cummat<-function(mat)
-	{
-		cummat<-matrix(0, nrow=nrow(mat), ncol=ncol(mat))
-		
-		for (i in 1:nrow(mat))
-			cummat[i,] <- cumsum(mat[i,])
-		return(cummat)
-	}
+    cummat<-function(mat)
+    {
+        cummat<-matrix(0, nrow=nrow(mat), ncol=ncol(mat))
+        
+        for (i in 1:nrow(mat))
+            cummat[i,] <- cumsum(mat[i,])
+        return(cummat)
+    }
 
-	probaCumList<-list();
+    probaCumList<-list();
 
-	
-	if (is.list(object$transMat))
-	{
-		probaCumList<-lapply(object$transMat,cummat)
-	} else
-	{
-		probaCumList<-list(cummat(object$transMat))
-	}
+    
+    if (is.list(object$transMat))
+    {
+        probaCumList<-lapply(object$transMat,cummat)
+    } else
+    {
+        probaCumList<-list(cummat(object$transMat))
+    }
 
     for (tt in k:nSim)
-	{
+    {
         val <- value[tt] <- trouve_indice(Aux[tt], probaCumList[[((tt-1)%%length(probaCumList))+1]][val,])
-	}
+    }
     
     return(as.integer(value))
 }
@@ -1281,8 +1281,8 @@ forwardBackward<-function(HMM, obs)
     if (class(HMM) == "HMMFitClass")
         HMM <- HMM$HMM
 
-	if (length(obs) < 1) stop("'obs' needs to contain at least a single element!")
-	
+    if (length(obs) < 1) stop("'obs' needs to contain at least a single element!")
+    
     if (is.data.frame(obs))
     {   dimObs <- dim(obs)[2]
         if (dimObs == 1)
@@ -1293,7 +1293,7 @@ forwardBackward<-function(HMM, obs)
 
     HMM <- setStorageMode(HMM)
     maListe <- TransfListe(HMM$distribution, obs)
-	
+    
     Res1 <- .Call("RLogforwardbackward", HMM, maListe$Zt)
     names(Res1) <- c("Alpha", "Beta", "Gamma", "Xsi", "Rho", "LLH")
     if (!is.list(obs))
@@ -1338,8 +1338,8 @@ viterbi<-function(HMM, obs)
 {   if ( ( class(HMM) != "HMMFitClass" ) && (class(HMM) != "HMMClass") )
         stop("class(HMM) must be 'HMMClass' or 'HMMFitClass'\n")
     
-	if (length(obs) < 1) stop("'obs' needs to contain at least a single element!")
-	
+    if (length(obs) < 1) stop("'obs' needs to contain at least a single element!")
+    
     if (class(HMM) == "HMMFitClass")
         HMM <- HMM$HMM
     

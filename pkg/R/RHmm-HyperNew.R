@@ -1,11 +1,11 @@
  ###############################################################
- #### RHmm version 1.4.0                                      
+ #### RHmm version 1.4.1                                      
  ####                                                         
  #### File: RHmm-HyperNew.R 
  ####                                                         
- #### Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
- #### Author: Sebastian BAUER <sebastian.bauer@charite.de>                                                        
- #### Date: 2010/11/18                                       
+ #### Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr>
+ #### Author: Sebastian BAUER <sebastian.bauer@charite.de>
+ #### Date: 2010/11/27                                       
  ####                                                         
  ###############################################################
 

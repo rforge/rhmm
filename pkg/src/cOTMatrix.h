@@ -1,11 +1,11 @@
 /**************************************************************
- *** RHmm version 1.4.0                                      
+ *** RHmm version 1.4.1                                      
  ***                                                         
  *** File: cOTMatrix.h 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2010/11/14                                      
+ *** Date: 2010/11/27                                      
  ***                                                         
  **************************************************************/
 
@@ -34,7 +34,6 @@ public :
 	double**	mMat	;
 public :
 	cOTMatrix(uint theNRow=0, uint theNCol=0, double theVal = 0.0L) ;
-	cOTMatrix(const cOTMatrix &m);
 	virtual ~cOTMatrix() ;
 	void Delete(void) ;
 	void ReAlloc(uint theNRow, uint theNCol, double theVal = 0.0L) ;
@@ -67,3 +66,6 @@ public :
 } ;
 
 #endif // _COTMATRIX_H_
+
+
+	

@@ -1,11 +1,11 @@
 /**************************************************************
- *** RHmm version 1.4.0                                      
+ *** RHmm version 1.4.1                                      
  ***                                                         
  *** File: Main.cpp 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2010/11/14                                      
+ *** Date: 2010/11/27                                      
  ***                                                         
  **************************************************************/
 
@@ -23,7 +23,7 @@
 #include "RHmm.h"
 using namespace std;
 
-#define FIC_NAME  "Cac40.txt" /*"Geyser.txt" "data_mixture.txt" "DISCRETEb.txt" "DISCRETE.txt"   "Geyser.txt" "SimulMultiMixt.txt"*/
+#define FIC_NAME  "Norm.txt" /*"Geyser.txt" "data_mixture.txt" "DISCRETEb.txt" "DISCRETE.txt"   "Geyser.txt" "SimulMultiMixt.txt"*/
 #define DIM_OBS 1
 #define NB_SAMPLE 1
 int main(void)
