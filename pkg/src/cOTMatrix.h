@@ -33,6 +33,7 @@ public :
 	uint		mNCol	;
 	double**	mMat	;
 public :
+	cOTMatrix(const cOTMatrix &theSrcMatrix);
 	cOTMatrix(uint theNRow=0, uint theNCol=0, double theVal = 0.0L) ;
 	virtual ~cOTMatrix() ;
 	void Delete(void) ;

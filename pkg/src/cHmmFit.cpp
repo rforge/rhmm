@@ -29,10 +29,11 @@ cHmmFit::~cHmmFit()
 }
 
 cHmmFit & cHmmFit::operator = (cHmmFit &theSrc)
-{       mLLH = theSrc.mLLH ;
-        CopyHmm(theSrc) ;
-        mDistrParam->CopyDistr(theSrc.mDistrParam) ;
-        return(*this) ;
+{
+	mLLH = theSrc.mLLH ;
+	CopyHmm(theSrc) ;
+    mDistrParam->CopyDistr(theSrc.mDistrParam) ;
+    return(*this) ;
 }
 
 void cHmmFit::BaumWelchAlgo(cBaumWelchInParam& theInParam)
@@ -157,11 +158,10 @@ void cHmmFit::BaumWelchAlgoInit(cBaumWelchInParam &theInParam)
         GetRNGstate();
 #endif _RDLL_
 
-cHmmFit myHMMFitCour(theInParam),
-                myHMM(theInParam)               ;
-cBaumWelchInParam myParamEntree ;
+        cHmmFit myHMMFitCour(theInParam), myHMM(theInParam);
+        cBaumWelchInParam myParamEntree;
         myParamEntree = theInParam ;
-                                                                                                ;       
+
 double  myLogVraisCour = -1e100 ;
         
         myParamEntree.mNMaxIter = theInParam.mNMaxIterInit  ;
@@ -186,7 +186,8 @@ register uint   t                                                               
                 for (i = 0 ; i < myParamEntree.mNClass ; i++)
                 {       mySum = 0.0 ;
                         for (j = 0 ; j < myParamEntree.mNClass ; j++)
-                        {       myHMMFitCour.mTransMatVector[0][i][j] = unif_rand() ; // FIXME
+                        {
+                        		myHMMFitCour.mTransMatVector[0][i][j] = unif_rand() ; // FIXME
                                 mySum += myHMMFitCour.mTransMatVector[0][i][j] ;
                         }
                         for (j = 0 ; j < myParamEntree.mNClass ; j++)
@@ -199,7 +200,8 @@ register uint   t                                                               
                 if(theInParam.mVerbose > 1)
                         Rprintf("Rand init num %d - LLH = %f\n", t, myHMMFitCour.mLLH) ;
                 if (myHMMFitCour.mLLH > myLogVraisCour)
-                {       myHMM = myHMMFitCour ;
+                {
+                		myHMM = myHMMFitCour ;
                         myLogVraisCour = myHMMFitCour.mLLH ;
                 } 
         }
@@ -210,7 +212,6 @@ register uint   t                                                               
         }
 
         *this = myHMM ;
-        
 }
 
 

@@ -33,6 +33,8 @@ cOTVector& cOTVector::operator =(cOTMatrix& theMatrix)
 }
 
 
+
+
 cOTMatrix& transpose(cOTVector &theVect)
 {
 cOTMatrix* myTranspose ;
@@ -40,6 +42,21 @@ cOTMatrix* myTranspose ;
 	for (register uint i=0 ; i < theVect.mSize ; i++)
 			myTranspose->mMat[0][i] = theVect[i] ;
 	return *myTranspose ;
+}
+
+
+cOTMatrix :: cOTMatrix(const cOTMatrix &theSrcMatrix)
+{
+	int i,j;
+
+	mNRow = mNCol = 0 ;
+	mMat = (double **)NULL;
+
+	ReAlloc(theSrcMatrix.mNRow, theSrcMatrix.mNCol, 0);
+
+	for (i = 0 ; i < mNRow ; i++)
+		for (j = 0 ; j < mNCol ; j++)
+			mMat[i][j] = theSrcMatrix.mMat[i][j] ;
 }
 
 cOTMatrix::cOTMatrix(uint theNRow, uint theNCol, double theVal)
@@ -117,12 +134,11 @@ double* & cOTMatrix::operator [](uint theNRow)
 		throw cOTError("bad index") ;
 }
 
-
 cOTMatrix& cOTMatrix::operator =(cOTMatrix& theSrcMatrix)
 {
 register uint	i,
 				j	;
-	
+
 	if (mNRow == 0)
 	{	if ( (mMat = new double*[theSrcMatrix.mNRow]) == NULL)
 			throw cOTError("memory allocation problem") ;
@@ -441,7 +457,7 @@ int myInfo,
 	theDet = 1.0L ;
 cOTVector myInvEigenValue = cOTVector(theMatrix.mNCol) ;
 
-cOTMatrix myEigenVector = cOTMatrix(theMatrix.mNCol, theMatrix.mNCol) ;
+cOTMatrix myEigenVector(theMatrix.mNCol, theMatrix.mNCol) ;
 	for (register uint i = 0 ; i < theMatrix.mNCol ; i++)
 	{	theDet *= myW[i] ;
 		myInvEigenValue[i] = 1.0 /myW[i] ;

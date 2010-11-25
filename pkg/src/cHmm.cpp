@@ -129,9 +129,8 @@ cHmm::~cHmm()
 
 cHmm & cHmm::operator = (cHmm &theSrc)
 {       
-        mInitProba = theSrc.mInitProba ;
-
-                mTransMatVector = theSrc.mTransMatVector ;
+	mInitProba = theSrc.mInitProba ;
+	this->mTransMatVector = theSrc.mTransMatVector ;
 
                 /*      for (register uint i = 0 ; i < mvQ ; i++)
         {       mInitProba[i] = theSrc.mInitProba[i] ;
@@ -139,8 +138,8 @@ cHmm & cHmm::operator = (cHmm &theSrc)
                         mTransMat[i][j] = theSrc.mTransMat[i][j] ;
         }
 */
-        mDistrParam->CopyDistr(theSrc.mDistrParam) ;
-        return(*this) ;
+	mDistrParam->CopyDistr(theSrc.mDistrParam) ;
+	return(*this) ;
 }
 
 void cHmm::Print(void)

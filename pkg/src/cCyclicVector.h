@@ -28,9 +28,8 @@ public:
                 return *this;
 
         this->clear();
-
         for (int i=0;i<rhs.size();i++)
-                this->push_back(rhs.at(i));
+            this->push_back(rhs.at(i));
 
         return *this;
     }
