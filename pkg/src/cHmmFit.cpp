@@ -1,11 +1,11 @@
 /**************************************************************
- *** RHmm version 1.4.1                                      
+ *** RHmm version 1.4.2                                     
  ***                                                         
  *** File: cHmmFit.cpp 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2010/11/27                                      
+ *** Date: 2010/11/26                                     
  ***                                                         
  **************************************************************/
 
@@ -30,8 +30,8 @@ cHmmFit::~cHmmFit()
 
 cHmmFit & cHmmFit::operator = (cHmmFit &theSrc)
 {
-	mLLH = theSrc.mLLH ;
-	CopyHmm(theSrc) ;
+        mLLH = theSrc.mLLH ;
+        CopyHmm(theSrc) ;
     mDistrParam->CopyDistr(theSrc.mDistrParam) ;
     return(*this) ;
 }
@@ -187,7 +187,7 @@ register uint   t                                                               
                 {       mySum = 0.0 ;
                         for (j = 0 ; j < myParamEntree.mNClass ; j++)
                         {
-                        		myHMMFitCour.mTransMatVector[0][i][j] = unif_rand() ; // FIXME
+                                        myHMMFitCour.mTransMatVector[0][i][j] = unif_rand() ; // FIXME
                                 mySum += myHMMFitCour.mTransMatVector[0][i][j] ;
                         }
                         for (j = 0 ; j < myParamEntree.mNClass ; j++)
@@ -201,7 +201,7 @@ register uint   t                                                               
                         Rprintf("Rand init num %d - LLH = %f\n", t, myHMMFitCour.mLLH) ;
                 if (myHMMFitCour.mLLH > myLogVraisCour)
                 {
-                		myHMM = myHMMFitCour ;
+                                myHMM = myHMMFitCour ;
                         myLogVraisCour = myHMMFitCour.mLLH ;
                 } 
         }

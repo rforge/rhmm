@@ -1,11 +1,11 @@
 /**************************************************************
- *** RHmm version 1.4.1                                      
+ *** RHmm version 1.4.2                                     
  ***                                                         
  *** File: cCyclicVector.h 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2010/11/27                                      
+ *** Date: 2010/11/26                                     
  ***                                                         
  **************************************************************/
 
@@ -28,7 +28,7 @@ public:
                 return *this;
 
         this->clear();
-        for (int i=0;i<rhs.size();i++)
+        for (int i=0;i<(int)rhs.size();i++)
             this->push_back(rhs.at(i));
 
         return *this;

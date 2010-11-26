@@ -1,11 +1,11 @@
 /**************************************************************
- *** RHmm version 1.4.1                                      
+ *** RHmm version 1.4.2                                     
  ***                                                         
  *** File: cOTError.h 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2010/11/27                                      
+ *** Date: 2010/11/26                                     
  ***                                                         
  **************************************************************/
 
@@ -15,17 +15,17 @@
 #include <iostream>
 
 #ifndef NULL
-	#define NULL 0
+        #define NULL 0
 #endif // NULL
 
 #ifndef uint
-	typedef unsigned int uint ;
+        typedef unsigned int uint ;
 #endif // uint
 
 class cOTError
 {
-	public :
-		cOTError(char *theMess) ;
+        public :
+                cOTError(char *theMess) ;
 } ;
 
 #endif //_COTERROR_H_

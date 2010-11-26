@@ -1,11 +1,11 @@
 /**************************************************************
- *** RHmm version 1.4.1                                      
+ *** RHmm version 1.4.2                                     
  ***                                                         
  *** File: cMixtMultivariateNormal.cpp 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2010/11/27                                      
+ *** Date: 2010/11/26                                     
  ***                                                         
  **************************************************************/
 
