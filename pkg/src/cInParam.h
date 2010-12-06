@@ -9,8 +9,8 @@
  ***                                                         
  **************************************************************/
 
-#ifndef _CINPARAM_H_
-#define _CINPARAM_H_
+#pragma once
+
 #include "Hmm.h"
 
 
@@ -29,6 +29,3 @@ class cInParam
                 cInParam & operator =(const cInParam &theSrc) ;
                 virtual void Print(void) ;
 } ;
-
-
-#endif //_CINPARAM_H_

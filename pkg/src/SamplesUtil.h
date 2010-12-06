@@ -9,10 +9,9 @@
  ***                                                         
  **************************************************************/
 
-#ifndef _SamplesUtil_H_
-#define _SamplesUtil_H_
+#pragma once
 #include "OTMathUtil.h"
 
 void flatSamples(cOTVector* theInVect, uint theNSample, uint theDimObs, uint theNObsAllSamples, cOTVector& theOutVect) ;
 void listSamples(cOTVector& theInVect, uint theNSample, uint theDimObs, uint* theNObsSample, cOTVector* theOutVect) ;
-#endif // _SamplesUtil_H_
+

@@ -9,8 +9,8 @@
  ***                                                         
  **************************************************************/
 
-#ifndef _CBAUMWELCH_H_
-#define _CBAUMWELCH_H_
+#pragma once
+
 #include "cInParam.h"
 #include "cHmm.h"
 
@@ -35,4 +35,3 @@ class cBaumWelch
 } ;
 
 
-#endif // _CBAUMWELCH_H_

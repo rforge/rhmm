@@ -9,8 +9,7 @@
  ***                                                         
  **************************************************************/
 
-#ifndef _RHMM_H_
-#define _RHMM_H_
+#pragma once
 
 typedef enum ParamHMMEnum
 {       eNClasses=0,
@@ -51,6 +50,4 @@ typedef enum DistEnum
         #define BEG_EXTERN_C extern "C" {
         #define END_EXTERN_C }
 #endif //BEG_EXTERN_C
-
-#endif //_RHMM_H_
 

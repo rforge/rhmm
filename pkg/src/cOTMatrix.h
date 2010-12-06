@@ -9,8 +9,7 @@
  ***                                                         
  **************************************************************/
 
-#ifndef _COTMATRIX_H_
-#define _COTMATRIX_H_
+#pragma once
 #ifndef MIN_DBLE
         #define MIN_DBLE 1e-16L
 #endif //MIN_DBLE
@@ -20,11 +19,22 @@
         typedef unsigned int uint ;
 #endif //uint
 
+
 #include <iostream>
-#include <math.h>
+#include <cmath>
 #include "R_ext/Lapack.h"
 #include "cOTError.h"
 #include "cOTVector.h"
+
+#ifdef __SUNPRO_CC
+    #ifndef _RDLL_
+        #define log std::log
+        #define exp std::exp
+        #define printf std::printf
+        #define pow std::pow
+        #define sqrt std::sqrt
+    #endif // RDLL
+#endif //__SUNPRO_CC
 
 class cOTMatrix
 {
@@ -66,7 +76,6 @@ public :
         friend void LapackInvAndDet(cOTMatrix &theMatrix, cOTMatrix &theInvMatrix, double& theDet) ;
 } ;
 
-#endif // _COTMATRIX_H_
 
 
         

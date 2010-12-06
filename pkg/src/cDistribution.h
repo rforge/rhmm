@@ -9,8 +9,8 @@
  ***                                                         
  **************************************************************/
 
-#ifndef _CDISTRIBUTION_H_
-#define _CDISTRIBUTION_H_
+#pragma once
+
 #include "cBaumWelchInParam.h"
 #include "cBaumWelch.h"
 
@@ -35,5 +35,3 @@ class cDistribution
 #endif // _RDLL_
 
 } ;
-
-#endif //_CDISTRIBUTION_H_

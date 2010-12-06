@@ -9,8 +9,8 @@
  ***                                                         
  **************************************************************/
 
-#ifndef _KMEANS_H_
-#define _KMEANS_H_
+#pragma once
+
 #ifndef _RDLL_
 
 #include "OTMathUtil.h"
@@ -22,7 +22,6 @@
 
 void mkmeans(cOTVector& theYt, uint theNClass, int* theSeq) ;
 void mkmeans(cOTVector& theYt, uint theNClass, uint theDimObs, int* theSeq) ;
-#endif //_RDLL_
-#endif // _KMEANS_H_
 
+#endif //_RDLL_
 

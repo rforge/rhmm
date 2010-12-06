@@ -9,8 +9,8 @@
  ***                                                         
  **************************************************************/
 
-#ifndef _CMULTIVARIATENORMAL_H_
-#define _CMULTIVARIATENORMAL_H_
+#pragma once
+
 #include "cDistribution.h"
 #include "SamplesUtil.h"
 
@@ -34,5 +34,3 @@ class cMultivariateNormal : public cDistribution
                 uint GetNParam(void){ return mMean[0].mSize + mMean[0].mSize * mMean[0].mSize ; }
 
 } ;
-
-#endif //_CMULTIVARIATENORMAL_H_

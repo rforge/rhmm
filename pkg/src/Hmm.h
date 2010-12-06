@@ -9,8 +9,7 @@
  ***                                                         
  **************************************************************/
 
-#ifndef _HMM_H_
-#define _HMM_H_
+#pragma once
 
 #include "OTMathUtil.h"
 
@@ -59,7 +58,3 @@ typedef enum initEnum
         eKMeans = 1,
         eUser = 2
 }initEnum;
-
-
-#endif //_HMM_H_
-

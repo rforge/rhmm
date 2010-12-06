@@ -511,7 +511,7 @@ cOTMatrix* myProbaCond = new cOTMatrix[myNbSample] ;
 
 cBaumWelch myBaumWelch=cBaumWelch(myNbSample, myT, myNbClasses) ;
         myBaumWelch.ForwardBackward(myProbaCond, myHMM) ;
-// On enlève le scale   
+// On enlï¿½ve le scale   
         for (register uint n = 0 ; n < myNbSample ; n++)
         {       for (register uint t = 0 ; t < myT[n] ; t++)
                         for (register uint j = 0 ; j < myNbClasses ; j++)
@@ -705,4 +705,5 @@ UNPROTECT(1) ;
         return(myRes) ;
 }
 END_EXTERN_C
+
 #endif //_RDLL_

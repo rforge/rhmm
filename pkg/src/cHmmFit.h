@@ -9,8 +9,8 @@
  ***                                                         
  **************************************************************/
 
-#ifndef _CHMMFIT_H_
-#define _CHMMFIT_H_
+#pragma once
+
 #include "cBaumWelchInParam.h"
 #include "cBaumWelch.h"
 #include "cDistribution.h"
@@ -35,5 +35,3 @@ class cHmmFit : public cBaumWelch, public cHmm
                 void ComputeGradient(cBaumWelchInParam& theInParam, cOTVector& theGrad, double theDelta=1e-3) ;
                 void ComputeHessian(cBaumWelchInParam& theInPram, cOTMatrix& theHess, double theDelta=1e-3) ;
 } ;
-
-#endif // _CHMMFIT_H_

@@ -9,8 +9,7 @@
  ***                                                         
  **************************************************************/
 
-#ifndef _CUNIVARIATENORMAL_H_
-#define _CUNIVARIATENORMAL_H_
+#pragma once
 #include "cDistribution.h"
 
 class cUnivariateNormal : public cDistribution
@@ -29,5 +28,3 @@ class cUnivariateNormal : public cDistribution
                 virtual uint GetNParam(void){ return 2 ; }
                 void CopyDistr(cDistribution* theSrc) ;
 } ;
-
-#endif //_CUNIVARIATENORMAL_H_

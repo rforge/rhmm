@@ -432,7 +432,7 @@ cOTMatrix& inv(cOTMatrix &theMatrix)
 double myDet ;
 
         LapackInvAndDet(theMatrix, ourTempMatrix, myDet) ;
-        if (fabs(myDet) < MIN_DBLE)
+        if (std::fabs(myDet) < MIN_DBLE)
                         throw cOTError("Non inversible matrix") ;
         return ourTempMatrix ;
 }

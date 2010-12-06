@@ -9,6 +9,7 @@
  ***                                                         
  **************************************************************/
 
+#pragma once
 #ifdef _DEBOGAGE_
 extern uint ourNProtect ;
 
@@ -45,6 +46,5 @@ extern uint ourNProtect ;
                 SET_VECTOR_ELT(theSEXP_, i_, myAux_) ; \
         } \
 }
+#endif //_DEBOGAGE_
 
-
-#endif 

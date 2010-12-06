@@ -9,8 +9,8 @@
  ***                                                         
  **************************************************************/
 
-#ifndef _COTVECTOR_H_
-#define _COTVECTOR_H_
+#pragma once
+
 #include <iostream>
 #include "cOTError.h"
 
@@ -58,4 +58,3 @@ class cOTVector
                 friend cOTVector& copy_double(double* theVect, uint theSize) ;
 } ;
 
-#endif //  _COTVECTOR_H_

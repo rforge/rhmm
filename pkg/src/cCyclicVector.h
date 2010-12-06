@@ -9,8 +9,8 @@
  ***                                                         
  **************************************************************/
 
- #include <vector>
-
+#pragma once
+#include <vector>
 #include "Hmm.h"
 
 template<class T>

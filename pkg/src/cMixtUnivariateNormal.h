@@ -9,8 +9,8 @@
  ***                                                         
  **************************************************************/
 
-#ifndef _CMIXTUNIVARIATENORMAL_H_
-#define _CMIXTUNIVARIATENORMAL_H_
+#pragma once
+
 #include "cDistribution.h"
 
 class cMixtUnivariateNormal : public cDistribution
@@ -33,5 +33,3 @@ class cMixtUnivariateNormal : public cDistribution
                 virtual void SetParam(uint theDeb, cOTVector& theParam) ;
                 uint GetNParam(void){ return mvNMixt * 3 - 1  ; }
 } ;
-
-#endif //_CMIXTUNIVARIATENORMAL_H_

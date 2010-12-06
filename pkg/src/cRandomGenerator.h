@@ -9,8 +9,8 @@
  ***                                                         
  **************************************************************/
 
-#ifndef _CRANDOMGENERATOR_H_
-#define _CRANDOMGENERATOR_H_
+#pragma once
+
 #ifdef _GSL_
 #include <gsl/gsl_rng.h>
         class cRandomGenerator
@@ -22,4 +22,4 @@
                         ~cRandomGenerator() ;
         } ;
 #endif // _GSL_
-#endif //_CRANDOMGENERATOR_H_
+

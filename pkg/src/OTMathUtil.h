@@ -9,11 +9,8 @@
  ***                                                         
  **************************************************************/
 
-#ifndef _OTMathUtil_H_
-#define _OTMathUtil_H_
+#pragma once
 
 #include "cOTError.h"
 #include "cOTVector.h"
 #include "cOTMatrix.h"
-
-#endif //_OTMathUtil_H_

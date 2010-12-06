@@ -9,8 +9,8 @@
  ***                                                         
  **************************************************************/
 
-#ifndef _CDISCRETE_H_
-#define _CDISCRETE_H_
+#pragma once
+
 #include "cDistribution.h"
 class cDiscrete : public cDistribution 
 {       private :
@@ -31,4 +31,3 @@ class cDiscrete : public cDistribution
                 void CopyDistr(cDistribution *theSrc) ;
 } ;
 
-#endif //_CDISCRETE_H_

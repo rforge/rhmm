@@ -9,8 +9,7 @@
  ***                                                         
  **************************************************************/
 
-#ifndef _CHMM_H_
-#define _CHMM_H_
+#pragma once
 
 #include "Hmm.h"
 #include "cInParam.h"
@@ -34,7 +33,3 @@ class cHmm
                 void SetParam(cOTVector& theParam) ;
                 void GetParam(cOTVector& theParam) ;            
 } ;
-
-
-
-#endif _CHMM_H_//

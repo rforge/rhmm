@@ -9,8 +9,7 @@
  ***                                                         
  **************************************************************/
 
-#ifndef _ALLDISTRIBUTIONS_H_
-#define _ALLDISTRIBUTIONS_H_
+#pragma once
 
 #include "cUnivariateNormal.h"
 #include "cMultivariateNormal.h"
@@ -18,4 +17,3 @@
 #include "cMixtMultivariateNormal.h"
 #include "cDiscrete.h"
 
-#endif// _ALLDISTRIBUTIONS_H_

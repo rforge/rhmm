@@ -9,8 +9,8 @@
  ***                                                         
  **************************************************************/
 
-#ifndef _CBAUMWELCHINPARAM_H_
-#define _CBAUMWELCHINPARAM_H_
+#pragma once
+
 #include "cInParam.h"
 
 class cBaumWelchInParam : public cInParam
@@ -28,6 +28,3 @@ class cBaumWelchInParam : public cInParam
                 virtual ~cBaumWelchInParam() ;
                 void Print(void) ;
 } ;
-
-
-#endif //_CBAUMWELCHINPARAM_H_

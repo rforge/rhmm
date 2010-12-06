@@ -9,8 +9,7 @@
  ***                                                         
  **************************************************************/
 
-#ifndef _CRUTILS_H_
-#define _CRUTILS_H_
+#pragma once
 
 #include "OTMathUtil.h"
 #include <R.h>
@@ -149,6 +148,4 @@ class cRUtil
                 void SetListListMatSexp(cOTMatrix** theMat, uint theNList1, uint* theNList2, SEXP &theSEXP) ;
 
         } ;
-#endif // _CRUTILS_H_
-
 
