@@ -1,14 +1,16 @@
 /**************************************************************
- *** RHmm version 1.4.3                                     
+ *** RHmm version 1.4.4                                     
  ***                                                         
  *** File: cRandomGenerator.h 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2010/12/01                                     
+ *** Date: 2010/12/08                                     
  ***                                                         
  **************************************************************/
 
+#ifndef _ CRANDOMGENERATOR_H_ 
+#define _CRANDOMGENERATOR_H_ 
 #pragma once
 
 #ifdef _GSL_
@@ -23,3 +25,4 @@
         } ;
 #endif // _GSL_
 
+#endif //_CRANDOMGENERATOR_H_ 

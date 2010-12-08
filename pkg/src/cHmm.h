@@ -1,14 +1,16 @@
 /**************************************************************
- *** RHmm version 1.4.3                                     
+ *** RHmm version 1.4.4                                     
  ***                                                         
  *** File: cHmm.h 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2010/12/01                                     
+ *** Date: 2010/12/08                                     
  ***                                                         
  **************************************************************/
 
+#ifndef _ CHMM_H_ 
+#define _CHMM_H_ 
 #pragma once
 
 #include "Hmm.h"
@@ -33,3 +35,4 @@ class cHmm
                 void SetParam(cOTVector& theParam) ;
                 void GetParam(cOTVector& theParam) ;            
 } ;
+#endif //_CHMM_H_ 

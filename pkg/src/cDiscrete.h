@@ -1,14 +1,16 @@
 /**************************************************************
- *** RHmm version 1.4.3                                     
+ *** RHmm version 1.4.4                                     
  ***                                                         
  *** File: cDiscrete.h 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2010/12/01                                     
+ *** Date: 2010/12/08                                     
  ***                                                         
  **************************************************************/
 
+#ifndef _ CDISCRETE_H_ 
+#define _CDISCRETE_H_ 
 #pragma once
 
 #include "cDistribution.h"
@@ -31,3 +33,4 @@ class cDiscrete : public cDistribution
                 void CopyDistr(cDistribution *theSrc) ;
 } ;
 
+#endif //_CDISCRETE_H_ 

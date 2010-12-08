@@ -1,14 +1,16 @@
 /**************************************************************
- *** RHmm version 1.4.3                                     
+ *** RHmm version 1.4.4                                     
  ***                                                         
  *** File: cLogBaumWelch.h 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2010/12/01                                     
+ *** Date: 2010/12/08                                     
  ***                                                         
  **************************************************************/
 
+#ifndef _ CLOGBAUMWELCH_H_ 
+#define _CLOGBAUMWELCH_H_ 
 #pragma once
 #include "cInParam.h"
 #include "cHmm.h"
@@ -33,3 +35,4 @@ class cLogBaumWelch
                 uint GetSampleSize(uint theN){ return mvT[theN] ;}
                 virtual ~cLogBaumWelch() ;
 } ;
+#endif //_CLOGBAUMWELCH_H_ 

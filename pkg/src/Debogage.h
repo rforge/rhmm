@@ -1,14 +1,16 @@
 /**************************************************************
- *** RHmm version 1.4.3                                     
+ *** RHmm version 1.4.4                                     
  ***                                                         
  *** File: Debogage.h 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2010/12/01                                     
+ *** Date: 2010/12/08                                     
  ***                                                         
  **************************************************************/
 
+#ifndef _ DEBOGAGE_H_ 
+#define _DEBOGAGE_H_ 
 #pragma once
 #ifdef _DEBOGAGE_
 extern uint ourNProtect ;
@@ -48,3 +50,4 @@ extern uint ourNProtect ;
 }
 #endif //_DEBOGAGE_
 
+#endif //_DEBOGAGE_H_ 

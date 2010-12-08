@@ -1,14 +1,16 @@
 /**************************************************************
- *** RHmm version 1.4.3                                     
+ *** RHmm version 1.4.4                                     
  ***                                                         
  *** File: cOTMatrix.h 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2010/12/01                                     
+ *** Date: 2010/12/08                                     
  ***                                                         
  **************************************************************/
 
+#ifndef _COTMATRIX_H_
+#define _COTMATRIX_H_
 #pragma once
 #ifndef MIN_DBLE
         #define MIN_DBLE 1e-16L
@@ -76,6 +78,7 @@ public :
         friend void LapackInvAndDet(cOTMatrix &theMatrix, cOTMatrix &theInvMatrix, double& theDet) ;
 } ;
 
+#endif // _COTMATRIX_H_
 
 
         
