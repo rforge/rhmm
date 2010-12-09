@@ -5,12 +5,12 @@
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2010/12/08                                     
+ *** Date: 2010/12/09                                     
  ***                                                         
  **************************************************************/
 
-#ifndef _ CLOGBAUMWELCH_H_ 
-#define _CLOGBAUMWELCH_H_ 
+#ifndef _CLOGBAUMWELCH_H_
+#define _CLOGBAUMWELCH_H_
 #pragma once
 #include "cInParam.h"
 #include "cHmm.h"
@@ -35,4 +35,4 @@ class cLogBaumWelch
                 uint GetSampleSize(uint theN){ return mvT[theN] ;}
                 virtual ~cLogBaumWelch() ;
 } ;
-#endif //_CLOGBAUMWELCH_H_ 
+#endif //_CLOGBAUMWELCH_H_

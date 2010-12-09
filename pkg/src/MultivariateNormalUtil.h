@@ -5,12 +5,12 @@
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2010/12/08                                     
+ *** Date: 2010/12/09                                     
  ***                                                         
  **************************************************************/
 
-#ifndef _ MULTIVARIATENORMALUTIL_H_ 
-#define _MULTIVARIATENORMALUTIL_H_ 
+#ifndef _MULTIVARIATENORMALUTIL_H_
+#define _MULTIVARIATENORMALUTIL_H_
 #pragma once
 #include "OTMathUtil.h"
 
@@ -41,22 +41,16 @@
         typedef unsigned int uint ;
 #endif //int
 
-void SymetricInverseAndDet      (       cOTMatrix&      theMat,
-                                                                double&         theDet,
-                                                                cOTMatrix&      theInvMat
-                                                        ) ;
-/*void dens_normale_multivariee (       cOTVector&      thex,
-                                                                        uint            theDimObs,      // dim de la loi multivari�e
-                                                                        cOTVector&      theMu,
-                                                                        cOTMatrix&      theCov,
-                                                                        double*         theDens
-                                                                ) ;
-*/
+void SymetricInverseAndDet      (	cOTMatrix&      theMat,
+                                    double&         theDet,
+                                    cOTMatrix&      theInvMat
+                                ) ;
 
-void MultivariateNormalDensity  (       cOTVector&      thex,
-                                                                        cOTVector&      theMu,
-                                                                        cOTMatrix&      theInvCov,
-                                                                        double          theDet,
-                                                                        double*         theDens
-                                                                ) ;
-#endif //_MULTIVARIATENORMALUTIL_H_ 
+void MultivariateNormalDensity  (   cOTVector&      thex,
+									cOTVector&      theMu,
+                                    cOTMatrix&      theInvCov,
+                                    double          theDet,
+                                    double*         theDens
+                                ) ;
+
+#endif //_MULTIVARIATENORMALUTIL_H_

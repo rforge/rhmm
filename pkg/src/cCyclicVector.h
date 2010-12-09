@@ -5,12 +5,12 @@
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2010/12/08                                     
+ *** Date: 2010/12/09                                     
  ***                                                         
  **************************************************************/
 
-#ifndef _ CCYCLICVECTOR_H_ 
-#define _CCYCLICVECTOR_H_ 
+#ifndef _CCYCLICVECTOR_H_
+#define _CCYCLICVECTOR_H_
 #pragma once
 #include <vector>
 #include "Hmm.h"
@@ -36,4 +36,4 @@ public:
         return *this;
     }
 };
-#endif //_CCYCLICVECTOR_H_ 
+#endif //_CCYCLICVECTOR_H_

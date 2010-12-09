@@ -5,12 +5,12 @@
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2010/12/08                                     
+ *** Date: 2010/12/09                                     
  ***                                                         
  **************************************************************/
 
-#ifndef _ CDISTRIBUTION_H_ 
-#define _CDISTRIBUTION_H_ 
+#ifndef _CDISTRIBUTION_H_
+#define _CDISTRIBUTION_H_
 #pragma once
 
 #include "cBaumWelchInParam.h"
@@ -37,4 +37,4 @@ class cDistribution
 #endif // _RDLL_
 
 } ;
-#endif //_CDISTRIBUTION_H_ 
+#endif //_CDISTRIBUTION_H_

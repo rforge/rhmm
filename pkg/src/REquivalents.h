@@ -5,12 +5,12 @@
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2010/12/08                                     
+ *** Date: 2010/12/09                                     
  ***                                                         
  **************************************************************/
 
-#ifndef _ REQUIVALENTS_H_ 
-#define _REQUIVALENTS_H_ 
+#ifndef _REQUIVALENTS_H_
+#define _REQUIVALENTS_H_
 #pragma once
 #include <cstdio>
 #include <cstdlib>
@@ -31,4 +31,4 @@ inline void GetRNGstate(void) { std::srand( (unsigned)time( NULL ) ); }
 inline double unif_rand(void) { return (double)std::rand()/(double)RAND_MAX ; }
 inline void PutRNGstate(void){}
 
-#endif //_REQUIVALENTS_H_ 
+#endif //_REQUIVALENTS_H_

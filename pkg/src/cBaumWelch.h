@@ -5,12 +5,12 @@
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2010/12/08                                     
+ *** Date: 2010/12/09                                     
  ***                                                         
  **************************************************************/
 
-#ifndef _ CBAUMWELCH_H_ 
-#define _CBAUMWELCH_H_ 
+#ifndef _CBAUMWELCH_H_
+#define _CBAUMWELCH_H_
 #pragma once
 
 #include "cInParam.h"
@@ -37,4 +37,4 @@ class cBaumWelch
 } ;
 
 
-#endif //_CBAUMWELCH_H_ 
+#endif //_CBAUMWELCH_H_

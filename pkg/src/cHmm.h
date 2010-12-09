@@ -5,12 +5,12 @@
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2010/12/08                                     
+ *** Date: 2010/12/09                                     
  ***                                                         
  **************************************************************/
 
-#ifndef _ CHMM_H_ 
-#define _CHMM_H_ 
+#ifndef _CHMM_H_
+#define _CHMM_H_
 #pragma once
 
 #include "Hmm.h"
@@ -35,4 +35,4 @@ class cHmm
                 void SetParam(cOTVector& theParam) ;
                 void GetParam(cOTVector& theParam) ;            
 } ;
-#endif //_CHMM_H_ 
+#endif //_CHMM_H_

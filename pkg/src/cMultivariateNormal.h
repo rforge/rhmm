@@ -5,12 +5,12 @@
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2010/12/08                                     
+ *** Date: 2010/12/09                                     
  ***                                                         
  **************************************************************/
 
-#ifndef _ CMULTIVARIATENORMAL_H_ 
-#define _CMULTIVARIATENORMAL_H_ 
+#ifndef _CMULTIVARIATENORMAL_H_
+#define _CMULTIVARIATENORMAL_H_
 #pragma once
 
 #include "cDistribution.h"
@@ -36,4 +36,4 @@ class cMultivariateNormal : public cDistribution
                 uint GetNParam(void){ return mMean[0].mSize + mMean[0].mSize * mMean[0].mSize ; }
 
 } ;
-#endif //_CMULTIVARIATENORMAL_H_ 
+#endif //_CMULTIVARIATENORMAL_H_

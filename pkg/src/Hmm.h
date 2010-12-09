@@ -5,12 +5,12 @@
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2010/12/08                                     
+ *** Date: 2010/12/09                                     
  ***                                                         
  **************************************************************/
 
-#ifndef _ HMM_H_ 
-#define _HMM_H_ 
+#ifndef _HMM_H_
+#define _HMM_H_
 #pragma once
 
 #include "OTMathUtil.h"
@@ -60,4 +60,4 @@ typedef enum initEnum
         eKMeans = 1,
         eUser = 2
 }initEnum;
-#endif //_HMM_H_ 
+#endif //_HMM_H_

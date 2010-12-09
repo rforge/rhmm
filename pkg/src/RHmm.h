@@ -5,12 +5,12 @@
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2010/12/08                                     
+ *** Date: 2010/12/09                                     
  ***                                                         
  **************************************************************/
 
-#ifndef _ RHMM_H_ 
-#define _RHMM_H_ 
+#ifndef _RHMM_H_
+#define _RHMM_H_
 #pragma once
 
 typedef enum ParamHMMEnum
@@ -53,4 +53,4 @@ typedef enum DistEnum
         #define END_EXTERN_C }
 #endif //BEG_EXTERN_C
 
-#endif //_RHMM_H_ 
+#endif //_RHMM_H_
