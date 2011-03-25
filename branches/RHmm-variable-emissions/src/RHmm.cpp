@@ -148,7 +148,7 @@ cHmmFit myParamSortie = cHmmFit(myParamEntree) ;
                         break ;
                         case eDiscreteDistr :
                         {       cDiscrete *myParam = dynamic_cast<cDiscrete *>(myHMM.mDistrParam) ;
-                                myRUtil.GetListVectSexp(myAux, 3, myNbClasses, myParam->mProba) ;
+                                myRUtil.GetEmissionSexp(myAux, 3, myParam->mProbaMatVector);
                         }
                         break ;
                 }
@@ -212,7 +212,9 @@ SEXP myRes,
                 break ;
                 case eDiscreteDistr :
                 {       cDiscrete *myParam = dynamic_cast<cDiscrete *>(myParamSortie.mDistrParam) ;
-                        myRUtil.SetListVectSexp(myParam->mProba, myNbClasses, myAux[2]) ;
+//                        myRUtil.SetListVectSexp(myParam->mProba, myNbClasses, myAux[2]) ;
+                		fprintf(stderr,"***Implement me\n");
+                		exit(0);
                 }
                 break ;
                 case eMixtUniNormalDistr :
@@ -371,7 +373,8 @@ cHmm    myHMM = cHmm(myDistrType, myNbClasses, myDimObs, myNbMixt, myNbProba) ;
 
                 case eDiscreteDistr :
                 {       cDiscrete *myParam = (cDiscrete *)(myHMM.mDistrParam) ;
-                        myRUtil.GetListVectSexp(myDistSEXP, 3, myNbClasses, myParam->mProba) ;
+                		myRUtil.GetEmissionSexp(myDistSEXP, 3, myParam->mProbaMatVector);
+
                 }
                 break ;
                 case eUnknownDistr :
@@ -494,7 +497,7 @@ cHmm myHMM = cHmm(myDistrType, myNbClasses, myDimObs, myNbMixt, myNbProba) ;
 
                 case eDiscreteDistr :
                 {       cDiscrete *myParam = (cDiscrete *)(myHMM.mDistrParam) ;
-                        myRUtil.GetListVectSexp(myDistSEXP, 3, myNbClasses, myParam->mProba) ;
+                		myRUtil.GetEmissionSexp(myDistSEXP, 3, myParam->mProbaMatVector);
                 }
                 break ;
                 case eUnknownDistr :
@@ -652,7 +655,7 @@ cHmm myHMM = cHmm(myDistrType, myNbClasses, myDimObs, myNbMixt, myNbProba) ;
 
                 case eDiscreteDistr :
                 {       cDiscrete *myParam = (cDiscrete *)(myHMM.mDistrParam) ;
-                        myRUtil.GetListVectSexp(myDistSEXP, 3, myNbClasses, myParam->mProba) ;
+                		myRUtil.GetEmissionSexp(myDistSEXP, 3, myParam->mProbaMatVector);
                 }
                 break ;
                 case eUnknownDistr :
