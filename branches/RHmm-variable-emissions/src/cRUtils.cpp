@@ -135,7 +135,7 @@ void cRUtil::GetMatListSexp(SEXP theSEXP, uint theNum, std::vector<cOTMatrix> &t
 }
 
 /**
- * Retrieves the emission probabilies which either can be stored as list of vectors
+ * Retrieves the emission probabilities which either can be stored as list of vectors
  * or as a list of matrices (time-dependent then).
  *
  * We assume that at least one element has been stored before.

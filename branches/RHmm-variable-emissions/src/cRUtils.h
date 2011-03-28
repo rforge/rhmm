@@ -86,7 +86,7 @@ class cRUtil
                 void GetListListMatSexp(SEXP theSEXP, uint theNum, uint theNList1, uint theNList2, cOTMatrix** theVect) ;
 
                 /*
-                *       Remplit une seule valeur dans un SEXP � la place n� theNum 
+                *       Remplit une seule valeur dans un SEXP � la place n� theNum
                 */
                 void set_val_sexp(int theVal, SEXP &theSEXP) ;
                 void set_val_sexp(uint theVal, SEXP &theSEXP) ;

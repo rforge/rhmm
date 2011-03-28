@@ -32,11 +32,14 @@ ifstream myFile ;
 cOTVector* myRt = new cOTVector[NB_SAMPLE] ;
 register uint n = 0 ;
 double myAux ;
-	myFile.open(FIC_NAME) ;
+	myFile.open(FIC_NAME);
+	if (!myFile.is_open())
+		fprintf(stderr,"Could not open %s\n",FIC_NAME);
 	while (myFile)
 	{	myFile >> myAux ;		
 		n++ ;
 	}
+
 	n = (n-1)/(DIM_OBS*NB_SAMPLE) ;
 	myFile.close() ;
 	for (register uint j = 0 ; j < NB_SAMPLE ; j++)

@@ -27,7 +27,7 @@ cDiscrete::~cDiscrete()
 {       MESS_DESTR("cDiscrete")
         if ( mvNClass > 0)
         {
-        	fprintf(stderr,"***Implement me!\n");
+        	fprintf(stderr,"***Implement me(~cDiscrete)!\n");
         }
         mvNClass = 0 ;
 }
@@ -41,14 +41,16 @@ uint cDiscrete::GetNProba(void)
 
 void cDiscrete::Print()
 {
-fprintf(stderr,"***Implement me!\n");
-exit(0);
-//        for (register uint i = 0 ; i < mvNClass ; i++)
-//        {       Rprintf("State %d :\t", i) ;
-//                for (register uint j = 0 ; j < GetNProba() ; j++)
-//                        Rprintf("P[%d]=%lf\t", j, mProba[i][j]) ;
-//                Rprintf("\n") ;
-//        }
+	for (uint h = 0; h<mProbaMatVector.size();h++ )
+	{
+		Rprintf("Position %d\n",h);
+        for (register uint i = 0 ; i < mvNClass ; i++)
+        {       Rprintf("State %d :\t", i) ;
+                for (register uint j = 0 ; j < GetNProba() ; j++)
+                        Rprintf("P[%d]=%lf\t", j, mProbaMatVector[h][i][j]) ;
+                Rprintf("\n") ;
+        }
+	}
 }
 
 void cDiscrete::ComputeCondProba(cOTVector* theY, uint theNSample, cOTMatrix* theCondProba)
@@ -69,7 +71,7 @@ register uint   i,
 
 void cDiscrete::UpdateParameters(cInParam& theInParam, cBaumWelch& theBaumWelch, cOTMatrix* theCondProba)
 {
-fprintf(stderr,"***Implement me!\n");
+fprintf(stderr,"***Implement me(UpdateParameters)!\n");
 exit(0);
 //register uint   i       ;
 //uint myNProba = GetNProba() ;
@@ -96,23 +98,33 @@ exit(0);
 
 void cDiscrete::InitParameters(cBaumWelchInParam& theInParam)
 {
-#ifdef _RDLL_
-        GetRNGstate();
-#endif //_RDLL_
-fprintf(stderr,"***Implement me!\n");
-exit(0);
+	register uint   i, t ;
+	uint myNProba = GetNProba() ;
 
-//register uint   i                       ;
-//uint myNProba = GetNProba() ;
-//        for (i = 0 ; i < mvNClass ; i++)
-//        {       register uint   j                       ;
-//                double                  mySum = 0.0 ;
-//                for(j = 0 ; j < myNProba ; j++)
-//                {       mProba[i][j] =  unif_rand() ;
-//                        mySum += mProba[i][j] ;
-//                }
-//                mProba[i] /= mySum ;
-//        }
+#ifdef _RDLL_
+	GetRNGstate();
+#endif //_RDLL_
+
+	for (t = 0 ; t < mProbaMatVector.size();t++)
+	{
+		for (i = 0 ; i < mvNClass ; i++)
+		{
+			register uint j;
+			double mySum = 0.0 ;
+
+			for(j = 0 ; j < myNProba ; j++)
+			{
+				mProbaMatVector[t][i][j] =  unif_rand() ;
+				mySum += mProbaMatVector[t][i][j];
+			}
+
+			/* Make it a probability measure */
+			for (j=0;j<myNProba;j++)
+				mProbaMatVector[t][i][j] /= mySum;
+		}
+	}
+
+	Print();
 
 #ifdef _RDLL_
         PutRNGstate() ;
