@@ -69,31 +69,36 @@ register uint   i,
         }
 }
 
+/* FIXME: This doesn't work for variable emissions */
 void cDiscrete::UpdateParameters(cInParam& theInParam, cBaumWelch& theBaumWelch, cOTMatrix* theCondProba)
 {
-fprintf(stderr,"***Implement me(UpdateParameters)!\n");
-exit(0);
-//register uint   i       ;
-//uint myNProba = GetNProba() ;
-//        for (i = 0 ; i < mvNClass ; i++)
-//        {       double myDenominateur = 0.0 ;
-//                register uint   n,
-//                                                t       ;
-//                for (n = 0 ; n < theInParam.mNSample ; n++)
-//                        for (t = 0 ; t < theInParam.mY[n].mSize  ; t++)
-//                                myDenominateur += theBaumWelch.mGamma[n][i][t] ;
-//
-//                for (register uint k = 0 ; k < myNProba ; k++)
-//                {       mProba[i][k] = 0.0 ;
-//                        for (n = 0 ; n < theInParam.mNSample ; n++)
-//                                for ( t = 0 ; t < theInParam.mY[n].mSize ; t++)
-//                                        mProba[i][k] += theBaumWelch.mGamma[n][i][t]*(theInParam.mY[n][t]==k) ;
-//                        if (myDenominateur > MIN_DBLE)
-//                                mProba[i][k] /= myDenominateur ;
-//                        else
-//                                mProba[i][k] = 0.0L ;
-//                }
-//        }
+	uint i;
+	uint myNProba = GetNProba() ;
+
+	for (i = 0 ; i < mvNClass ; i++)
+	{
+		double myDenominateur = 0.0 ;
+        uint n,t;
+
+        for (n = 0 ; n < theInParam.mNSample ; n++)
+        	for (t = 0 ; t < theInParam.mY[n].mSize; t++)
+        		myDenominateur += theBaumWelch.mGamma[n][i][t];
+
+        for (uint k = 0 ; k < myNProba ; k++)
+        {
+        	for (t=0;t<mProbaMatVector.size();t++)
+        		mProbaMatVector[t][i][k] = 0.0;
+
+        	for (n = 0 ; n < theInParam.mNSample ; n++)
+            	for (t = 0 ; t < theInParam.mY[n].mSize ; t++)
+            		mProbaMatVector[t][i][k] += theBaumWelch.mGamma[n][i][t]*(theInParam.mY[n][t]==k);
+
+        	if (myDenominateur > MIN_DBLE)
+            	mProbaMatVector[0][i][k] /= myDenominateur;
+            else
+            	mProbaMatVector[0][i][k] = 0.0L ;
+        }
+	}
 }
 
 void cDiscrete::InitParameters(cBaumWelchInParam& theInParam)
@@ -123,46 +128,44 @@ void cDiscrete::InitParameters(cBaumWelchInParam& theInParam)
 				mProbaMatVector[t][i][j] /= mySum;
 		}
 	}
-
-	Print();
-
 #ifdef _RDLL_
         PutRNGstate() ;
 #endif //_RDLL_
 }
 void cDiscrete::CopyDistr(cDistribution* theSrc)
 {
-fprintf(stderr,"***Implement me!\n");
-exit(0);
-//        cDiscrete *mySrc = (cDiscrete *)theSrc ;
-//
-//        mvNClass = mySrc->mvNClass ;
-//        for (register uint i=0 ; i < mvNClass ; i++)
-//                mProba[i] = mySrc->mProba[i] ;
+	cDiscrete *mySrc = (cDiscrete *)theSrc;
+	mvNClass = mySrc->mvNClass;
+	mProbaMatVector = mySrc->mProbaMatVector;
 }
 
 
 void cDiscrete::GetParam(uint theDeb, cOTVector& theParam)
 {
-fprintf(stderr,"***Implement me!\n");
-exit(0);
-//uint myNProba = this->GetNProba();
-//register uint k = theDeb ;
-//        for (register uint n = 0 ; n < mvNClass ; n++)
-//                for (register uint p = 0 ; p < myNProba - 1 ; p++)
-//                        theParam[k++] = mProba[n][p] ;
+	uint myNProba = this->GetNProba();
+	uint k = theDeb ;
+
+	for (uint t = 0 ; t < mProbaMatVector.size(); t++)
+		for (uint n = 0 ; n < mvNClass ; n++)
+			for (uint p = 0 ; p < myNProba - 1 ; p++)
+				theParam[k++] = mProbaMatVector[t][n][p];
 }
+
 void cDiscrete::SetParam(uint theDeb, cOTVector& theParam)
 {
-fprintf(stderr,"***Implement me!\n");
-exit(0);
-//uint myNProba = GetNProba() ;
-//register uint k = theDeb ;
-//        for (register uint n = 0 ; n < mvNClass ; n++)
-//        {       mProba[n][myNProba-1] = 1.0L ;
-//                for (register uint p = 0 ; p < myNProba - 1 ; p++)
-//                {       mProba[n][p]  = theParam[k++] ;
-//                        mProba[n][myNProba-1] -= mProba[n][p] ;
-//                }
-//        }
+	uint myNProba = GetNProba();
+	uint k = theDeb;
+
+	for (uint t = 0 ; t < mProbaMatVector.size(); t++)
+	{
+		for (uint n = 0 ; n < mvNClass ; n++)
+		{
+			mProbaMatVector[t][n][myNProba-1] = 1.0L ;
+			for (register uint p = 0 ; p < myNProba - 1 ; p++)
+			{
+				mProbaMatVector[t][n][p] = theParam[k++] ;
+				mProbaMatVector[t][n][myNProba-1] -= mProbaMatVector[t][n][p] ;
+			}
+		}
+	}
 }
