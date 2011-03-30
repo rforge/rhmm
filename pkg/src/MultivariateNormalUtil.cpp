@@ -13,7 +13,7 @@
 
 void SymetricInverseAndDet(cOTMatrix& theMat, double& theDet, cOTMatrix& theInvMat)
 {
-	LapackInvAndDet(theMat, theInvMat, theDet) ;
+        LapackInvAndDet(theMat, theInvMat, theDet) ;
 }
 
 

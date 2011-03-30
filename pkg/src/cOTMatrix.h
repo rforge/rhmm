@@ -25,7 +25,10 @@
 #include <iostream>
 #include <cmath>
 #include "R_ext/Lapack.h"
-#include "cOTError.h"
+#ifndef _COTERROR_H_
+    #include "cOTError.h"
+#endif // _COTERROR_H_
+
 #include "cOTVector.h"
 
 #ifdef __SUNPRO_CC

@@ -11,7 +11,7 @@
 
 #ifndef _COTERROR_H_
 #define _COTERROR_H_
-#pragma once
+
 #include <cstdlib>
 #include <iostream>
 
