@@ -1,17 +1,17 @@
 /**************************************************************
- *** RHmm version 1.4.4                                     
+ *** RHmm version 1.4.5                                     
  ***                                                         
  *** File: cOTError.h 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2010/12/09                                     
+ *** Date: 2011/03/31                                     
  ***                                                         
  **************************************************************/
 
 #ifndef _COTERROR_H_
 #define _COTERROR_H_
-
+#pragma once
 #include <cstdlib>
 #include <iostream>
 
