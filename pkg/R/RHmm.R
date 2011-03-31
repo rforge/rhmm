@@ -1,11 +1,11 @@
  ###############################################################
- #### RHmm version 1.4.4                               
+ #### RHmm version 1.4.5                              
  ####                                                         
  #### File: RHmm.R 
  ####                                                         
  #### Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr>
  #### Author: Sebastian BAUER <sebastian.bauer@charite.de>
- #### Date: 2010/12/09                                      
+ #### Date: 2011/03/31                                      
  ####                                                         
  ###############################################################
 
@@ -921,8 +921,8 @@ BaumWelch<-function(paramHMM, obs, paramAlgo)
     paramHMM1 <- setStorageMode(paramHMM1)
     
     Res1 <- .Call("RBaumWelch", paramHMM1, maListe$Zt, paramAlgo1)
-
-     if (paramHMM$dis=="NORMAL") 
+    
+    if (paramHMM$dis=="NORMAL") 
     {   if (paramHMM$dimObs == 1)
             distribution <- distributionSet(dis="NORMAL", mean=Res1[[3]], var=Res1[[4]], verif=FALSE)
         else
@@ -1213,9 +1213,10 @@ HMMFit <- function(obs, dis="NORMAL", nStates = 2, asymptCov=FALSE, asymptMethod
     else
         dimObs <- ncol(as.matrix(obs))
     
+    
     paramHMM <- list(nStates=nStates, dimObs=dimObs, nMixt = nMixt, Levels = Levels, dis=dis) 
     class(paramHMM) <- "paramHMM"
-   
+    
     Res<-BaumWelch(paramHMM, obs, paramAlgo)
     Res$call <- match.call()
     return(Res)
