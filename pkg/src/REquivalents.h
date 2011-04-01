@@ -24,7 +24,7 @@
     #define printf std::printf
     #define pow std::pow
     #define sqrt std::sqrt
-#endif __SUNPRO_CC
+#endif //__SUNPRO_CC
 
 #define Rprintf printf
 inline void GetRNGstate(void) { std::srand( (unsigned)time( NULL ) ); }
