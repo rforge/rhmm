@@ -1,11 +1,11 @@
 /**************************************************************
- *** RHmm version 1.4.4                                     
+ *** RHmm version 1.4.5                                     
  ***                                                         
  *** File: MultivariateNormalUtil.cpp 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2010/12/09                                     
+ *** Date: 2011/03/31                                     
  ***                                                         
  **************************************************************/
 
@@ -13,7 +13,7 @@
 
 void SymetricInverseAndDet(cOTMatrix& theMat, double& theDet, cOTMatrix& theInvMat)
 {
-	LapackInvAndDet(theMat, theInvMat, theDet) ;
+        LapackInvAndDet(theMat, theInvMat, theDet) ;
 }
 
 

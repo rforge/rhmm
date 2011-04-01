@@ -1,11 +1,11 @@
 /**************************************************************
- *** RHmm version 1.4.4                                     
+ *** RHmm version 1.4.5                                     
  ***                                                         
  *** File: cOTMatrix.h 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2010/12/09                                     
+ *** Date: 2011/03/31                                     
  ***                                                         
  **************************************************************/
 
@@ -25,7 +25,10 @@
 #include <iostream>
 #include <cmath>
 #include "R_ext/Lapack.h"
-#include "cOTError.h"
+#ifndef _COTERROR_H_
+    #include "cOTError.h"
+#endif // _COTERROR_H_
+
 #include "cOTVector.h"
 
 #ifdef __SUNPRO_CC

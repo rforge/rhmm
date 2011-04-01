@@ -1,11 +1,11 @@
 /**************************************************************
- *** RHmm version 1.4.4                                     
+ *** RHmm version 1.4.5                                     
  ***                                                         
  *** File: REquivalents.h 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2010/12/09                                     
+ *** Date: 2011/03/31                                     
  ***                                                         
  **************************************************************/
 
@@ -24,7 +24,7 @@
     #define printf std::printf
     #define pow std::pow
     #define sqrt std::sqrt
-#endif __SUNPRO_CC
+#endif //__SUNPRO_CC
 
 #define Rprintf printf
 inline void GetRNGstate(void) { std::srand( (unsigned)time( NULL ) ); }

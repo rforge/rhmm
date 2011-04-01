@@ -1,11 +1,11 @@
  ###############################################################
- #### RHmm version 1.4.4                               
+ #### RHmm version 1.4.5                              
  ####                                                         
  #### File: RHmm.R 
  ####                                                         
  #### Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr>
  #### Author: Sebastian BAUER <sebastian.bauer@charite.de>
- #### Date: 2010/12/09                                      
+ #### Date: 2011/03/31                                      
  ####                                                         
  ###############################################################
 
@@ -225,7 +225,7 @@ discreteSet <- function(proba, labels=NULL, verif = TRUE)
     }
     else
     {
-        labels <- as.character(gl(nLevels, 1, label="p"))
+        labels <- as.character(gl(nLevels, 1, labels="p"))
     }
     
     if (!is.matrix(proba[[1]]))
@@ -436,7 +436,7 @@ print.univariateNormalClass <- function(x, ...)
     Aux <- cbind(x$mean, x$var)
     Aux <- as.data.frame(Aux, row.names=" ")
     names(Aux) <- c("mean", "var")
-    rnames <- as.character(gl(x$nStates, 1, label="State "))
+    rnames <- as.character(gl(x$nStates, 1, labels="State "))
     rownames(Aux) <- rnames
     print.data.frame(Aux, quote=FALSE, right=TRUE)
 }
@@ -467,10 +467,10 @@ print.discreteClass <- function(x, ...)
     Aux <- matrix(nrow=x$nStates, ncol=x$nLevels)
     for (i in 1:x$nStates)
         Aux[i, ]<- t(proba[[i]])
-    rnames <- as.character(gl(x$nStates, 1, label="State "))
+    rnames <- as.character(gl(x$nStates, 1, labels="State "))
     Aux <- as.data.frame(Aux)
     if (is.null(names(proba[[1]])))
-        cnames <- as.character(gl(x$nLevels, 1, label="p"))
+        cnames <- as.character(gl(x$nLevels, 1, labels="p"))
     else
         cnames <- names(proba[[1]])
             
@@ -480,7 +480,7 @@ print.discreteClass <- function(x, ...)
 }
 
 print.mixtureUnivariateNormalClass <- function(x, ...)
-{   rnames <- as.character(gl(x$nMixt, 1, label="mixt. "))
+{   rnames <- as.character(gl(x$nMixt, 1, labels="mixt. "))
     for (i in 1:x$nStates)
     {   cat(sprintf("  State %d\n", i), sep="")
         Aux <- matrix(c(x$mean[[i]], x$var[[i]], x$proportion[[i]]), ncol=3)
@@ -999,8 +999,8 @@ BaumWelch<-function(paramHMM, obs, paramAlgo)
     paramHMM1 <- setStorageMode(paramHMM1)
     
     Res1 <- .Call("RBaumWelch", paramHMM1, maListe$Zt, paramAlgo1)
-
-     if (paramHMM$dis=="NORMAL") 
+    
+    if (paramHMM$dis=="NORMAL") 
     {   if (paramHMM$dimObs == 1)
             distribution <- distributionSet(dis="NORMAL", mean=Res1[[3]], var=Res1[[4]], verif=FALSE)
         else
@@ -1291,9 +1291,10 @@ HMMFit <- function(obs, dis="NORMAL", nStates = 2, asymptCov=FALSE, asymptMethod
     else
         dimObs <- ncol(as.matrix(obs))
     
+    
     paramHMM <- list(nStates=nStates, dimObs=dimObs, nMixt = nMixt, Levels = Levels, dis=dis) 
     class(paramHMM) <- "paramHMM"
-   
+    
     Res<-BaumWelch(paramHMM, obs, paramAlgo)
     Res$call <- match.call()
     return(Res)
@@ -1666,7 +1667,7 @@ plotSerie.distributionClass <- function(object, vit, obs, color="black", ...)
 
 
 
-HMMPlotSerie <- function(obs, states, dis = "NORMAL", color="green")
+HMMPlotSerie <- function(obs, states, dates = NULL, dis = "NORMAL", color="green")
 {   
     if ( (class(states) !="viterbiClass") && (!is_numeric_vector(states)) && (!is_list_numeric_vector(states)))
         stop("vit must be a viterbiClass object, a numeric vector or a list of numeric vector.\n")
@@ -1726,6 +1727,12 @@ HMMPlotSerie <- function(obs, states, dis = "NORMAL", color="green")
     {   nScreens <- nScreens+1
     }
     k<-1
+    if (is.null(dates))
+    {   xx <- seq(1,length(Aux))
+    }
+    else
+    {   xx <- dates
+    }
     while (k <= nStates)
     {   par(bg="white")
         split.screen(c(min(3, nStates),1))
@@ -1735,9 +1742,9 @@ HMMPlotSerie <- function(obs, states, dis = "NORMAL", color="green")
             z <- TransformeListe(distribution, Aux)
             y <- (z$Zt[[1]])*(states==k)
             if (dis != 'DISCRETE')
-                plot(y, col=color, type='l', xlab="", ylab="Serie", lwd=1)
+                plot(xx, y, col=color, type='l', xlab="", ylab="Serie", lwd=1)
             else
-                plot(y+1, col=color, type='l', xlab="", ylab="Serie", lwd=1)
+                plot(xx, y+1, col=color, type='l', xlab="", ylab="Serie", lwd=1)
             titre <- sprintf("Serie for state %d", k)
             k <- k + 1
             i <- i + 1

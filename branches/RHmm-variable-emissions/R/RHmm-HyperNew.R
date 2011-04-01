@@ -1,11 +1,11 @@
  ###############################################################
- #### RHmm version 1.4.4                               
+ #### RHmm version 1.4.5                              
  ####                                                         
  #### File: RHmm-HyperNew.R 
  ####                                                         
  #### Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr>
  #### Author: Sebastian BAUER <sebastian.bauer@charite.de>
- #### Date: 2010/12/09                                      
+ #### Date: 2011/03/31                                      
  ####                                                         
  ###############################################################
 
@@ -993,7 +993,7 @@ asymptoticCovMat <- function(HMM, obs, asymptMethod=c('nlme', 'optim'))
     return(asymptMatCov)
 }
 
-asymptoticSimCovMat <- function(HMM, obs, nSimul, verbose=FALSE)
+asymptoticSimCovMat <- function(HMM, obs, nSimul, verbose=FALSE, oldCovMat=NULL, oldNSimul=0)
 {
     if ( ( class(HMM) != "HMMFitClass" ) && (class(HMM) != "HMMClass") )
         stop("class(HMM) must be 'HMMClass' or 'HMMFitClass'\n")
@@ -1001,7 +1001,13 @@ asymptoticSimCovMat <- function(HMM, obs, nSimul, verbose=FALSE)
         HMM <- HMM$HMM
     nParam <- GetNAllParam(HMM)$nParam
     Teta0 <- GetVectAllParam(HMM)
-    matCov <- matrix(0, nParam, nParam)
+    if (oldNSimul==0)
+    {   matCov <- matrix(0, nParam, nParam)
+    }
+    else
+    {   matCov <- oldCovMat
+    }
+    
     if (is.list(obs))
     {   nList <- length(obs)
         nObs <- rep(0, nList)
@@ -1013,7 +1019,8 @@ asymptoticSimCovMat <- function(HMM, obs, nSimul, verbose=FALSE)
     {   nList <- 1
         nObs <- c(length(obs))
     }
-    for (i in 1:nSimul)
+    
+    for (i in oldNSimul:(oldNSimul+nSimul-1))
     {   simObs <- NULL
         for (j in 1:nList)
         {   simObs <- c(simObs, HMMSim(nObs[j], HMM=HMM))
@@ -1024,7 +1031,7 @@ asymptoticSimCovMat <- function(HMM, obs, nSimul, verbose=FALSE)
             u <- Teta - Teta0
             matCov <- (i*matCov + u%*%t(u))/(i+1)
             if (verbose)
-            {   cat(sprintf("iteration %d\n", i))
+            {   cat(sprintf("iteration %d\n", i+1))
             }
         }
     }
