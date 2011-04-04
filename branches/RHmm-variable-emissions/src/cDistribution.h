@@ -16,7 +16,6 @@
 #include "cBaumWelchInParam.h"
 #include "cBaumWelch.h"
 
-
 class cDistribution  
 {       public :
                 virtual void ComputeCondProba(cOTVector* theY, uint theNSample, cOTMatrix* theCondProba)=0 ;
@@ -27,6 +26,7 @@ class cDistribution
                 virtual uint GetNParam(void)=0;
                 virtual void GetParam(uint theDeb, cOTVector& theParam)=0 ;
                 virtual void SetParam(uint theDeb, cOTVector& theParam)=0 ;
+                virtual ~cDistribution(){};
 #ifndef _RDLL_
                 void KMeans(cOTVector& theYt, uint theNClass, int* theSeq) {
                                 mkmeans(theYt, theNClass, theSeq) ;

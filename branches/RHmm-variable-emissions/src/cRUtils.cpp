@@ -597,4 +597,4 @@ void cRUtil::SetListListMatSexp(cOTMatrix** theMat, uint theNList1, uint* theNLi
         }
 }
 
-#endif / _RDLL_
+#endif /* _RDLL_ */

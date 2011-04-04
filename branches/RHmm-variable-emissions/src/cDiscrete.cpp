@@ -12,25 +12,25 @@
 #include "cDiscrete.h"
 
 cDiscrete::cDiscrete(uint theNClass, uint theNProba) 
-{       MESS_CREAT("cDiscrete")
-        if ( (theNClass > 0) && (theNProba > 0) )
-        {       mvNClass = theNClass ;
-                cOTMatrix *emissionMat = new cOTMatrix(theNClass,theNProba,0);
-                mProbaMatVector.push_back(*emissionMat);
-        }
-        else
-        {       mvNClass = 0 ; 
-        }
+{
+	MESS_CREAT("cDiscrete")
+	if ( (theNClass > 0) && (theNProba > 0) )
+    {
+		mvNClass = theNClass ;
+		cOTMatrix *emissionMat = new cOTMatrix(theNClass,theNProba,0);
+        mProbaMatVector.push_back(*emissionMat);
+        delete emissionMat;
+    } else
+    {
+    	mvNClass = 0 ;
+    }
 }
 
 cDiscrete::~cDiscrete()
-{       MESS_DESTR("cDiscrete")
-        if ( mvNClass > 0)
-        {
-        	fprintf(stderr,"***Implement me(~cDiscrete)!\n");
-        }
-        mvNClass = 0 ;
+{
+	MESS_DESTR("cDiscrete")
 }
+
 uint cDiscrete::GetNProba(void)
 {
         if (mvNClass > 0)
@@ -93,6 +93,7 @@ void cDiscrete::UpdateParameters(cInParam& theInParam, cBaumWelch& theBaumWelch,
             	for (t = 0 ; t < theInParam.mY[n].mSize ; t++)
             		mProbaMatVector[t][i][k] += theBaumWelch.mGamma[n][i][t]*(theInParam.mY[n][t]==k);
 
+        	/* FIXME: for variable emissions */
         	if (myDenominateur > MIN_DBLE)
             	mProbaMatVector[0][i][k] /= myDenominateur;
             else
