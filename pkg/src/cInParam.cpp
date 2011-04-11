@@ -1,15 +1,15 @@
 /**************************************************************
- *** RHmm version 1.4.5                                     
+ *** RHmm version 1.4.7                                     
  ***                                                         
  *** File: cInParam.cpp 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2011/03/31                                     
+ *** Date: 2011/04/07                                     
  ***                                                         
  **************************************************************/
 
-#include "cInParam.h"
+#include "StdAfxRHmm.h"
 
 cInParam::cInParam(uint theNSample, uint theDimObs, cOTVector* theY, distrDefinitionEnum theDistrType, uint theNClass, uint theNMixt, uint theNProba)
 {       MESS_CREAT("cInParam")

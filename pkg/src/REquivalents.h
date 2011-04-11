@@ -1,17 +1,19 @@
 /**************************************************************
- *** RHmm version 1.4.5                                     
+ *** RHmm version 1.4.7                                     
  ***                                                         
  *** File: REquivalents.h 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2011/03/31                                     
+ *** Date: 2011/04/07                                     
  ***                                                         
  **************************************************************/
 
 #ifndef _REQUIVALENTS_H_
 #define _REQUIVALENTS_H_
 #pragma once
+#ifndef _RDLL_
+
 #include <cstdio>
 #include <cstdlib>
 #include <cmath>
@@ -24,11 +26,13 @@
     #define printf std::printf
     #define pow std::pow
     #define sqrt std::sqrt
-#endif //__SUNPRO_CC
+#endif __SUNPRO_CC
 
 #define Rprintf printf
 inline void GetRNGstate(void) { std::srand( (unsigned)time( NULL ) ); }
 inline double unif_rand(void) { return (double)std::rand()/(double)RAND_MAX ; }
 inline void PutRNGstate(void){}
+
+#endif _RDLL_
 
 #endif //_REQUIVALENTS_H_

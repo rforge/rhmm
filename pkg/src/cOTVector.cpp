@@ -1,15 +1,17 @@
 /**************************************************************
- *** RHmm version 1.4.5                                     
+ *** RHmm version 1.4.7                                     
  ***                                                         
  *** File: cOTVector.cpp 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2011/03/31                                     
+ *** Date: 2011/04/07                                     
  ***                                                         
  **************************************************************/
 
 #include "cOTVector.h"
+
+cOTVector	ourTempVect ;
 
 cOTVector::cOTVector()
 {
@@ -55,7 +57,6 @@ void cOTVector::Delete(void)
         mSize = 0 ;
         mVect = (double *)NULL ;
 }
-
 void cOTVector::ReAlloc(uint theSize)
 {       Delete() ;
         if (theSize > 0)
@@ -64,7 +65,6 @@ void cOTVector::ReAlloc(uint theSize)
                 mSize = theSize ;
         }
 }
-
 void cOTVector::ReAlloc(uint theSize, double theVal)
 {       Delete() ;
         if (theSize > 0)
@@ -85,14 +85,12 @@ void cOTVector::ReAlloc(uint theSize, double* theVect)
                 mSize = theSize ;
         }
 }
-
 double& cOTVector::operator[](int theIndex)
 {       if ( ((uint)theIndex >= 0) && ((uint)theIndex < mSize) )
                 return(mVect[theIndex]) ;
         else
                 throw cOTError("bad index") ;
 }
-
 cOTVector& cOTVector::operator =(cOTVector& theSrcVect)
 {
         if (mSize == 0)
@@ -115,7 +113,6 @@ cOTVector& cOTVector::operator =(double* theSrcVect)
                 mVect[i] = theSrcVect[i] ;
         return *this ;
 }
-
 cOTVector& cOTVector::operator =(double theVal)
 {
         if (mSize == 0)
@@ -132,28 +129,24 @@ cOTVector& cOTVector::operator =(double theVal)
 cOTVector& cOTVector::operator +(cOTVector& theVect)
 {
         if (mSize == theVect.mSize)
-        {       for (register uint i = 0 ; i < mSize ; i++)
-                        mVect[i] += theVect.mVect[i] ;
-                return *this ;
+        {	ourTempVect = *this ;
+			ourTempVect += theVect ;
+			return ourTempVect ;
         }
         else
                 throw cOTError("vectors must have the same size") ;
-
 }
 cOTVector& cOTVector::operator +(double theVal)
 {
         if (mSize == 0)
-        {       mSize = 1 ;
-                mVect = new double[1] ;
-                mVect[0] = 0.0L ;
-        }
-
-        for (register uint i = 0 ; i < mSize ; i++)
-                        mVect[i] += theVal ;
-        
-        return *this ;
+        {	ourTempVect.ReAlloc(1, theVal) ;
+		}
+		else
+        {	ourTempVect = *this ;
+			ourTempVect += theVal ;
+		}
+		return *this ;
 }
-
 cOTVector& cOTVector::operator +=(cOTVector& theSrcVect)
 {
         if (mSize == theSrcVect.mSize)
@@ -164,7 +157,6 @@ cOTVector& cOTVector::operator +=(cOTVector& theSrcVect)
         else
                 throw cOTError("vectors must have the same size") ;
 }
-
 cOTVector& cOTVector::operator +=(double theVal)
 {
         if (mSize == 0)
@@ -178,29 +170,24 @@ cOTVector& cOTVector::operator +=(double theVal)
         
         return *this ;
 }
-
-
 cOTVector& cOTVector::operator -(cOTVector& theVect)
 {
-        if (mSize == theVect.mSize)
-        {       for (register uint i = 0 ; i < mSize ; i++)
-                        mVect[i] -= theVect.mVect[i] ;
-                return *this ;
-        }
-        else
-                throw cOTError("vectors must have the same size") ;
+	if (mSize == theVect.mSize)
+	{   ourTempVect = *this ;
+		ourTempVect -= theVect ;
+	}
+	else
+		throw cOTError("vectors must have the same size") ;
 }
 cOTVector& cOTVector::operator -(double theVal)
 {
         if (mSize == 0)
-        {       mSize = 1 ;
-                mVect = new double[1] ;
-                mVect[0] = 0.0L ;
-        }
-
-        for (register uint i = 0 ; i < mSize ; i++)
-                        mVect[i] -= theVal ;
-        
+        {	ourTempVect.ReAlloc(1, theVal) ;
+		}
+		else
+        {	ourTempVect = *this ;
+			ourTempVect -= theVal ;
+		}
         return *this ;
 }
 cOTVector& cOTVector::operator -=(cOTVector& theSrcVect)
@@ -212,7 +199,6 @@ cOTVector& cOTVector::operator -=(cOTVector& theSrcVect)
         }
         else
                 throw cOTError("vectors must have the same size") ;
-
 }
 cOTVector& cOTVector::operator -=(double theVal)
 {
@@ -228,9 +214,9 @@ cOTVector& cOTVector::operator -=(double theVal)
         return *this ;
 }
 cOTVector& cOTVector::operator *(double theLambda)
-{       for (register uint i = 0 ; i < mSize ; i++)
-                mVect[i] *= theLambda ;
-        return *this ;
+{   ourTempVect = *this ;    
+	ourTempVect *= theLambda ;
+	return ourTempVect ;
 }
 cOTVector& cOTVector::operator *=(double theLambda)
 {       for (register uint i = 0 ; i < mSize ; i++)
@@ -238,16 +224,15 @@ cOTVector& cOTVector::operator *=(double theLambda)
         return *this ;
 }
 cOTVector& cOTVector::operator /(double theLambda)
-{       for (register uint i = 0 ; i < mSize ; i++)
-                mVect[i] /= theLambda ;
-        return *this ;
+{    ourTempVect = *this ;    
+	ourTempVect /= theLambda ;
+	return ourTempVect ;
 }
 cOTVector& cOTVector::operator /=(double theLambda)
 {       for (register uint i = 0 ; i < mSize ; i++)
                 mVect[i] /= theLambda ;
         return *this ;
 }
-
 bool operator ==(cOTVector& theVect1, cOTVector& theVect2)
 {
         if (theVect1.mSize != theVect2.mSize)
@@ -257,7 +242,6 @@ bool operator ==(cOTVector& theVect1, cOTVector& theVect2)
                         return(false) ;
         return(true) ;
 }
-
 bool operator >(cOTVector& theVect1, cOTVector& theVect2)
 {
         if (theVect1.mSize != theVect2.mSize)
@@ -267,7 +251,6 @@ bool operator >(cOTVector& theVect1, cOTVector& theVect2)
                         return(false) ;
         return(true) ;
 }
-
 bool operator >=(cOTVector& theVect1, cOTVector& theVect2)
 {
         if (theVect1.mSize != theVect2.mSize)
@@ -286,7 +269,6 @@ bool operator <(cOTVector& theVect1, cOTVector& theVect2)
                         return(false) ;
         return(true) ;
 }
-
 bool operator <=(cOTVector& theVect1, cOTVector& theVect2)
 {
         if (theVect1.mSize != theVect2.mSize)
@@ -296,24 +278,18 @@ bool operator <=(cOTVector& theVect1, cOTVector& theVect2)
                         return(false) ;
         return(true) ;
 }
-
-
-
 std::ostream& operator <<(std::ostream& theStream, cOTVector& theVect)
 {
         for (register uint i = 0 ; i < theVect.mSize ; i++)
                 theStream << theVect[i] << std::endl ;
         return theStream ;
 }
-
-cOTVector& zeros(uint theN) 
+cOTVector& Zeros(uint theN) 
 {
 cOTVector *myRes = new cOTVector(theN, 0.0L) ;
         return(*myRes) ;
 }
-
-
-cOTVector& copy_double(double *theVect, uint theSize)
+cOTVector& CopyDouble(double *theVect, uint theSize)
 {
 cOTVector *myRes = new cOTVector(theSize, theVect) ;
         return *myRes ;

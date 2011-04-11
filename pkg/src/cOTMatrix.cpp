@@ -1,51 +1,38 @@
 /**************************************************************
- *** RHmm version 1.4.5                                     
+ *** RHmm version 1.4.7                                     
  ***                                                         
  *** File: cOTMatrix.cpp 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2011/03/31                                     
+ *** Date: 2011/04/07                                     
  ***                                                         
  **************************************************************/
 
 #include "cOTMatrix.h"
 
+cOTVector ourTempVector ;
 cOTMatrix ourTempMatrix  ;
 
-cOTVector& cOTVector::operator =(const cOTMatrix& theMatrix)
+cOTVector& cOTVector::operator=(const cOTMatrix& theMatrix)
 {
         if (theMatrix.mNCol == 1)
-        {
-                if (mSize == 0)
-                {       mVect = new double[theMatrix.mNRow] ;
-                        mSize = theMatrix.mNRow ;
-                }
-                else
-                {       delete [] mVect ;
-                        mSize = theMatrix.mNRow ;
-                        mVect = new double[mSize] ;
-                }
-                for (register uint i = 0 ; i < mSize ; i++)
-                        mVect[i] = theMatrix.mMat[i][0] ;
+        {	ourTempVector.ReAlloc(theMatrix.mNRow) ;
+            for (register uint i = 0 ; i < mSize ; i++)
+				ourTempVector.mVect[i] = theMatrix.mMat[i][0] ;
         }
-        return *this ;
+        return ourTempVector ;
 }
 
-
-
-
-cOTMatrix& transpose(cOTVector &theVect)
+cOTMatrix& Transpose(cOTVector &theVect)
 {
-cOTMatrix* myTranspose ;
-        myTranspose = new cOTMatrix(1, theVect.mSize) ;
+        ourTempMatrix.ReAlloc(1, theVect.mSize) ;
         for (register uint i=0 ; i < theVect.mSize ; i++)
-                        myTranspose->mMat[0][i] = theVect[i] ;
-        return *myTranspose ;
+                        ourTempMatrix.mMat[0][i] = theVect[i] ;
+        return ourTempMatrix ;
 }
 
-
-cOTMatrix :: cOTMatrix(const cOTMatrix &theSrcMatrix)
+cOTMatrix::cOTMatrix(const cOTMatrix &theSrcMatrix)
 {
         int i,j;
 
@@ -126,6 +113,7 @@ uint    i       ;
                 mNCol = theNCol ;
         }
 }
+
 double* & cOTMatrix::operator [](uint theNRow)
 {
         if (theNRow < mNRow)
@@ -167,6 +155,7 @@ register uint   i,
                         mMat[i][j] = theSrcMatrix.mMat[i][j] ;
         return *this ;
 }
+
 cOTMatrix& cOTMatrix::operator =(cOTVector& theVect)
 {
 register uint   i       ;
@@ -198,6 +187,7 @@ register uint   i       ;
                 mMat[i][0] = theVect[i] ;
         return *this ;
 }
+
 cOTMatrix& cOTMatrix::operator =(double theVal)
 {
         if ( (mNRow > 0) && (mNCol > 0) )
@@ -207,14 +197,13 @@ cOTMatrix& cOTMatrix::operator =(double theVal)
         }
         return *this ;
 }
+
 cOTMatrix& cOTMatrix::operator +(cOTMatrix& theMatrix)
-{       if ( (theMatrix.mNCol == mNCol) && (theMatrix.mNRow == mNRow) )
-        {       for (register uint i = 0 ; i < mNRow ; i++)
-                        for (register uint j = 0 ; j < mNCol ; j++)
-                                mMat[i][j] += theMatrix.mMat[i][j] ;
-        }
-        return *this ;
+{	ourTempMatrix = *this ;
+	ourTempMatrix += theMatrix ;
+	return ourTempMatrix ;
 }
+
 cOTMatrix& cOTMatrix::operator +=(cOTMatrix& theMatrix)
 {       if ( (theMatrix.mNCol == mNCol) && (theMatrix.mNRow == mNRow) )
         {       for (register uint i = 0 ; i < mNRow ; i++)
@@ -227,15 +216,11 @@ cOTMatrix& cOTMatrix::operator +=(cOTMatrix& theMatrix)
 }
 
 cOTMatrix& cOTMatrix::operator -(cOTMatrix& theMatrix)
-{       if ( (theMatrix.mNCol == mNCol) && (theMatrix.mNRow == mNRow) )
-        {       for (register uint i = 0 ; i < mNRow ; i++)
-                        for (register uint j = 0 ; j < mNCol ; j++)
-                                mMat[i][j] -= theMatrix.mMat[i][j] ;
-                return *this ;
-        }
-        else
-                throw cOTError("wrong matrices size") ;
+{	ourTempMatrix = *this ;
+	ourTempMatrix -= theMatrix ;
+	return ourTempMatrix ;
 }
+
 cOTMatrix& cOTMatrix::operator -=(cOTMatrix& theMatrix)
 {       if ( (theMatrix.mNCol == mNCol) && (theMatrix.mNRow == mNRow) )
         {       for (register uint i = 0 ; i < mNRow ; i++)
@@ -247,46 +232,25 @@ cOTMatrix& cOTMatrix::operator -=(cOTMatrix& theMatrix)
                 throw cOTError("wrong matrices size") ;
 }
 
-
 cOTMatrix& operator *(cOTMatrix& theLeft, cOTMatrix &theRight)
 {       
-cOTMatrix *myRes = new cOTMatrix(theLeft.mNRow, theRight.mNCol) ;
-        if ( (theLeft.mNCol == theRight.mNRow) )
-        {       for (register uint i = 0 ; i < theLeft.mNRow ; i++)
-                        for (register uint j = 0 ; j < theRight.mNCol ; j++)
-                                for (register uint k = 0 ; k < theLeft.mNCol ; k++)
-                                        myRes->mMat[i][j] += theLeft[i][k] * theRight[k][j] ;
-                return *myRes ;
-        }
-        else
-                throw cOTError("wrong matrices size") ;
+	ourTempMatrix.ReAlloc(theLeft.mNRow, theRight.mNCol) ;
+	if ( (theLeft.mNCol == theRight.mNRow) )
+    {	for (register uint i = 0 ; i < theLeft.mNRow ; i++)
+			for (register uint j = 0 ; j < theRight.mNCol ; j++)
+				for (register uint k = 0 ; k < theLeft.mNCol ; k++)
+					ourTempMatrix.mMat[i][j] += theLeft[i][k] * theRight[k][j] ;
+		return ourTempMatrix ;
+	}
+    else
+		throw cOTError("wrong matrices size") ;
 }
 
 cOTMatrix& cOTMatrix::operator *=(cOTMatrix& theMatrix)
 {       
-cOTMatrix myRes(mNRow, mNRow, 0.0L) ;
-        if ( (theMatrix.mNCol == mNCol) && (theMatrix.mNRow == mNRow) && (mNRow == mNCol) )
-        {       for (register uint i = 0 ; i < mNRow ; i++)
-                        for (register uint j = 0 ; j < mNCol ; j++)
-                                for (register uint k = 0 ; k < mNRow ; k++)
-                                        myRes[i][j] += mMat[i][k]*theMatrix.mMat[k][j] ;
-                *this = myRes ;                 
-                return *this ;
-        }
-        else
-                throw cOTError("wrong matrices size") ;
+	*this = *this * theMatrix ;
+	return *this ;
 }
-
-cOTMatrix& operator-(cOTMatrix& theRight)
-{
-cOTMatrix* myRes = new cOTMatrix(theRight.mNRow, theRight.mNCol) ;
-        for (register uint i = 0 ; i < theRight.mNRow ; i++)
-                for (register uint j = 0 ; j < theRight.mNCol ; j++)
-                        myRes->mMat[i][j]= -theRight.mMat[i][j] ;
-        return *myRes ;
-}
-
-
 
 std::ostream& operator <<(std::ostream& theStream, cOTMatrix& theMat)
 {
@@ -299,15 +263,15 @@ register uint   i,
         }
         return theStream ;
 }
+
 cOTVector& operator *(cOTMatrix& theLeft, cOTVector& theVect)
 {
-cOTVector* myVect=(cOTVector *)NULL ;
         if (theLeft.mNCol == theVect.mSize)
-        {       myVect = new cOTVector(theLeft.mNRow) ;
+        {       ourTempVector.ReAlloc(theLeft.mNRow) ;
                 for (register uint i = 0 ; i < theLeft.mNRow ; i++)
                         for (register uint k= 0 ; k < theLeft.mNCol ; k++)
-                                myVect->mVect[i] += theLeft[i][k] * theVect[k] ;
-                return *myVect ;
+                                ourTempVector.mVect[i] += theLeft[i][k] * theVect[k] ;
+                return ourTempVector ;
         }
         else
                 throw cOTError("wrong matrix or vector size") ;
@@ -315,30 +279,31 @@ cOTVector* myVect=(cOTVector *)NULL ;
 
 cOTMatrix& operator *(cOTVector& theVect, cOTMatrix& theRight)
 {
-cOTMatrix* myMat=(cOTMatrix *)NULL ;
         if (theRight.mNRow == 1)
-        {       myMat = new cOTMatrix(theVect.mSize, theRight.mNCol) ;
+        {       ourTempMatrix.ReAlloc(theVect.mSize, theRight.mNCol) ;
                 for (register uint i = 0 ; i < theVect.mSize ; i++)
                         for (register uint j = 0 ; j < theRight.mNCol ; j++)
-                                myMat->mMat[i][j] += theVect[i]*theRight[0][j] ;
-                return *myMat ;
+                                ourTempMatrix.mMat[i][j] += theVect[i]*theRight[0][j] ;
+                return ourTempMatrix ;
         }
         else
                 throw cOTError("wrong matrix or vector size") ; 
 }
+
 cOTMatrix& operator *(cOTMatrix& theMatrix, double theLambda)
 {       
-cOTMatrix* myRes = new cOTMatrix(theMatrix.mNRow, theMatrix.mNCol) ;
-        for (register uint i = 0 ; i < theMatrix.mNRow ; i++)
-                for (register uint j=0 ; j< theMatrix.mNCol ; j++)
-                        myRes->mMat[i][j] = theLambda*theMatrix.mMat[i][j] ;
-        return *myRes ;
+	 ourTempMatrix = theMatrix ;
+	 ourTempMatrix *= theLambda ;
+     return ourTempMatrix ;
 }
 
 cOTMatrix& operator *(double theLambda, cOTMatrix& theMatrix)
 {
-        return(theMatrix*theLambda) ;
+	 ourTempMatrix = theMatrix ;
+	 ourTempMatrix *= theLambda ;
+     return ourTempMatrix ;
 }
+
 cOTMatrix& cOTMatrix::operator *=(double theLambda)
 {       
         for (register uint i = 0 ; i < mNRow ; i++)
@@ -349,12 +314,10 @@ cOTMatrix& cOTMatrix::operator *=(double theLambda)
 
 cOTMatrix& cOTMatrix::operator /(double theLambda)
 {       
-        for (register uint i = 0 ; i < mNRow ; i++)
-                        for (register uint j = 0 ; j < mNCol ; j++)
-                                        mMat[i][j] /= theLambda ;       
-        return *this ;
+ 	 ourTempMatrix = *this ;
+	 ourTempMatrix /= theLambda ;
+     return ourTempMatrix ;
 }
-
 
 cOTMatrix& cOTMatrix::operator /=(double theLambda)
 {       
@@ -364,70 +327,41 @@ cOTMatrix& cOTMatrix::operator /=(double theLambda)
         return *this ;
 }
 
-
-cOTMatrix& transpose(cOTMatrix &theMatrix)
+cOTMatrix& Transpose(cOTMatrix &theMatrix)
 {
-cOTMatrix* myTranspose ;
-        myTranspose = new cOTMatrix(theMatrix.mNCol, theMatrix.mNRow) ;
+
+        ourTempMatrix.ReAlloc(theMatrix.mNCol, theMatrix.mNRow) ;
         for (register uint i=0 ; i < theMatrix.mNRow ; i++)
                 for (register uint j = 0 ; j < theMatrix.mNCol ; j++)
-                        myTranspose->mMat[j][i] = theMatrix.mMat[i][j] ;
-        return *myTranspose ;
+                        ourTempMatrix.mMat[j][i] = theMatrix.mMat[i][j] ;
+        return ourTempMatrix ;
 }
-cOTMatrix& zeros(uint theN, uint theP)
+
+cOTMatrix& Zeros(uint theN, uint theP)
 {
-cOTMatrix *myMat = new cOTMatrix(theN, theP) ;
-        return *myMat ;
+	ourTempMatrix.ReAlloc(theN, theP) ;
+	return ourTempMatrix ;
 }
-cOTMatrix& identity(uint theN)
+
+cOTMatrix& Identity(uint theN)
 {
-cOTMatrix *myMat = new cOTMatrix(theN, theN) ;
+	ourTempMatrix.ReAlloc(theN, theN) ;
         for (register uint i=0 ; i < theN ; i++)
-                myMat->mMat[i][i] = 1.0L ;
-        return *myMat ;
+                ourTempMatrix.mMat[i][i] = 1.0L ;
+        return ourTempMatrix ;
 }
 
-/*void svd(cOTMatrix &theMatrix, cOTMatrix &theU, cOTVector &theS, cOTMatrix &theV)
+cOTMatrix& Diag(cOTVector &theVect)
 {
-        theU = theMatrix ;
-        theV = identity(theMatrix.mNCol) ;
-        theS = 0.0 ;
-int     myErr = svd(theMatrix.mMat, theMatrix.mNRow, theMatrix.mNCol, theU.mMat, theS.mVect, theV.mMat) ; 
-        if (myErr > 0)
-                throw cOTError("svd: no convergence after 500 iterations") ;
-}
-*/
-
-cOTMatrix& diag(cOTVector &theVect)
-{
-cOTMatrix* myMat = new cOTMatrix(theVect.mSize, theVect.mSize) ;
+	ourTempMatrix.ReAlloc(theVect.mSize, theVect.mSize) ;
         for (register uint i = 0 ; i < theVect.mSize ; i++)
-                myMat->mMat[i][i] = theVect.mVect[i] ;
+                ourTempMatrix.mMat[i][i] = theVect.mVect[i] ;
 
-        return *myMat ;
-}
-/*
-cOTMatrix& inv(cOTMatrix &theMatrix)
-{
-cOTMatrix       myU,
-                        myV     ;
-cOTVector       myS     ;
-        svd(theMatrix, myU, myS, myV) ;
-
-        for (register uint i = 0 ; i < myS.mSize ; i++)
-                if (fabs(myS[i]) < MIN_DBLE)
-                        throw cOTError("Non inversible matrix") ;
-                else
-                        myS[i] = 1.0L/myS[i] ;
-cOTMatrix       myMatS = diag(myS) ;
-        
-        return (transpose(myV) * myMatS * transpose(myU)) ;
+        return ourTempMatrix ;
 }
 
-*/
-cOTMatrix& inv(cOTMatrix &theMatrix)
+cOTMatrix& Inv(cOTMatrix &theMatrix)
 {
-//cOTMatrix     myInv = cOTMatrix(theMatrix.mNRow, theMatrix.mNCol) ;
         ourTempMatrix.ReAlloc(theMatrix.mNRow, theMatrix.mNCol) ;
 double myDet ;
 
@@ -436,6 +370,7 @@ double myDet ;
                         throw cOTError("Non inversible matrix") ;
         return ourTempMatrix ;
 }
+
 void LapackInvAndDet(cOTMatrix& theMatrix, cOTMatrix& theInvMatrix, double& theDet)
 {
 double *myAP = new double[theMatrix.mNCol*(theMatrix.mNCol + 1)/2],
@@ -464,7 +399,7 @@ cOTMatrix myEigenVector(theMatrix.mNCol, theMatrix.mNCol) ;
                 for (register int j = 0 ; j < myN ; j++)
                         myEigenVector[i][j] = myZ[i + j*myN] ;
         }
-        theInvMatrix =  myEigenVector * diag(myInvEigenValue) * transpose(myEigenVector);
+        theInvMatrix =  myEigenVector * Diag(myInvEigenValue) * Transpose(myEigenVector);
         
         delete myAP ;
         delete myW ;

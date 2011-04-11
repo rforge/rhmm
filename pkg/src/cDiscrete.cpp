@@ -1,15 +1,15 @@
 /**************************************************************
- *** RHmm version 1.4.5                                     
+ *** RHmm version 1.4.7                                     
  ***                                                         
  *** File: cDiscrete.cpp 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2011/03/31                                     
+ *** Date: 2011/04/07                                     
  ***                                                         
  **************************************************************/
 
-#include "cDiscrete.h"
+#include "StdAfxRHmm.h"
 
 cDiscrete::cDiscrete(uint theNClass, uint theNProba) 
 {       MESS_CREAT("cDiscrete")

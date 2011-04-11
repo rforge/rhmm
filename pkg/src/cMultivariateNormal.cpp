@@ -1,16 +1,16 @@
 /**************************************************************
- *** RHmm version 1.4.5                                     
+ *** RHmm version 1.4.7                                     
  ***                                                         
  *** File: cMultivariateNormal.cpp 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2011/03/31                                     
+ *** Date: 2011/04/07                                     
  ***                                                         
  **************************************************************/
 
-#include "MultivariateNormalUtil.h"
-#include "cMultivariateNormal.h"
+#include "StdAfxRHmm.h"
+
 
 
 cMultivariateNormal::cMultivariateNormal(uint theNClass, uint theDimObs)

@@ -1,16 +1,15 @@
 /**************************************************************
- *** RHmm version 1.4.5                                     
+ *** RHmm version 1.4.7                                     
  ***                                                         
  *** File: cMixtMultivariateNormal.cpp 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2011/03/31                                     
+ *** Date: 2011/04/07                                     
  ***                                                         
  **************************************************************/
 
-#include "MultivariateNormalUtil.h"
-#include "cMixtMultivariateNormal.h"
+#include "StdAfxRHmm.h"
 
 static void MixtMultivariateNormalDensity(cOTVector& theY, uint theNMixt, cOTVector* theMean, cOTMatrix* theInvCov, cOTVector& theDet, cOTVector& thep, double* theDens)
 {
@@ -147,7 +146,7 @@ double*         myDet = new double[mvNMixt] ;
                                 for (register int l = m+1 ; l < (int)mvDimObs ; l++)
                                         myCov[l][m] = myCov[m][l] ;
                         mCov[i][l] = myCov/mySumGammail ;
-                        mCov[i][l] -= mMean[i][l] * transpose(mMean[i][l]) ;
+                        mCov[i][l] -= mMean[i][l] * Transpose(mMean[i][l]) ;
                 }
         }
 }               

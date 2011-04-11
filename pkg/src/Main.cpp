@@ -1,26 +1,19 @@
 /**************************************************************
- *** RHmm version 1.4.5                                     
+ *** RHmm version 1.4.7                                     
  ***                                                         
  *** File: Main.cpp 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2011/03/31                                     
+ *** Date: 2011/04/07                                     
  ***                                                         
  **************************************************************/
 
 #ifndef _RDLL_
 #include <iostream>
 #include <fstream>
-#include "Hmm.h"
-#include "cInParam.h"
-#include "cBaumWelchInParam.h"
-#include "cBaumWelch.h"
-#include "AllDistributions.h"
-#include "cHmm.h"
-#include "cHmmFit.h"
-#include "cViterbi.h"
-#include "RHmm.h"
+#include "StdAfxRHmm.h"
+
 using namespace std;
 
 #define FIC_NAME  "Norm.txt" /*"Geyser.txt" "data_mixture.txt" "DISCRETEb.txt" "DISCRETE.txt"   "Geyser.txt" "SimulMultiMixt.txt"*/

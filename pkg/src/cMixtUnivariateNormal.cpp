@@ -1,15 +1,15 @@
 /**************************************************************
- *** RHmm version 1.4.5                                     
+ *** RHmm version 1.4.7                                     
  ***                                                         
  *** File: cMixtUnivariateNormal.cpp 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2011/03/31                                     
+ *** Date: 2011/04/07                                     
  ***                                                         
  **************************************************************/
 
-#include "cMixtUnivariateNormal.h"
+#include "StdAfxRHmm.h"
 static void MixtUnivariateNormalDensity(cOTVector& theY, uint theNMixt, cOTVector& theMean, cOTVector& theVar, cOTVector& thep, double* theDens)
 {
 cOTVector mySigma(theNMixt) ;
