@@ -40,8 +40,8 @@ cMultivariateNormal::~cMultivariateNormal()
                 {       mMean[i].Delete() ;
                         mCov[i].Delete() ;
                 }
-                delete mMean ;
-                delete mCov ;
+                delete [] mMean ;
+                delete [] mCov ;
                 mMean = NULL ;
                 mCov = NULL ;
                 mvNClass = 0 ;
