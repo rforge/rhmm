@@ -207,7 +207,7 @@ SEXP myRes,
                 break ;
                 case eDiscreteDistr :
                 {       cDiscrete *myParam = dynamic_cast<cDiscrete *>(myParamSortie.mDistrParam) ;
-                		myRUtil.SetMatSexp(myParam->mProbaMatVector[0], myAux[2]); // TODO: Do it for the real list
+                		myRUtil.SetListVectSexp(myParam->mProbaMatVector[0], myAux[2]); // TODO: Do it for the real list
                 }
                 break ;
                 case eMixtUniNormalDistr :

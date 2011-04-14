@@ -485,7 +485,21 @@ void cRUtil::SetListVectSexp(cOTVector* theVal, uint theNElt, SEXP &theSEXP)
         }
 }
 
+void cRUtil::SetListVectSexp(cOTMatrix& theVal, SEXP &theSEXP)
+{
+	uint theNElt;
 
+	theNElt = theVal.mNRow;
+
+	PROTECT(theSEXP = allocVector(VECSXP, theNElt)) ;
+	for (uint i = 0 ; i < theNElt; i++)
+	{
+	       SEXP myAux  ;
+	       SetVectSexp(theVal[i], theVal.mNCol, myAux) ;
+	       SET_VECTOR_ELT(theSEXP, i, myAux) ;
+	}
+
+}
 
 /*
  * Remplit une liste de theNElt matrice de taille theLigne x theCol dans un SEXP

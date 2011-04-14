@@ -125,6 +125,8 @@ class cRUtil
                 void SetListVectSexp(uint** theVal, uint theNElt, uint *theDim, SEXP &theSEXP) ;
                 void SetListVectSexp(double** theVal, uint theNElt, uint *theDim, SEXP &theSEXP) ;
                 void SetListVectSexp(cOTVector* theVal, uint theNElt, SEXP &theSEXP) ;
+                void SetListVectSexp(cOTMatrix& theVal, SEXP &theSEXP) ;
+
                 /*
                 * Remplit une liste de theNElt matrice de taille theLigne x theCol dans un SEXP
                 */
