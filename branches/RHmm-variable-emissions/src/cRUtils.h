@@ -1,18 +1,18 @@
 /**************************************************************
- *** RHmm version 1.4.5                                     
+ *** RHmm version 1.4.7                                     
  ***                                                         
  *** File: cRUtils.h 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2011/03/31                                     
+ *** Date: 2011/04/07                                     
  ***                                                         
  **************************************************************/
 
 #ifndef _CRUTILS_H_
 #define _CRUTILS_H_
 #pragma once
-
+#ifdef _RDLL_
 #include "OTMathUtil.h"
 #include <R.h>
 #include <Rinternals.h>
@@ -152,4 +152,5 @@ class cRUtil
 
         } ;
 
+#endif // _RDLL_ 
 #endif //_CRUTILS_H_

@@ -1,11 +1,11 @@
 /**************************************************************
- *** RHmm version 1.4.5                                     
+ *** RHmm version 1.4.7                                     
  ***                                                         
  *** File: cOTVector.h 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2011/03/31                                     
+ *** Date: 2011/04/07                                     
  ***                                                         
  **************************************************************/
 
@@ -55,8 +55,8 @@ class cOTVector
                 friend bool operator >(cOTVector& theVect1, cOTVector& theVect2) ;
                 friend bool operator >=(cOTVector& theVect1, cOTVector& theVect2) ;
                 friend std::ostream& operator <<(std::ostream& theStream, cOTVector &theVect) ;
-                friend cOTMatrix& transpose(cOTVector &theVect) ;
-                friend cOTVector& zeros(uint theN) ;
-                friend cOTVector& copy_double(double* theVect, uint theSize) ;
+                friend cOTMatrix& Transpose(cOTVector &theVect) ;
+                friend cOTVector& Zeros(uint theN) ;
+                friend cOTVector& CopyDouble(double* theVect, uint theSize) ;
 } ;
 #endif // _COTVECTOR_H_

@@ -1,15 +1,16 @@
 /**************************************************************
- *** RHmm version 1.4.5                                     
+ *** RHmm version 1.4.7                                     
  ***                                                         
  *** File: Kmeans.cpp 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2011/03/31                                     
+ *** Date: 2011/04/07                                     
  ***                                                         
  **************************************************************/
 
-#include "Kmeans.h"
+#include "StdAfxRHmm.h"
+
 #ifndef _RDLL_
 void mkmeans(cOTVector& theYt, uint theNClass, int* theSeq)
 { 

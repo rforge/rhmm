@@ -1,15 +1,15 @@
 /**************************************************************
- *** RHmm version 1.4.5                                     
+ *** RHmm version 1.4.7                                     
  ***                                                         
  *** File: cHmmFit.cpp 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2011/03/31                                     
+ *** Date: 2011/04/07                                     
  ***                                                         
  **************************************************************/
 
-#include "cHmmFit.h"
+#include "StdAfxRHmm.h"
 
 cHmmFit::cHmmFit(distrDefinitionEnum theDistrType, uint theNClass, uint theDimObs, uint theNMixt, uint theNProba, uint theNSample, uint* myT):cBaumWelch(theNSample, myT, theDimObs), cHmm(theDistrType, theNClass, theDimObs, theNMixt, theNProba)
 {       MESS_CREAT("cHmmFit")
