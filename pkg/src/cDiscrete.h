@@ -18,7 +18,7 @@ class cDiscrete : public cDistribution
 {       private :
                 uint            mvNClass        ;
         public :
-                cOTVector*      mProba          ;
+                cCyclicVector<cOTMatrix>	mProbaMatVector;
         public :
                 cDiscrete(uint theNClass, uint theNProba) ;
                 virtual ~cDiscrete() ;
@@ -29,7 +29,7 @@ class cDiscrete : public cDistribution
                 uint GetNProba() ;
                 virtual void GetParam(uint theDeb, cOTVector& theParam) ;
                 virtual void SetParam(uint theDeb, cOTVector& theParam) ;
-                uint GetNParam(void){ return mProba[0].mSize - 1 ; }
+                uint GetNParam(void){ return mProbaMatVector[0].mNCol - 1 ; }
                 void CopyDistr(cDistribution *theSrc) ;
 } ;
 

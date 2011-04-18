@@ -401,10 +401,10 @@ cOTMatrix myEigenVector(theMatrix.mNCol, theMatrix.mNCol) ;
         }
         theInvMatrix =  myEigenVector * Diag(myInvEigenValue) * Transpose(myEigenVector);
         
-        delete myAP ;
-        delete myW ;
-        delete myZ ;
-        delete myWork ;
+        delete [] myAP ;
+        delete [] myW ;
+        delete [] myZ ;
+        delete [] myWork ;
 
 }
 

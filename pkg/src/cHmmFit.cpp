@@ -156,7 +156,7 @@ void cHmmFit::BaumWelchAlgoInit(cBaumWelchInParam &theInParam)
         }
 #else
         GetRNGstate();
-#endif _RDLL_
+#endif /* _RDLL_ */
 
         cHmmFit myHMMFitCour(theInParam), myHMM(theInParam);
         cBaumWelchInParam myParamEntree;
