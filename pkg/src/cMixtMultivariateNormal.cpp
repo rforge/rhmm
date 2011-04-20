@@ -10,6 +10,7 @@
  **************************************************************/
 
 #include "StdAfxRHmm.h"
+#include "cOTMatrix.h"
 
 static void MixtMultivariateNormalDensity(cOTVector& theY, uint theNMixt, cOTVector* theMean, cOTMatrix* theInvCov, cOTVector& theDet, cOTVector& thep, double* theDens)
 {
@@ -77,14 +78,16 @@ void cMixtMultivariateNormal::ComputeCondProba(cOTVector* theY, uint theNSample,
 {
 cOTMatrix* myInvCov = new cOTMatrix[mvNMixt] ;
 cOTVector myDet = cOTVector(mvNMixt) ;
-        
+
         for (register uint i = 0 ; i < mvNMixt ; i++)
                 myInvCov[i].ReAlloc(mvDimObs, mvDimObs) ;
 
 
         for (register uint i = 0 ; i < mvNClass ; i++)
         {       for (register uint j = 0 ; j < mvNMixt ; j++)
+        		{
                         SymetricInverseAndDet(mCov[i][j], myDet[j], myInvCov[j]) ;
+        		}
                 for (register uint n = 0 ; n < theNSample ; n++)
                         MixtMultivariateNormalDensity(theY[n], mvNMixt, mMean[i], myInvCov, myDet, mp[i], theCondProba[n].mMat[i]) ;
         }
@@ -185,7 +188,14 @@ double mys = 0.0 ;
         double mySomme = 0.0 ;
         register uint l ;
                 for (l = 0 ; l < mvNMixt ; l++)
-                {       for (register uint k = 0 ; k < mvDimObs ; k++)
+                {
+                		/* FIXME:
+                		 * Zeros returns a global reference, but mCov[i][l] is a instance, so this
+                		 * is fine, but weird of course.
+                		 */
+                		mCov[i][l] = Zeros(mCov[i][l].mNRow,mCov[i][l].mNCol);
+
+                		for (register uint k = 0 ; k < mvDimObs ; k++)
                         {       mMean[i][l][k] =  -2*myStd[k] + myMoy[k] + 2*myStd[k] * unif_rand() ;
                                 mCov[i][l][k][k] = 0.5*myVar[k] + 3*myVar[k] * unif_rand() ;     
                         }

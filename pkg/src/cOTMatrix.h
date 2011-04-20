@@ -81,6 +81,8 @@ public :
         friend void LapackInvAndDet(cOTMatrix &theMatrix, cOTMatrix &theInvMatrix, double& theDet) ;
 } ;
 
+cOTMatrix& Zeros(uint theN, uint theP);
+
 #endif // _COTMATRIX_H_
 
 
