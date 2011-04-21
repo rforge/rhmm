@@ -1,11 +1,11 @@
 /**************************************************************
- *** RHmm version 1.4.7                                     
+ *** RHmm version 1.4.9
  ***                                                         
  *** File: MultivariateNormalUtil.cpp 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2011/04/07                                     
+ *** Date: 2011/04/21                                     
  ***                                                         
  **************************************************************/
 
@@ -19,6 +19,25 @@ void SymetricInverseAndDet(cOTMatrix& theMat, double& theDet, cOTMatrix& theInvM
 
 
 void MultivariateNormalDensity(cOTVector& thex, cOTVector& theMu, cOTMatrix& theInvCov, double theDet, double*  theDens)
+{
+register uint i, j, t ;
+double  myAux, myRapport ;
+
+uint myDimObs = theMu.mSize ;   
+        myRapport = pow(SQRT_TWO_PI, (int)myDimObs)*sqrt(theDet) ;
+
+uint myT = thex.mSize / myDimObs ;
+
+        for ( t = 0 ; t < myT ; t++)
+        {       myAux = 0.0 ;
+                for (i = 0 ; i < myDimObs ; i++)
+                        for (j = 0 ; j < myDimObs ; j++)
+                                myAux += (thex[t+i*myT]-theMu[i]) * theInvCov[i][j] * (thex[t+j*myT]-theMu[j]) ;
+                theDens[t] = exp(-0.5*myAux)/myRapport ;
+        }
+}
+
+void MultivariateNormalDensity(cOTVector& thex, cOTVector& theMu, cOTMatrix& theInvCov, double theDet, cDVector&  theDens)
 {
 register uint i, j, t ;
 double  myAux, myRapport ;

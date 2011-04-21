@@ -1,11 +1,11 @@
 /**************************************************************
- *** RHmm version 1.4.7                                     
+ *** RHmm version 1.4.9
  ***                                                         
  *** File: cHmmFit.cpp 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2011/04/07                                     
+ *** Date: 2011/04/21                                     
  ***                                                         
  **************************************************************/
 
@@ -87,6 +87,7 @@ cOTMatrix*      myProbaCond = new cOTMatrix[theInParam.mNSample] ;
                                 mTransMatVector[0][i][j] /= myDenominateur ;
                         }
                 }
+                
 
                 mDistrParam->UpdateParameters(theInParam, *this, myProbaCond) ;
                 mDistrParam->ComputeCondProba(theInParam.mY, theInParam.mNSample, myProbaCond) ;
@@ -101,8 +102,7 @@ cOTMatrix*      myProbaCond = new cOTMatrix[theInParam.mNSample] ;
                         Rprintf("Iter num %d - LLH : %10.4lf -  Normalized LLH : %8.6lf\n", myNbIter, mLLH, mLLH/myT) ;
                 myNbIter++ ;
         }
-        while ((myRap > theInParam.mTol) && (myNbIter < theInParam.mNMaxIter)) ;
-
+        while ((myRap > theInParam.mTol) & (myNbIter < theInParam.mNMaxIter)) ;
 /* Terminer la matrice de transition */
         for (i = 0 ; i < theInParam.mNClass ; i++)
         {       double mySomme = 0.0 ;
@@ -156,7 +156,7 @@ void cHmmFit::BaumWelchAlgoInit(cBaumWelchInParam &theInParam)
         }
 #else
         GetRNGstate();
-#endif /* _RDLL_ */
+#endif _RDLL_
 
         cHmmFit myHMMFitCour(theInParam), myHMM(theInParam);
         cBaumWelchInParam myParamEntree;
@@ -187,7 +187,7 @@ register uint   t                                                               
                 {       mySum = 0.0 ;
                         for (j = 0 ; j < myParamEntree.mNClass ; j++)
                         {
-                        		myHMMFitCour.mTransMatVector[0][i][j] = unif_rand() ; // FIXME
+                                        myHMMFitCour.mTransMatVector[0][i][j] = unif_rand() ; // FIXME
                                 mySum += myHMMFitCour.mTransMatVector[0][i][j] ;
                         }
                         for (j = 0 ; j < myParamEntree.mNClass ; j++)
@@ -195,6 +195,7 @@ register uint   t                                                               
                 }
                 
                 myHMMFitCour.mDistrParam->InitParameters(myParamEntree) ;
+
                 myHMMFitCour.BaumWelchAlgo(myParamEntree) ;
                 if(theInParam.mVerbose > 1)
                         Rprintf("Rand init num %d - LLH = %f\n", t, myHMMFitCour.mLLH) ;
@@ -204,7 +205,6 @@ register uint   t                                                               
                         myLogVraisCour = myHMMFitCour.mLLH ;
                 } 
         }
-
         if (theInParam.mVerbose > 1)
         {       Rprintf("\n Random Initialisation:\n") ;
                 myHMM.mDistrParam->Print() ;

@@ -1,11 +1,11 @@
 /**************************************************************
- *** RHmm version 1.4.7                                     
+ *** RHmm version 1.4.9
  ***                                                         
  *** File: cRUtils.h 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2011/04/07                                     
+ *** Date: 2011/04/21                                     
  ***                                                         
  **************************************************************/
 
@@ -31,7 +31,7 @@ class cRUtil
                 void EndProtect(void){if (mvNbProtect > 0) {UNPROTECT(mvNbProtect); mvNbProtect = 0 ; }} ;
                 ~cRUtil(){mvNbProtect = 0 ;};
                 /*
-                 *      Rï¿½cupï¿½rer une seule valeur ï¿½ partir d'une liste SEXP ï¿½ la place nï¿½ theNum
+                 *      Récupérer une seule valeur à partir d'une liste SEXP à la place n° theNum
                  */
                 void GetValSexp(SEXP theSEXP, uint theNum, uint &theVal) ;
                 void GetValSexp(SEXP theSEXP, uint theNum, int &theVal) ;
@@ -39,36 +39,35 @@ class cRUtil
                 void GetValSexp(SEXP theSEXP, uint theNum, char* theVal) ;
                 void GetValSexp(SEXP theSEXP, uint theNum, SEXP &theVal) ;
                 /*
-                *       Rï¿½cupï¿½rer une vecteur ï¿½ partir d'une liste SEXP ï¿½ la place nï¿½ theNum
+                *       Récupérer une vecteur à partir d'une liste SEXP à la place n° theNum
                 */
                 void GetVectSexp(SEXP theSEXP, uint theNum, uint theDim, double* theVal) ;
                 void GetVectSexp(SEXP theSEXP, uint theNum, uint theDim, int* theVal) ;
                 void GetVectSexp(SEXP theSEXP, uint theNum, uint theDim, uint* theVal) ;
                 void GetVectSexp(SEXP theSEXP, uint theNum, cOTVector& theVal) ;
                 /*
-                *       Rï¿½cupï¿½rer une matrice ï¿½ partir d'une liste SEXP ï¿½ la place nï¿½ theNum
+                *       Récupérer une matrice à partir d'une liste SEXP à la place n° theNum
                 */
                 void GetMatSexp(SEXP theSEXP, uint theNum, uint theLigne, uint theCol, int** theMat) ;
                 void GetMatSexp(SEXP theSEXP, uint theNum, uint theLigne, uint theCol, uint** theMat) ;
                 void GetMatSexp(SEXP theSEXP, uint theNum, uint theLigne, uint theCol, double** theMat) ;
                 void GetMatSexp(SEXP theSEXP, uint theNum, cOTMatrix& theMat) ;
                 void GetMatListSexp(SEXP theSEXP, uint theNum, std::vector<cOTMatrix> &theList);
-                void GetEmissionSexp(SEXP theSEXP, uint theNum, std::vector<cOTMatrix> &theList);
                 /*
-                *       Rï¿½cupï¿½rer l'ensemble des nombres dans une liste de nombres
+                *       Récupérer l'ensemble des nombres dans une liste de nombres
                 */
                 void GetListValSexp(SEXP theSEXP, uint theNum, uint theNElt, int* theVal) ;
                 void GetListValSexp(SEXP theSEXP, uint theNum, uint theNElt, uint* theVal) ;
                 void GetListValSexp(SEXP theSEXP, uint theNum, uint theNElt, double* theVal) ;
                 /*
-                * Rï¿½cuperer l'ensemble des vecteurs dans une liste de vecteur
+                * Récuperer l'ensemble des vecteurs dans une liste de vecteur
                 */
                 void GetListVectSexp(SEXP theSEXP, uint theNum, uint theNElt, uint theDim, int** theVal) ;
                 void GetListVectSexp(SEXP theSEXP, uint theNum, uint theNElt, uint theDim, uint** theVal) ;
                 void GetListVectSexp(SEXP theSEXP, uint theNum, uint theNElt, uint theDim, double** theVal) ;
                 void GetListVectSexp(SEXP theSEXP, uint theNum, uint theNElt, cOTVector* theVal) ;
                 /*
-                *       Rï¿½cupï¿½rer l'ensemble des matrices d'une liste de matrices
+                *       Récupérer l'ensemble des matrices d'une liste de matrices
                 */
                 void GetListMatSexp(SEXP theSEXP, uint theNum, uint theNElt, uint theLigne, uint theCol, int*** theVal) ;
                 void GetListMatSexp(SEXP theSEXP, uint theNum, uint theNElt, uint theLigne, uint theCol, uint*** theVal) ;
@@ -76,17 +75,17 @@ class cRUtil
                 void GetListMatSexp(SEXP theSEXP, uint theNum, uint theNElt, cOTMatrix* theVal) ;
                 
                 /*
-                 * Rï¿½cupï¿½rer l'ensemble des vecteurs dans une liste de liste de vecteurs
+                 * Récupérer l'ensemble des vecteurs dans une liste de liste de vecteurs
                  */
                 void GetListListVectSexp(SEXP theSEXP, uint theNum, uint theNList1, uint theNList2, cOTVector** theVect) ;
 
                 /*
-                 * Rï¿½cupï¿½rer l'ensemble des vecteurs dans une liste de liste de matrices
+                 * Récupérer l'ensemble des vecteurs dans une liste de liste de matrices
                  */
                 void GetListListMatSexp(SEXP theSEXP, uint theNum, uint theNList1, uint theNList2, cOTMatrix** theVect) ;
 
                 /*
-                *       Remplit une seule valeur dans un SEXP ï¿½ la place nï¿½ theNum
+                *       Remplit une seule valeur dans un SEXP à la place n° theNum 
                 */
                 void set_val_sexp(int theVal, SEXP &theSEXP) ;
                 void set_val_sexp(uint theVal, SEXP &theSEXP) ;
@@ -119,14 +118,12 @@ class cRUtil
                 void SetListVectSexp(uint** theVal, uint theNElt, uint theDim, SEXP &theSEXP) ;
                 void SetListVectSexp(double** theVal, uint theNElt, uint theDim, SEXP &theSEXP) ;
                 /*
-                * Remplit une liste de theNElt vecteurs de tailles diffï¿½rentes theDim[i] dans un SEXP
+                * Remplit une liste de theNElt vecteurs de tailles différentes theDim[i] dans un SEXP
                 */
                 void SetListVectSexp(int** theVal, uint theNElt, uint* theDim, SEXP &theSEXP) ;
                 void SetListVectSexp(uint** theVal, uint theNElt, uint *theDim, SEXP &theSEXP) ;
                 void SetListVectSexp(double** theVal, uint theNElt, uint *theDim, SEXP &theSEXP) ;
                 void SetListVectSexp(cOTVector* theVal, uint theNElt, SEXP &theSEXP) ;
-                void SetListVectSexp(cOTMatrix& theVal, SEXP &theSEXP) ;
-
                 /*
                 * Remplit une liste de theNElt matrice de taille theLigne x theCol dans un SEXP
                 */
@@ -134,7 +131,7 @@ class cRUtil
                 void SetListMatSexp(uint*** theVal, uint theNElt, uint theLigne, uint theCol, SEXP &theSEXP) ;
                 void SetListMatSexp(double*** theVal, uint theNElt, uint theLigne, uint theCol, SEXP &theSEXP) ;
                 /*
-                * Remplit une liste de theNElt matrice de tailles diffrï¿½ntes theLigne[i] x theCol[i] dans un SEXP
+                * Remplit une liste de theNElt matrice de tailles diffréntes theLigne[i] x theCol[i] dans un SEXP
                 */
                 void SetListMatSexp(int*** theVal, uint theNElt, uint *theLigne, uint *theCol, SEXP &theSEXP) ;
                 void SetListMatSexp(uint*** theVal, uint theNElt, uint *theLigne, uint *theCol, SEXP &theSEXP) ;

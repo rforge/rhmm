@@ -1,11 +1,11 @@
 /**************************************************************
- *** RHmm version 1.4.7                                     
+ *** RHmm version 1.4.9
  ***                                                         
  *** File: cDistribution.h 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2011/04/07                                     
+ *** Date: 2011/04/21                                     
  ***                                                         
  **************************************************************/
 
@@ -15,6 +15,7 @@
 
 #include "cBaumWelchInParam.h"
 #include "cBaumWelch.h"
+
 
 class cDistribution  
 {       public :
@@ -26,7 +27,6 @@ class cDistribution
                 virtual uint GetNParam(void)=0;
                 virtual void GetParam(uint theDeb, cOTVector& theParam)=0 ;
                 virtual void SetParam(uint theDeb, cOTVector& theParam)=0 ;
-                virtual ~cDistribution(){};
 #ifndef _RDLL_
                 void KMeans(cOTVector& theYt, uint theNClass, int* theSeq) {
                                 mkmeans(theYt, theNClass, theSeq) ;

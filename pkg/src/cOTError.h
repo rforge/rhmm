@@ -1,19 +1,23 @@
 /**************************************************************
- *** RHmm version 1.4.7                                     
+ *** RHmm version 1.4.9
  ***                                                         
  *** File: cOTError.h 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2011/04/07                                     
+ *** Date: 2011/04/21                                     
  ***                                                         
  **************************************************************/
 
 #ifndef _COTERROR_H_
 #define _COTERROR_H_
+#pragma once
 
 #include <cstdlib>
 #include <iostream>
+#ifdef _RDLL_
+	#include "R_ext/Error.h"
+#endif // _RDLL_
 
 #ifndef NULL
         #define NULL 0
@@ -29,4 +33,4 @@ class cOTError
                 cOTError(const char *theMess) ;
 } ;
 
-#endif // #_COTERROR_H
+#endif // _COTERROR_H

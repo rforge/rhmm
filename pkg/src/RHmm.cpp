@@ -1,11 +1,11 @@
 /**************************************************************
- *** RHmm version 1.4.7                                     
+ *** RHmm version 1.4.9
  ***                                                         
  *** File: RHmm.cpp 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2011/04/07                                     
+ *** Date: 2011/04/21                                     
  ***                                                         
  **************************************************************/
 
@@ -106,9 +106,6 @@ cHmmFit myParamSortie = cHmmFit(myParamEntree) ;
                 myRUtil.GetValSexp(theParamBW, eInitPoint, myAux1) ;
                 myRUtil.GetVectSexp(myAux1, 0, myHMM.mInitProba) ;
                 myRUtil.GetMatSexp(myAux1, 1, myHMM.mTransMatVector[0]) ; /* FIXME */
-                if (myHMM.mTransMatVector.size() > 1)
-                	warning("Time-inhomogeneous Markov chain not supported yet for BaumWelch algorithm.");
-
                 SEXP myAux ;
                 myRUtil.GetValSexp(myAux1, 2, myAux) ; // $distribution
                 switch (myDistrType)
@@ -140,10 +137,7 @@ cHmmFit myParamSortie = cHmmFit(myParamEntree) ;
                         break ;
                         case eDiscreteDistr :
                         {       cDiscrete *myParam = dynamic_cast<cDiscrete *>(myHMM.mDistrParam) ;
-                                myRUtil.GetEmissionSexp(myAux, 3, myParam->mProbaMatVector);
-
-                                if (myParam->mProbaMatVector.size() > 1)
-                                	warning("Variable discrete emission probabilities not supported yet for BaumWelch algorithm.");
+                                myRUtil.GetListVectSexp(myAux, 3, myNbClasses, myParam->mProba) ;
                         }
                         break ;
                 }
@@ -207,7 +201,7 @@ SEXP myRes,
                 break ;
                 case eDiscreteDistr :
                 {       cDiscrete *myParam = dynamic_cast<cDiscrete *>(myParamSortie.mDistrParam) ;
-                		myRUtil.SetListVectSexp(myParam->mProbaMatVector[0], myAux[2]); // TODO: Do it for the real list
+                        myRUtil.SetListVectSexp(myParam->mProba, myNbClasses, myAux[2]) ;
                 }
                 break ;
                 case eMixtUniNormalDistr :
@@ -328,7 +322,7 @@ for (register uint n = 0 ; n < myNbSample ; n++)
                 myRUtil.GetValSexp(theYt, n, myAux) ;
                 myT[n] = length(myAux) / myDimObs ;
                 myY[n].ReAlloc(myT[n]*myDimObs) ;
-                myY[n]= REAL(myAux) ;
+                myY[n] = REAL(myAux) ;
         }
 
 cHmm    myHMM = cHmm(myDistrType, myNbClasses, myDimObs, myNbMixt, myNbProba) ;
@@ -366,8 +360,7 @@ cHmm    myHMM = cHmm(myDistrType, myNbClasses, myDimObs, myNbMixt, myNbProba) ;
 
                 case eDiscreteDistr :
                 {       cDiscrete *myParam = (cDiscrete *)(myHMM.mDistrParam) ;
-                		myRUtil.GetEmissionSexp(myDistSEXP, 3, myParam->mProbaMatVector);
-
+                        myRUtil.GetListVectSexp(myDistSEXP, 3, myNbClasses, myParam->mProba) ;
                 }
                 break ;
                 case eUnknownDistr :
@@ -490,7 +483,7 @@ cHmm myHMM = cHmm(myDistrType, myNbClasses, myDimObs, myNbMixt, myNbProba) ;
 
                 case eDiscreteDistr :
                 {       cDiscrete *myParam = (cDiscrete *)(myHMM.mDistrParam) ;
-                		myRUtil.GetEmissionSexp(myDistSEXP, 3, myParam->mProbaMatVector);
+                        myRUtil.GetListVectSexp(myDistSEXP, 3, myNbClasses, myParam->mProba) ;
                 }
                 break ;
                 case eUnknownDistr :
@@ -507,7 +500,7 @@ cOTMatrix* myProbaCond = new cOTMatrix[myNbSample] ;
 
 cBaumWelch myBaumWelch=cBaumWelch(myNbSample, myT, myNbClasses) ;
         myBaumWelch.ForwardBackward(myProbaCond, myHMM) ;
-// On enl�ve le scale
+// On enl�ve le scale   
         for (register uint n = 0 ; n < myNbSample ; n++)
         {       for (register uint t = 0 ; t < myT[n] ; t++)
                         for (register uint j = 0 ; j < myNbClasses ; j++)
@@ -648,7 +641,7 @@ cHmm myHMM = cHmm(myDistrType, myNbClasses, myDimObs, myNbMixt, myNbProba) ;
 
                 case eDiscreteDistr :
                 {       cDiscrete *myParam = (cDiscrete *)(myHMM.mDistrParam) ;
-                		myRUtil.GetEmissionSexp(myDistSEXP, 3, myParam->mProbaMatVector);
+                        myRUtil.GetListVectSexp(myDistSEXP, 3, myNbClasses, myParam->mProba) ;
                 }
                 break ;
                 case eUnknownDistr :
