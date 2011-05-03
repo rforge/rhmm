@@ -5,7 +5,7 @@
  ####                                                         
  #### Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr>
  #### Author: Sebastian BAUER <sebastian.bauer@charite.de>
- #### Date: 2011/04/21                                  
+ #### Date: 2011/05/03                                  
  ####                                                         
  ###############################################################
 
@@ -198,7 +198,7 @@ discreteSet <- function(proba, labels=NULL, verif = TRUE)
             return("wrong number of labels\n")
     }
     else
-        labels <- as.character(gl(nLevels, 1, labels="p"))
+        labels <- MakeLabels(nLevels, labels="p")
     
     for (i in 1:nStates)
         names(proba[[i]]) <- labels
@@ -386,11 +386,22 @@ distributionSet <- function(dis, ...)
     }     
 }
 
+MakeLabels <- function(nStates, labels="State")
+{
+    cNames <- NULL
+    for (i in 1:nStates)
+    {   cNames <- c(cNames, sprintf("%s %d", labels, i))
+    }
+    return(cNames)
+}
+
+
 print.univariateNormalClass <- function(x, ...)
 {   Aux <- cbind(x$mean, x$var)
     Aux <- as.data.frame(Aux, row.names=" ")
     names(Aux) <- c("mean", "var")
-    rnames <- as.character(gl(x$nStates, 1, labels="State "))
+    rnames <- MakeLabels(x$nStates)
+    
     rownames(Aux) <- rnames
     print.data.frame(Aux, quote=FALSE, right=TRUE)
 }
@@ -419,10 +430,10 @@ print.discreteClass <- function(x, ...)
     Aux <- matrix(nrow=x$nStates, ncol=x$nLevels)
     for (i in 1:x$nStates)
         Aux[i, ]<- t(proba[[i]])
-    rnames <- as.character(gl(x$nStates, 1, labels="State "))
+    rnames <- MakeLabels(x$nStates)
     Aux <- as.data.frame(Aux)
     if (is.null(names(proba[[1]])))
-        cnames <- as.character(gl(x$nLevels, 1, labels="p"))
+        cnames <- MakeLabels(x$nLevels, labels="p")
     else
         cnames <- names(proba[[1]])
             
@@ -432,7 +443,7 @@ print.discreteClass <- function(x, ...)
 }
 
 print.mixtureUnivariateNormalClass <- function(x, ...)
-{   rnames <- as.character(gl(x$nMixt, 1, labels="mixt. "))
+{   rnames <- MakeLabels(x$nMixt, labels="mixt.")
     for (i in 1:x$nStates)
     {   cat(sprintf("  State %d\n", i), sep="")
         Aux <- matrix(c(x$mean[[i]], x$var[[i]], x$proportion[[i]]), ncol=3)
@@ -545,7 +556,7 @@ HMMSet <- function(initProb, transMat, ...)
     return(Res)
 }
 
-
+ 
 print.HMMClass <- function(x, ...)
 {   y <- x$distribution
     if (y$dis == "NORMAL")
@@ -588,21 +599,20 @@ print.HMMClass <- function(x, ...)
     cat("\nInitial probabilities:\n", sep="")
     Aux <- t(x$initProb)
     Aux <- as.data.frame(Aux)
-    cnames <- as.character(gl(x$distribution$nStates, 1, labels="Pi"))
+    cnames <- MakeLabels(x$distribution$nStates, labels="Pi")
     names(Aux) <- cnames
     row.names(Aux) <- " "
     print.data.frame(Aux, quote=FALSE, right=TRUE)
     
-    
     print.mat<-function(mat)
     {
         Aux <- as.data.frame(mat)
-        cnames <- as.character(gl(x$distribution$nStates, 1, labels="State "))
+        cnames <- MakeLabels(x$distribution$nStates)
         names(Aux) <- cnames
         rownames(Aux) <- cnames
         print.data.frame(Aux, quote=FALSE, right=TRUE)
-        
     }
+  
     
     if (is.list(x$transMat))
     {
