@@ -1,11 +1,11 @@
 /**************************************************************
- *** RHmm version 1.4.9
+ *** RHmm version 1.4.7                                     
  ***                                                         
  *** File: RHmm.h 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2011/04/21                                     
+ *** Date: 2011/04/07                                     
  ***                                                         
  **************************************************************/
 
@@ -60,5 +60,5 @@ typedef enum DistEnum
         #define END_EXTERN_C }
 #endif //BEG_EXTERN_C
 
-#endif // _RDLL_
+#endif _RDLL_
 #endif //_RHMM_H_

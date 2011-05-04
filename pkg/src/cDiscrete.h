@@ -1,11 +1,11 @@
 /**************************************************************
- *** RHmm version 1.4.9
+ *** RHmm version 1.4.7                                     
  ***                                                         
  *** File: cDiscrete.h 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2011/04/21                                     
+ *** Date: 2011/04/07                                     
  ***                                                         
  **************************************************************/
 
@@ -18,7 +18,7 @@ class cDiscrete : public cDistribution
 {       private :
                 uint            mvNClass        ;
         public :
-                cOTVector*      mProba          ;
+                cCyclicVector<cOTMatrix>	mProbaMatVector;
         public :
                 cDiscrete(uint theNClass, uint theNProba) ;
                 virtual ~cDiscrete() ;
@@ -29,7 +29,7 @@ class cDiscrete : public cDistribution
                 uint GetNProba() ;
                 virtual void GetParam(uint theDeb, cOTVector& theParam) ;
                 virtual void SetParam(uint theDeb, cOTVector& theParam) ;
-                uint GetNParam(void){ return mProba[0].mSize - 1 ; }
+                uint GetNParam(void){ return mProbaMatVector[0].mNCol - 1 ; }
                 void CopyDistr(cDistribution *theSrc) ;
 } ;
 

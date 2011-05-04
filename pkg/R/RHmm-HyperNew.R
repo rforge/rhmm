@@ -1,11 +1,11 @@
  ###############################################################
- #### RHmm version 1.4.9                              
+ #### RHmm version 1.4.7                              
  ####                                                         
  #### File: RHmm-HyperNew.R 
  ####                                                         
  #### Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr>
  #### Author: Sebastian BAUER <sebastian.bauer@charite.de>
- #### Date: 2011/05/03                                  
+ #### Date: 2011/04/07                                    
  ####                                                         
  ###############################################################
 
@@ -962,7 +962,7 @@ asymptoticCovMat <- function(HMM, obs, asymptMethod=c('nlme', 'optim'))
     nParam <- dim(Hh)[1]
     K <- GradConstraint(HMM)
     Dh <- Hh + t(K) %*% K
-    Dm1 <- try(solve(Dh), silent=TRUE)
+    Dm1 <- try(solve(Dh), silent=T)
     if (class(Dm1)=="try-error")
     {   asymptMatCov <- matrix(NaN, ncol=nParam, nrow=nParam)
         colnames(asymptMatCov) <- rownames(asymptMatCov) <- NomsParamHMM(HMM)
@@ -970,7 +970,7 @@ asymptoticCovMat <- function(HMM, obs, asymptMethod=c('nlme', 'optim'))
         return(asymptMatCov)
     }
     Aux <- K %*% Dm1 %*% t(K)
-    Auxm1 <- try(solve(Aux), silent=TRUE)
+    Auxm1 <- try(solve(Aux), silent=T)
     if (class(Auxm1)=="try-error")
     {   asymptMatCov <- matrix(NaN, ncol=nParam, nrow=nParam)
         colnames(asymptMatCov) <- rownames(asymptMatCov) <- NomsParamHMM(HMM)

@@ -1,11 +1,11 @@
 /**************************************************************
- *** RHmm version 1.4.9
+ *** RHmm version 1.4.7                                     
  ***                                                         
  *** File: cHmm.cpp 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2011/04/21                                     
+ *** Date: 2011/04/07                                     
  ***                                                         
  **************************************************************/
 
@@ -16,7 +16,7 @@ cHmm::cHmm(distrDefinitionEnum theDistrType, uint theNClass, uint theDimObs, uin
         mDistrType = theDistrType ;
         mInitProba.ReAlloc(theNClass) ;
 
-        cOTMatrix *transMat = new cOTMatrix(theNClass,theNClass,0.0);
+        cOTMatrix *transMat = new cOTMatrix(theNClass,theNClass,0);
         mTransMatVector.push_back(*transMat);
 //      mTransMat.ReAlloc(theNClass, theNClass) ;
 
@@ -46,8 +46,9 @@ cHmm::cHmm(const cInParam &theInParam)
         mInitProba.ReAlloc(theInParam.mNClass);
 //      mTransMat.ReAlloc(theInParam.mNClass, theInParam.mNClass) ;
 
-        cOTMatrix *transMat = new cOTMatrix(theInParam.mNClass,theInParam.mNClass,0.0);
+        cOTMatrix *transMat = new cOTMatrix(theInParam.mNClass,theInParam.mNClass,0);
         mTransMatVector.push_back(*transMat);
+        delete transMat;
 
         mDistrType = theInParam.mDistrType ;
         switch(mDistrType)
@@ -77,49 +78,11 @@ cHmm::~cHmm()
         std::vector<cOTMatrix>::iterator it;
         for (it = mTransMatVector.begin(); it < mTransMatVector.end(); it++ )
                 it->Delete();
-        // Probably more to free here
 
+        // Probably more to free here
         mInitProba.Delete() ;
 
-        delete mDistrParam ;    
-/*      if (mDistrParam != NULL)
-        {       switch(mDistrType)
-                {       case eNormalDistr :
-                        {       
-                        cUnivariateNormal* myDistr = dynamic_cast<cUnivariateNormal *>(mDistrParam) ;
-                                delete myDistr ;
-                        }
-                        break ;
-                        case eMultiNormalDistr :
-                        {
-                        cMultivariateNormal* myDistr = dynamic_cast<cMultivariateNormal *>(mDistrParam) ;
-                                delete myDistr ;
-                        }
-                        break ;
-                        case eMixtUniNormalDistr :
-                        {
-                        cMixtUnivariateNormal* myDistr = dynamic_cast<cMixtUnivariateNormal *>(mDistrParam) ;
-                                delete myDistr ;
-                        }
-                        break ;
-                        case eMixtMultiNormalDistr :
-                        {       
-                        cMixtUnivariateNormal* myDistr = dynamic_cast<cMixtUnivariateNormal *>(mDistrParam) ;
-                                delete myDistr ;
-                        }
-                        break ;
-                        case eDiscreteDistr :
-                        {
-                        cDiscrete* myDistr = dynamic_cast<cDiscrete *>(mDistrParam) ;
-                                delete myDistr ;
-                        }
-                        break ;
-                        case eUnknownDistr :
-                                mDistrParam = (cDistribution *)NULL ;
-                        break ;
-                }
-        }
-*/
+        delete mDistrParam ;
         mDistrParam = (cDistribution *)NULL ;
 }
 

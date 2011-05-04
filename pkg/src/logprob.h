@@ -1,11 +1,11 @@
 /**************************************************************
- *** RHmm version 1.4.9
+ *** RHmm version 1.4.7                                     
  ***                                                         
  *** File: logprob.h 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2011/04/21                                     
+ *** Date: 2011/04/07                                     
  ***                                                         
  **************************************************************/
 
@@ -21,10 +21,10 @@
 #ifndef MAX
         #define MAX(p,q) ((p) > (q) ? (p) : (q))
 #endif //MAX
-extern double eexp(double theX) ;
-extern double eln(double theX) ;
-extern double elnsum(double theX, double theY) ;
-extern double elnproduct(double theX, double theY) ;
+extern double eexp(const double theX) ;
+extern double eln(const double theX) ;
+extern double elnsum(const double theX, const double theY) ;
+extern double elnproduct(const double theX, const double theY) ;
 
 #endif // _LOGPROB_H_
 

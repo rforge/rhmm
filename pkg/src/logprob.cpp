@@ -1,17 +1,17 @@
 /**************************************************************
- *** RHmm version 1.4.9
+ *** RHmm version 1.4.7                                     
  ***                                                         
  *** File: logprob.cpp 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2011/04/21                                     
+ *** Date: 2011/04/07                                     
  ***                                                         
  **************************************************************/
 
 #include "logprob.h"
 
-double eexp( double theX)
+double eexp(const double theX)
 {
         if (theX <= LOGZERO)
                 return(0.0L) ;
@@ -19,7 +19,7 @@ double eexp( double theX)
                 return(exp(theX)) ;
 }
 
-double eln( double theX)
+double eln(const double theX)
 {
         if (theX > 0.0L)
                 return(log(theX)) ;
@@ -27,9 +27,10 @@ double eln( double theX)
                 return(LOGZERO) ;
 }
 
-double elnsum1( double theX,  double theY)
+double elnsum1(const double theX, const double theY)
 {       
-double  myeLnX = eln(theX), myeLnY = eln(theY) ;
+double  myeLnX = eln(theX),
+                myeLnY = eln(theY) ;
         
         if ( (myeLnX <= LOGZERO) || (myeLnY <= LOGZERO) )
         {       if (myeLnX <= LOGZERO)
@@ -39,13 +40,13 @@ double  myeLnX = eln(theX), myeLnY = eln(theY) ;
         }
         else
         {       if (myeLnX > myeLnY) 
-                        return(myeLnX + eln(1.0+exp(myeLnY-myeLnX))) ;
+                        return(myeLnX + eln(1.0L+exp(myeLnY-myeLnX))) ;
                 else
-                        return(myeLnY + eln(1.0+exp(myeLnX-myeLnY))) ;
+                        return(myeLnY + eln(1.0L+exp(myeLnX-myeLnY))) ;
         }
 }
 
-double elnsum( double theeLnX,  double theeLnY)
+double elnsum(const double theeLnX, const double theeLnY)
 {       
 // elnsum(eln(x), eln(y)) = eln(x+y) pour x, y > LOGZERO
 // elnsum(LOGZERO, eln(y)) = eln(y)
@@ -56,11 +57,11 @@ double  myeLnX = MAX(theeLnX, theeLnY),
         if (myeLnY <= LOGZERO)
                 return(myeLnX) ;
         else
-                return(myeLnX + eln(1.0+exp(myeLnY-myeLnX))) ;
+                return(myeLnX + eln(1.0L+exp(myeLnY-myeLnX))) ;
 }
 
 
-double elnproduct1( double theX,  double theY)
+double elnproduct1(const double theX, const double theY)
 {
 double  myeLnX = eln(theX),
                 myeLnY = eln(theY) ;
@@ -71,7 +72,7 @@ double  myeLnX = eln(theX),
                 return(myeLnX + myeLnY) ;
 }
 
-double elnproduct( double theeLnX,  double theeLnY)
+double elnproduct(const double theeLnX, const double theeLnY)
 // elnproduct(eln(x), eln(y)) = eln(x) + eln(y) pour x, y > 0
 // elnproduct(LOGZERO, eln(y)) = elnproduct(eln(x), LOGZERO) = LOGZERO
 {

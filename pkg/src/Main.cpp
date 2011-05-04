@@ -1,11 +1,11 @@
 /**************************************************************
- *** RHmm version 1.4.9
+ *** RHmm version 1.4.7                                     
  ***                                                         
  *** File: Main.cpp 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2011/04/21                                     
+ *** Date: 2011/04/07                                     
  ***                                                         
  **************************************************************/
 
@@ -16,22 +16,23 @@
 
 using namespace std;
 
-#define FIC_NAME   "Xirisx.txt" /* "Norm.txt"  "n1d_3s.txt"  "Geyser.txt" "data_mixture.txt"  "DISCRETEb.txt" "DISCRETE.txt"  "SimulMultiMixt.txt"*/
-#define DIM_OBS 4
+#define FIC_NAME  "Norm.txt" /*"Geyser.txt" "data_mixture.txt" "DISCRETEb.txt" "DISCRETE.txt"   "Geyser.txt" "SimulMultiMixt.txt"*/
+#define DIM_OBS 1
 #define NB_SAMPLE 1
-#define NB_STATES 3
-#define NB_MIXT 3
 int main(void)
 {
 ifstream myFile ;
 cOTVector* myRt = new cOTVector[NB_SAMPLE] ;
 register uint n = 0 ;
 double myAux ;
-	myFile.open(FIC_NAME) ;
+	myFile.open(FIC_NAME);
+	if (!myFile.is_open())
+		fprintf(stderr,"Could not open %s\n",FIC_NAME);
 	while (myFile)
 	{	myFile >> myAux ;		
 		n++ ;
 	}
+
 	n = (n-1)/(DIM_OBS*NB_SAMPLE) ;
 	myFile.close() ;
 	for (register uint j = 0 ; j < NB_SAMPLE ; j++)
@@ -54,11 +55,10 @@ double myAux ;
 //cHmm MyHMM(eNormalDistr, 2) ;
 uint myDimObs = DIM_OBS ;
 
-//cBaumWelchInParam myParam=cBaumWelchInParam(NB_SAMPLE, myDimObs, myRt, eNormalDistr, NB_STATES) ;
+cBaumWelchInParam myParam=cBaumWelchInParam(1, myDimObs, myRt, eNormalDistr, 2) ;
 //cBaumWelchInParam myParam=cBaumWelchInParam(1, myDimObs, myRt1, eDiscreteDistr, 3, 0, 10) ;
 //cBaumWelchInParam myParam=cBaumWelchInParam(NB_SAMPLE, myDimObs, myRt, eMixtUniNormalDistr, 2, 3) ;
 //cBaumWelchInParam myParam=cBaumWelchInParam(NB_SAMPLE, myDimObs, myRt, eMultiNormalDistr, 3) ;
-cBaumWelchInParam myParam=cBaumWelchInParam(NB_SAMPLE, myDimObs,  myRt, eMixtMultiNormalDistr, NB_STATES, NB_MIXT) ;
 
 /*cHmm myHMM(eDiscreteDistr, 2) ;
 	myHMM.mInitProba[0] = myHMM.mInitProba[1] = 0.5L ;
@@ -99,13 +99,15 @@ cOTMatrix*	myProbaCond = new cOTMatrix[myParam.mNSample] ;
 	myHMMFit.ForwardBackward(myProbaCond, myHMMFit) ;
 	cout << *(myHMMFit.mRho) ;
 
-*/
+
 cViterbi myViterbi(myParam) ;
 	myViterbi.ViterbiPath(myParam, myHMMFit) ;
 //	myViterbi.ViterbiPath(myParam, myHMM) ;
 	for (register uint n = 0 ; n < myParam.mNSample ; n++)
 		for (register uint i = 0 ; i < myParam.mY[n].mSize ; i++)
 			std::cout << myViterbi.mSeq[n][i] << std::endl ;
+			source("C:/Users/taram/Documents/R/RHMM DEBUG/debug.R")
+*/
 /*
 cOTVector myGrad ;
 	myHMMFit.ComputeGradient(myParam, myGrad, 1e-2) ;

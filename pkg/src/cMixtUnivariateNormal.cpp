@@ -1,11 +1,11 @@
 /**************************************************************
- *** RHmm version 1.4.9
+ *** RHmm version 1.4.7                                     
  ***                                                         
  *** File: cMixtUnivariateNormal.cpp 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2011/04/21                                     
+ *** Date: 2011/04/07                                     
  ***                                                         
  **************************************************************/
 
@@ -23,7 +23,8 @@ cOTVector mySigma(theNMixt) ;
                 double myCR = (theY[t] - theMean[i])/mySigma[i] ;
                         theDens[t] += thep[i]/(SQRT_TWO_PI*mySigma[i])*exp(-0.5*myCR*myCR) ;
                 }
-                theDens[t] = MAX(theDens[t], 1e-16) ;
+                if (theDens[t] < 1e-30)
+                        theDens[t] = 1e-30 ;
         }
 }
 
@@ -62,7 +63,7 @@ void cMixtUnivariateNormal::ComputeCondProba(cOTVector* theY, uint theNSample, c
 {
         for (register uint n = 0 ; n < theNSample ; n++)
                 for (register uint i = 0 ; i < mvNClass ; i++)
-                        MixtUnivariateNormalDensity(theY[n], mvNMixt, mMean[i], mVar[i], mp[i], theCondProba[n][i]) ;
+                        MixtUnivariateNormalDensity(theY[n], mvNMixt, mMean[i], mVar[i], mp[i], theCondProba[n].mMat[i]) ;
 }
 
 void cMixtUnivariateNormal::UpdateParameters(cInParam& theInParam, cBaumWelch& theBaumWelch, cOTMatrix* theCondProba)
@@ -86,7 +87,7 @@ void cMixtUnivariateNormal::UpdateParameters(cInParam& theInParam, cBaumWelch& t
                                 for (t = 0 ; t < theInParam.mY[n].mSize ; t++)
                                 {       
                                 double  myStd = sqrt(mVar[i][l]),
-                                        myCR = (theInParam.mY[n][t] - mMean[i][l])/myStd ;
+                                                myCR = (theInParam.mY[n][t] - mMean[i][l])/myStd ;
                                         myGammail = theBaumWelch.mGamma[n][i][t] * mp[i][l] * 1/(SQRT_TWO_PI*myStd) * exp(-0.5*myCR*myCR) / theCondProba[n][i][t] ;
                                         mySumGammail += myGammail ; 
                                         myMoy += myGammail * theInParam.mY[n][t] ;

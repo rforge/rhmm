@@ -1,11 +1,11 @@
 /**************************************************************
- *** RHmm version 1.4.9
+ *** RHmm version 1.4.7                                     
  ***                                                         
  *** File: cViterbi.cpp 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2011/04/21                                     
+ *** Date: 2011/04/07                                     
  ***                                                         
  **************************************************************/
 
@@ -100,7 +100,12 @@ int** myPsi = new int*[theInParam.mNClass] ;
                 for (register int t =  (int)(mySize-2) ; t >= 0 ; t--)
                         mSeq[n][t] = myPsi[mSeq[n][t+1]][t+1] ;
 
-               for (register uint j = 0 ; j < theInParam.mNClass ; j++)
+/*              for (register uint j = 0 ; j < theInParam.mNClass ; j++)
+                {       myPsi[j] = new int[theInParam.mY[n].mSize] ;
+                        myDelta[j].ReAlloc(theInParam.mY[n].mSize) ;
+                }
+*/              
+                for (register uint j = 0 ; j < theInParam.mNClass ; j++)
                 {
                         delete [] myPsi[j] ;
                         myDelta[j].Delete() ;
@@ -108,8 +113,8 @@ int** myPsi = new int*[theInParam.mNClass] ;
         }
         for (register uint n = 0 ; n < myNSample ; n++)
                 myProbaCond[n].Delete() ;
-      delete myPsi ;
-      delete [] myDelta ;
-      delete [] myProbaCond ;
+//      delete myPsi ;
+//      delete myDelta ;
+//      delete myProbaCond ;
 }
 
