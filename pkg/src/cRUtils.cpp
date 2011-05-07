@@ -144,15 +144,26 @@ void cRUtil::GetEmissionSexp(SEXP theSEXP, uint theNum, std::vector<cOTMatrix> &
 {
 	SEXP myAux = VECTOR_ELT(theSEXP, theNum) ;
 
-	if (isMatrix(myAux))
+	uint nrow = theList.at(0).mNRow;
+	uint ncol = theList.at(0).mNCol;
+	uint i,j;
+
+	if (isVectorList(myAux))
 	{
-		/* Fill as first matrix */
-		GetMatSexp(theSEXP,theNum,theList[0]);
+		/* Parameter is a list of vectors */
+		cOTVector vec;
+		vec.ReAlloc(ncol);
+
+		for (i=0;i<nrow;i++)
+		{
+			GetVectSexp(myAux, i, vec);
+
+			for (j=0;j<ncol;j++)
+				theList.at(0).mMat[i][j] = vec.mVect[j];
+		}
 	} else
 	{
-		uint i;
-		uint nrow = theList.at(0).mNRow;
-		uint ncol = theList.at(0).mNCol;
+		/* Parameter is a list of matrixes */
 
 		for (i=0;i<length(myAux);i++)
 		{
