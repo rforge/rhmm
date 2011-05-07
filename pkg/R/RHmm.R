@@ -803,8 +803,6 @@ sim.discreteClass <- function(object, nSim, lastState)
    		}
    	}
    	
-   	print(value)
-
     return(value)
 }
 
