@@ -148,9 +148,12 @@ void cRUtil::GetEmissionSexp(SEXP theSEXP, uint theNum, std::vector<cOTMatrix> &
 	uint ncol = theList.at(0).mNCol;
 	uint i,j;
 
-	if (isVectorList(myAux))
+	if (!isVector(myAux))
+		return;
+
+	if (!isMatrix(VECTOR_ELT(myAux,0)))
 	{
-		/* Parameter is a list of vectors */
+		/* Parameter is a list of vectors, as the first elements is no matrix */
 		cOTVector vec;
 		vec.ReAlloc(ncol);
 
@@ -163,7 +166,7 @@ void cRUtil::GetEmissionSexp(SEXP theSEXP, uint theNum, std::vector<cOTMatrix> &
 		}
 	} else
 	{
-		/* Parameter is a list of matrixes */
+		/* Parameter is a list of matrices */
 
 		for (i=0;i<length(myAux);i++)
 		{
