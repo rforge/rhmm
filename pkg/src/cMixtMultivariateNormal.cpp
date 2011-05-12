@@ -1,18 +1,16 @@
 /**************************************************************
- *** RHmm version 1.4.7                                     
+ *** RHmm version 1.5.0
  ***                                                         
  *** File: cMixtMultivariateNormal.cpp 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2011/04/07                                     
  ***                                                         
  **************************************************************/
 
 #include "StdAfxRHmm.h"
-#include "cOTMatrix.h"
 
-static void MixtMultivariateNormalDensity(cOTVector& theY, uint theNMixt, cOTVector* theMean, cOTMatrix* theInvCov, cOTVector& theDet, cOTVector& thep, double* theDens)
+static void MixtMultivariateNormalDensity(cDVector& theY, uint theNMixt, cDVector* theMean, cDMatrix* theInvCov, cDVector& theDet, cDVector& thep, double* theDens)
 {
 uint myT = theY.mSize / theMean[0].mSize ;
 double* myDens = new double[myT] ;
@@ -35,12 +33,12 @@ cMixtMultivariateNormal::cMixtMultivariateNormal(uint theNClass, uint theNMixt, 
         mvNMixt = theNMixt ;
         mvDimObs = theDimObs ;
         if ( (theNClass > 0) && (theNMixt > 0) && (theDimObs > 0) )
-        {       mMean = new cOTVector*[theNClass] ;
-                mCov = new cOTMatrix*[theNClass] ;
-                mp = new cOTVector[theNClass] ;
+        {       mMean = new cDVector*[theNClass] ;
+                mCov = new cDMatrix*[theNClass] ;
+                mp = new cDVector[theNClass] ;
                 for (register uint i = 0 ; i < mvNClass ; i++)
-                {       mMean[i] = new cOTVector[theNMixt] ;
-                        mCov[i] = new cOTMatrix[theNMixt] ;
+                {       mMean[i] = new cDVector[theNMixt] ;
+                        mCov[i] = new cDMatrix[theNMixt] ;
                         mp[i].ReAlloc(theNMixt) ;
                         for (register uint j = 0 ; j < theNMixt ; j++)
                         {       mMean[i][j].ReAlloc(theDimObs) ;
@@ -74,10 +72,10 @@ cMixtMultivariateNormal::~cMixtMultivariateNormal()
         mvNClass = mvNMixt = mvDimObs = 0 ;
 }
 
-void cMixtMultivariateNormal::ComputeCondProba(cOTVector* theY, uint theNSample, cOTMatrix* theCondProba)
+void cMixtMultivariateNormal::ComputeCondProba(cDVector* theY, uint theNSample, cDMatrix* theCondProba)
 {
-cOTMatrix* myInvCov = new cOTMatrix[mvNMixt] ;
-cOTVector myDet = cOTVector(mvNMixt) ;
+cDMatrix* myInvCov = new cDMatrix[mvNMixt] ;
+cDVector myDet = cDVector(mvNMixt) ;
 
         for (register uint i = 0 ; i < mvNMixt ; i++)
                 myInvCov[i].ReAlloc(mvDimObs, mvDimObs) ;
@@ -85,20 +83,20 @@ cOTVector myDet = cOTVector(mvNMixt) ;
 
         for (register uint i = 0 ; i < mvNClass ; i++)
         {       for (register uint j = 0 ; j < mvNMixt ; j++)
-        		{
+                        {
                         SymetricInverseAndDet(mCov[i][j], myDet[j], myInvCov[j]) ;
-        		}
+                        }
                 for (register uint n = 0 ; n < theNSample ; n++)
-                        MixtMultivariateNormalDensity(theY[n], mvNMixt, mMean[i], myInvCov, myDet, mp[i], theCondProba[n].mMat[i]) ;
+                        MixtMultivariateNormalDensity(theY[n], mvNMixt, mMean[i], myInvCov, myDet, mp[i], theCondProba[n][i]) ;
         }
         for (register uint i = 0 ; i < mvNMixt ; i++)
                 myInvCov[i].Delete() ;
         delete [] myInvCov ;
 }
 
-void cMixtMultivariateNormal::UpdateParameters(cInParam& theInParam, cBaumWelch& theBaumWelch, cOTMatrix* theCondProba)
+void cMixtMultivariateNormal::UpdateParameters(cInParam& theInParam, cBaumWelch& theBaumWelch, cDMatrix* theCondProba)
 {       
-cOTMatrix*      myInvCov = new cOTMatrix[mvNMixt];
+cDMatrix*      myInvCov = new cDMatrix[mvNMixt];
 double*         myDet = new double[mvNMixt] ;
 
         for (register uint i = 0 ; i < mvNMixt ; i++)
@@ -119,8 +117,8 @@ double*         myDet = new double[mvNMixt] ;
                 for (register uint j = 0 ; j < mvNMixt ; j++)
                         SymetricInverseAndDet(mCov[i][j], myDet[j], myInvCov[j]) ;
                 
-        cOTVector myMoy = cOTVector(mvDimObs) ;
-        cOTMatrix myCov = cOTMatrix(mvDimObs, mvDimObs) ;
+        cDVector myMoy = cDVector(mvDimObs) ;
+        cDMatrix myCov = cDMatrix(mvDimObs, mvDimObs) ;
                 for (register uint l = 0 ; l < mvNMixt  ; l++)
                 {                               
                         myMoy = 0.0 ;
@@ -161,7 +159,7 @@ void cMixtMultivariateNormal::InitParameters(cBaumWelchInParam &theInParam)
         GetRNGstate();
 #endif //_RDLL_
 
-cOTVector       myMoy(mvDimObs),
+cDVector       myMoy(mvDimObs),
                         myVar(mvDimObs),
                         myStd(mvDimObs) ;
 
@@ -189,13 +187,13 @@ double mys = 0.0 ;
         register uint l ;
                 for (l = 0 ; l < mvNMixt ; l++)
                 {
-                		/* FIXME:
-                		 * Zeros returns a global reference, but mCov[i][l] is a instance, so this
-                		 * is fine, but weird of course.
-                		 */
-                		mCov[i][l] = Zeros(mCov[i][l].mNRow,mCov[i][l].mNCol);
+                                /* FIXME:
+                                 * Zeros returns a global reference, but mCov[i][l] is a instance, so this
+                                 * is fine, but weird of course.
+                                 */
+                                mCov[i][l] = Zeros(mCov[i][l].mNRow,mCov[i][l].mNCol);
 
-                		for (register uint k = 0 ; k < mvDimObs ; k++)
+                                for (register uint k = 0 ; k < mvDimObs ; k++)
                         {       mMean[i][l][k] =  -2*myStd[k] + myMoy[k] + 2*myStd[k] * unif_rand() ;
                                 mCov[i][l][k][k] = 0.5*myVar[k] + 3*myVar[k] * unif_rand() ;     
                         }
@@ -247,7 +245,7 @@ void cMixtMultivariateNormal::Print()
 }
 
 
-void cMixtMultivariateNormal::GetParam(uint theDeb, cOTVector& theParam)
+void cMixtMultivariateNormal::GetParam(uint theDeb, cDVector& theParam)
 {
 register uint k = theDeb ;
         for (register uint n = 0 ; n < mvNClass ; n++)
@@ -262,11 +260,11 @@ register uint k = theDeb ;
                 }
         }
 }
-void cMixtMultivariateNormal::SetParam(uint theDeb, cOTVector& theParam)
+void cMixtMultivariateNormal::SetParam(uint theDeb, cDVector& theParam)
 {
 register uint k = theDeb ;
         for (register uint n = 0 ; n < mvNClass ; n++)
-        {       mp[n][mvNMixt-1] = 1.0L ;
+        {       mp[n][mvNMixt-1] = 1.0 ;
                 for (register uint p = 0 ; p < mvNMixt ; p++)
                 {       for (register uint i = 0 ; i < mvDimObs ; i++)
                                 mMean[n][p][i] = theParam[k++] ;

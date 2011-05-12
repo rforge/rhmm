@@ -1,11 +1,10 @@
  ###############################################################
- #### RHmm version 1.4.7                              
+ #### RHmm version 1.5.0                             
  ####                                                         
  #### File: RHmm.R 
  ####                                                         
  #### Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr>
  #### Author: Sebastian BAUER <sebastian.bauer@charite.de>
- #### Date: 2011/04/07                                    
  ####                                                         
  ###############################################################
 
@@ -120,6 +119,15 @@ is_list_list_positive_definite <- function(x)
     return(TRUE)
 }
 
+MakeLabels <- function(nStates, labels="State")
+{
+    cNames <- NULL
+    for (i in 1:nStates)
+    {   cNames <- c(cNames, sprintf("%s %d", labels, i))
+    }
+    return(cNames)
+}
+
 univariateNormalSet <- function(mean, var, verif=TRUE)
 {   if (verif)
     {   if (!is_numeric_vector(mean))
@@ -175,43 +183,43 @@ discreteSet <- function(proba, labels=NULL, verif = TRUE)
 {   
     if (verif)
     {
-    	inhomogeneous.emissions <- is_list_numeric_matrix(proba)
+        inhomogeneous.emissions <- is_list_numeric_matrix(proba)
 
-    	#
-		# if proba is a list of vectors, then a list element correspond to the emission probability distribution given
-		# a hidden state (hence the vector of each element is as large as the number of emission states is, and the
-		# list contains as many elements as their are hidden states)
-		# 
-		# we also accept here that proba is a list of matrices. Each matrix describes the emission probabilities
-		# of a given time point. Rows indicate the given hidden state, while columns indicate the emission state.
-		#
-		if (!is_list_numeric_vector(proba) && !inhomogeneous.emissions)
+        #
+                # if proba is a list of vectors, then a list element correspond to the emission probability distribution given
+                # a hidden state (hence the vector of each element is as large as the number of emission states is, and the
+                # list contains as many elements as their are hidden states)
+                # 
+                # we also accept here that proba is a list of matrices. Each matrix describes the emission probabilities
+                # of a given time point. Rows indicate the given hidden state, while columns indicate the emission state.
+                #
+                if (!is_list_numeric_vector(proba) && !inhomogeneous.emissions)
             return("'proba' parameter for discrete distributions must be a list of vectors or a list of matrices.\n")
 
-		if (!inhomogeneous.emissions)
-		{
-        	nStates <- length(proba)
-	        nLevels <- length(proba[[1]])
-	        Aux <- as.integer(lapply(proba, length)) - nLevels
-	        if (sum(abs(Aux)) != 0)
-	            return("Each element of 'proba' must have the same length, which is the number of the different discrete observations.\n") 
-	        if (!is_list_proba_vector(proba) )
-	            return("The sum of each element of 'proba' must be equal to 1.\n")
-		} else
-		{
-        	nStates <- nrow(proba[[1]])
-        	nLevels <- ncol(proba[[1]])
-		}
+                if (!inhomogeneous.emissions)
+                {
+                nStates <- length(proba)
+                nLevels <- length(proba[[1]])
+                Aux <- as.integer(lapply(proba, length)) - nLevels
+                if (sum(abs(Aux)) != 0)
+                    return("Each element of 'proba' must have the same length, which is the number of the different discrete observations.\n") 
+                if (!is_list_proba_vector(proba) )
+                    return("The sum of each element of 'proba' must be equal to 1.\n")
+                } else
+                {
+                nStates <- nrow(proba[[1]])
+                nLevels <- ncol(proba[[1]])
+                }
     } else
     {
-    	if (!is.matrix(proba[[1]]))
-    	{
-			nStates <- length(proba)
-        	nLevels <- length(proba[[1]])
-        }	else
+        if (!is.matrix(proba[[1]]))
         {
-        	nStates <- nrow(proba[[1]])
-        	nLevels <- ncol(proba[[1]])
+                        nStates <- length(proba)
+                nLevels <- length(proba[[1]])
+        }       else
+        {
+                nStates <- nrow(proba[[1]])
+                nLevels <- ncol(proba[[1]])
         }
     }
     
@@ -225,19 +233,19 @@ discreteSet <- function(proba, labels=NULL, verif = TRUE)
     }
     else
     {
-        labels <- as.character(gl(nLevels, 1, labels="p"))
+        labels <- MakeLabels(nLevels, labels="p")
     }
     
     if (!is.matrix(proba[[1]]))
     {
-    	# setting names for list
-	    for (i in 1:nStates)
-    	    names(proba[[i]]) <- labels
-   	} else
-   	{
-   		for (i in 1:length(proba))
-   			names(proba[[i]]) <- labels
-   	}
+        # setting names for list
+            for (i in 1:nStates)
+            names(proba[[i]]) <- labels
+        } else
+        {
+                for (i in 1:length(proba))
+                        names(proba[[i]]) <- labels
+        }
 
     Res <- list(dis="DISCRETE", nStates=nStates, nLevels=nLevels, proba=proba, dimObs=1)
     class(Res) <- c("distributionClass", "discreteClass")
@@ -436,7 +444,7 @@ print.univariateNormalClass <- function(x, ...)
     Aux <- cbind(x$mean, x$var)
     Aux <- as.data.frame(Aux, row.names=" ")
     names(Aux) <- c("mean", "var")
-    rnames <- as.character(gl(x$nStates, 1, labels="State "))
+    rnames <- MakeLabels(x$nStates)
     rownames(Aux) <- rnames
     print.data.frame(Aux, quote=FALSE, right=TRUE)
 }
@@ -467,10 +475,10 @@ print.discreteClass <- function(x, ...)
     Aux <- matrix(nrow=x$nStates, ncol=x$nLevels)
     for (i in 1:x$nStates)
         Aux[i, ]<- t(proba[[i]])
-    rnames <- as.character(gl(x$nStates, 1, labels="State "))
+    rnames <- MakeLabels(x$nStates)
     Aux <- as.data.frame(Aux)
     if (is.null(names(proba[[1]])))
-        cnames <- as.character(gl(x$nLevels, 1, labels="p"))
+        cnames <- MakeLabels(x$nLevels, labels="p")
     else
         cnames <- names(proba[[1]])
             
@@ -480,7 +488,7 @@ print.discreteClass <- function(x, ...)
 }
 
 print.mixtureUnivariateNormalClass <- function(x, ...)
-{   rnames <- as.character(gl(x$nMixt, 1, labels="mixt. "))
+{   rnames <- MakeLabels(x$nMixt, labels="mixt. ")
     for (i in 1:x$nStates)
     {   cat(sprintf("  State %d\n", i), sep="")
         Aux <- matrix(c(x$mean[[i]], x$var[[i]], x$proportion[[i]]), ncol=3)
@@ -639,7 +647,7 @@ print.HMMClass <- function(x, ...)
     cat("\nInitial probabilities:\n", sep="")
     Aux <- t(x$initProb)
     Aux <- as.data.frame(Aux)
-    cnames <- as.character(gl(x$distribution$nStates, 1, labels="Pi"))
+    cnames <- MakeLabels(x$distribution$nStates, labels="Pi")
     names(Aux) <- cnames
     row.names(Aux) <- " "
     print.data.frame(Aux, quote=FALSE, right=TRUE)
@@ -648,7 +656,7 @@ print.HMMClass <- function(x, ...)
     print.mat<-function(mat)
     {
         Aux <- as.data.frame(mat)
-        cnames <- as.character(gl(x$distribution$nStates, 1, labels="State "))
+        cnames <- MakeLabels(x$distribution$nStates)
         names(Aux) <- cnames
         rownames(Aux) <- cnames
         print.data.frame(Aux, quote=FALSE, right=TRUE)
@@ -752,8 +760,8 @@ sim.mixtureMultivariateNormalClass <-  function(object, nSim, lastState)
 
 rdiscrete <- function(nSim, proba)
 {
-	nProba <- length(proba)
-	probaCum <- rep(0, nProba)
+        nProba <- length(proba)
+        probaCum <- rep(0, nProba)
     for (i in 1:nProba)
         probaCum[i] <- sum(proba[1:i])
     Aux <- runif(nSim)
@@ -784,25 +792,27 @@ sim.discreteClass <- function(object, nSim, lastState)
 {   
     value <- NULL
     
-	if (!is.matrix(object$proba[[1]]))
-	{
-	    for (i in 1:object$nStates)
-    	{
-        	value <- cbind(value, rdiscrete(nSim, object$proba[[i]]))
-    	}
-   	} else
-   	{
-   		for (j in 1:nSim)
-   		{
-   			row <- NULL
-   			for (i in 1:object$nStates)
-   			{
-   				row <- cbind(row, rdiscrete(1, object$proba[[((j-1)%%length(object$proba))+1]][i,]))
-   			}
-   			value <- rbind(value,row);
-   		}
-   	}
-   	
+        if (!is.matrix(object$proba[[1]]))
+        {
+            for (i in 1:object$nStates)
+        {
+                value <- cbind(value, rdiscrete(nSim, object$proba[[i]]))
+        }
+        } else
+        {
+                for (j in 1:nSim)
+                {
+                        row <- NULL
+                        for (i in 1:object$nStates)
+                        {
+                                row <- cbind(row, rdiscrete(1, object$proba[[((j-1)%%length(object$proba))+1]][i,]))
+                        }
+                        value <- rbind(value,row);
+                }
+        }
+        
+        print(value)
+
     return(value)
 }
 
@@ -871,10 +881,10 @@ sim.HMMClass <- function(object, nSim, lastState)
         if (!is.na(match("discreteClass", class(object$distribution))))
         {
             value <- as.factor(value)
-			if (!is.matrix(object$distribution$proba[[1]]))
-	            levels(value) <- names(object$distribution$proba[[1]])
+                        if (!is.matrix(object$distribution$proba[[1]]))
+                    levels(value) <- names(object$distribution$proba[[1]])
 
-			# FIXME: Also use labels for time-dependent emissions
+                        # FIXME: Also use labels for time-dependent emissions
         }
     }
     else

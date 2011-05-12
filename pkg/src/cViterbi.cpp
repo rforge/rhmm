@@ -1,11 +1,10 @@
 /**************************************************************
- *** RHmm version 1.4.7                                     
+ *** RHmm version 1.5.0
  ***                                                         
  *** File: cViterbi.cpp 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2011/04/07                                     
  ***                                                         
  **************************************************************/
 
@@ -47,14 +46,14 @@ double  myAux,
                 myAux1                                                  ;
 uint    myNSample = theInParam.mNSample ;
 
-cOTMatrix* myProbaCond = new cOTMatrix[myNSample] ;
+cDMatrix* myProbaCond = new cDMatrix[myNSample] ;
         for (register uint n = 0 ; n < myNSample ; n++)
         {       
         uint mySize = theInParam.mY[n].mSize/theInParam.mDimObs ;
                 myProbaCond[n].ReAlloc(theInParam.mNClass, mySize) ;
         }
 
-cOTVector* myDelta = new cOTVector[theInParam.mNClass] ; 
+cDVector* myDelta = new cDVector[theInParam.mNClass] ; 
 int** myPsi = new int*[theInParam.mNClass] ;
         theHMM.mDistrParam->ComputeCondProba(theInParam.mY, myNSample, myProbaCond) ;
         for (register uint n = 0 ; n < myNSample ; n++)

@@ -1,11 +1,10 @@
 /**************************************************************
- *** RHmm version 1.4.7                                     
+ *** RHmm version 1.5.0
  ***                                                         
  *** File: RHmm.cpp 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2011/04/07                                     
  ***                                                         
  **************************************************************/
 
@@ -80,7 +79,7 @@ uint myNbIterMaxInit ;
 
 uint myNbSample = length(theYt) ;
 
-cOTVector* myY = new cOTVector[myNbSample] ;
+cDVector* myY = new cDVector[myNbSample] ;
 
         for (register uint n = 0 ; n < myNbSample ; n++)
         {       
@@ -107,7 +106,7 @@ cHmmFit myParamSortie = cHmmFit(myParamEntree) ;
                 myRUtil.GetVectSexp(myAux1, 0, myHMM.mInitProba) ;
                 myRUtil.GetMatSexp(myAux1, 1, myHMM.mTransMatVector[0]) ; /* FIXME */
                 if (myHMM.mTransMatVector.size() > 1)
-                	warning("Time-inhomogeneous Markov chain not supported yet for BaumWelch algorithm.");
+                        warning("Time-inhomogeneous Markov chain not supported yet for BaumWelch algorithm.");
 
                 SEXP myAux ;
                 myRUtil.GetValSexp(myAux1, 2, myAux) ; // $distribution
@@ -143,7 +142,7 @@ cHmmFit myParamSortie = cHmmFit(myParamEntree) ;
                                 myRUtil.GetEmissionSexp(myAux, 3, myParam->mProbaMatVector);
 
                                 if (myParam->mProbaMatVector.size() > 1)
-                                	warning("Variable discrete emission probabilities not supported yet for BaumWelch algorithm.");
+                                        warning("Variable discrete emission probabilities not supported yet for BaumWelch algorithm.");
                         }
                         break ;
                 }
@@ -207,7 +206,7 @@ SEXP myRes,
                 break ;
                 case eDiscreteDistr :
                 {       cDiscrete *myParam = dynamic_cast<cDiscrete *>(myParamSortie.mDistrParam) ;
-                		myRUtil.SetListVectSexp(myParam->mProbaMatVector[0], myAux[2]); // TODO: Do it for the real list
+                                myRUtil.SetListVectSexp(myParam->mProbaMatVector[0], myAux[2]); // TODO: Do it for the real list
                 }
                 break ;
                 case eMixtUniNormalDistr :
@@ -322,7 +321,7 @@ char *myStr = (char *)myString ;
 uint    myNbSample = length(theYt) ;    
 uint*   myT = new uint[myNbSample]      ;
 //double        **myY   ;
-cOTVector* myY = new cOTVector[myNbSample] ;
+cDVector* myY = new cDVector[myNbSample] ;
 for (register uint n = 0 ; n < myNbSample ; n++)
         {       SEXP myAux ;
                 myRUtil.GetValSexp(theYt, n, myAux) ;
@@ -366,7 +365,7 @@ cHmm    myHMM = cHmm(myDistrType, myNbClasses, myDimObs, myNbMixt, myNbProba) ;
 
                 case eDiscreteDistr :
                 {       cDiscrete *myParam = (cDiscrete *)(myHMM.mDistrParam) ;
-                		myRUtil.GetEmissionSexp(myDistSEXP, 3, myParam->mProbaMatVector);
+                                myRUtil.GetEmissionSexp(myDistSEXP, 3, myParam->mProbaMatVector);
 
                 }
                 break ;
@@ -444,7 +443,7 @@ char *myStr = (char *)myString ;
 uint    myNbSample = length(theYt) ;    
 uint*   myT = new uint[myNbSample] ;
 
-cOTVector* myY = new cOTVector[myNbSample] ;
+cDVector* myY = new cDVector[myNbSample] ;
 
 
         for (register uint n = 0 ; n < myNbSample ; n++)
@@ -490,7 +489,7 @@ cHmm myHMM = cHmm(myDistrType, myNbClasses, myDimObs, myNbMixt, myNbProba) ;
 
                 case eDiscreteDistr :
                 {       cDiscrete *myParam = (cDiscrete *)(myHMM.mDistrParam) ;
-                		myRUtil.GetEmissionSexp(myDistSEXP, 3, myParam->mProbaMatVector);
+                                myRUtil.GetEmissionSexp(myDistSEXP, 3, myParam->mProbaMatVector);
                 }
                 break ;
                 case eUnknownDistr :
@@ -498,7 +497,7 @@ cHmm myHMM = cHmm(myDistrType, myNbClasses, myDimObs, myNbMixt, myNbProba) ;
                 break ;
         }
 
-cOTMatrix* myProbaCond = new cOTMatrix[myNbSample] ;
+cDMatrix* myProbaCond = new cDMatrix[myNbSample] ;
 
         for (register uint n = 0 ; n < myNbSample ; n++)
                 myProbaCond[n].ReAlloc(myNbClasses, myT[n]) ;
@@ -512,7 +511,7 @@ cBaumWelch myBaumWelch=cBaumWelch(myNbSample, myT, myNbClasses) ;
         {       for (register uint t = 0 ; t < myT[n] ; t++)
                         for (register uint j = 0 ; j < myNbClasses ; j++)
                                 myBaumWelch.mAlpha[n][j][t] *= myBaumWelch.mRho[n][t] ; 
-                double myScale = 1.0L ;
+                double myScale = 1.0 ;
                 for (register int t = (int)myT[n]-1 ; t >= 0 ; t--)
                 {       myScale *= myBaumWelch.mRho[n][t] ;
                         for (register uint j = 0 ; j < myNbClasses ; j++)
@@ -602,7 +601,7 @@ char *myStr = (char *)myString ;
 uint    myNbSample = length(theYt) ;    
 uint*   myT = new uint[myNbSample] ;
 
-cOTVector* myY = new cOTVector[myNbSample] ;
+cDVector* myY = new cDVector[myNbSample] ;
 
 
         for (register uint n = 0 ; n < myNbSample ; n++)
@@ -648,7 +647,7 @@ cHmm myHMM = cHmm(myDistrType, myNbClasses, myDimObs, myNbMixt, myNbProba) ;
 
                 case eDiscreteDistr :
                 {       cDiscrete *myParam = (cDiscrete *)(myHMM.mDistrParam) ;
-                		myRUtil.GetEmissionSexp(myDistSEXP, 3, myParam->mProbaMatVector);
+                                myRUtil.GetEmissionSexp(myDistSEXP, 3, myParam->mProbaMatVector);
                 }
                 break ;
                 case eUnknownDistr :
@@ -656,7 +655,7 @@ cHmm myHMM = cHmm(myDistrType, myNbClasses, myDimObs, myNbMixt, myNbProba) ;
                 break ;
         }
 
-cOTMatrix* myProbaCond = new cOTMatrix[myNbSample] ;
+cDMatrix* myProbaCond = new cDMatrix[myNbSample] ;
 
         for (register uint n = 0 ; n < myNbSample ; n++)
                 myProbaCond[n].ReAlloc(myNbClasses, myT[n]) ;

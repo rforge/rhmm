@@ -1,20 +1,19 @@
 /**************************************************************
- *** RHmm version 1.4.7                                     
+ *** RHmm version 1.5.0
  ***                                                         
  *** File: Kmeans.cpp 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2011/04/07                                     
  ***                                                         
  **************************************************************/
 
 #include "StdAfxRHmm.h"
 
 #ifndef _RDLL_
-void mkmeans(cOTVector& theYt, uint theNClass, int* theSeq)
+void mkmeans(cDVector& theYt, uint theNClass, int* theSeq)
 { 
-cOTVector myKmeans(theNClass) ;
+cDVector myKmeans(theNClass) ;
 uint myT = theYt.mSize ;
 double myMoy = 0.0,
          myVar = 0.0 ;
@@ -75,12 +74,12 @@ int myIter = 0 ;
 }
 
 
-void mkmeans(cOTVector& theYt, uint theNClass, uint theDimObs, int* theSeq)
+void mkmeans(cDVector& theYt, uint theNClass, uint theDimObs, int* theSeq)
 { 
 uint myT = (theYt.mSize/theDimObs) ;
-cOTMatrix myKmeans(theNClass, theDimObs) ;
+cDMatrix myKmeans(theNClass, theDimObs) ;
 
-cOTVector       myMoy(theDimObs),
+cDVector       myMoy(theDimObs),
                         myVar(theDimObs) ;
 
 register uint   i,
@@ -95,7 +94,7 @@ register uint   i,
 
 
 register uint k ;
-cOTVector myStDev(theDimObs)  ;
+cDVector myStDev(theDimObs)  ;
         for (register uint i = 0 ; i < theDimObs ; i++)
                 myStDev[i] = sqrt(myVar[i]) ;
 

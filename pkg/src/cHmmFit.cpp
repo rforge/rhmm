@@ -1,11 +1,10 @@
 /**************************************************************
- *** RHmm version 1.4.7                                     
+ *** RHmm version 1.5.0
  ***                                                         
  *** File: cHmmFit.cpp 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2011/04/07                                     
  ***                                                         
  **************************************************************/
 
@@ -46,7 +45,7 @@ register uint   i,
                                 n                               ;
 uint                    myT = 0                 ;
 
-cOTMatrix*      myProbaCond = new cOTMatrix[theInParam.mNSample] ; 
+cDMatrix*      myProbaCond = new cDMatrix[theInParam.mNSample] ; 
         
         for (n = 0 ; n < theInParam.mNSample ; n++)
         {       
@@ -133,7 +132,7 @@ void cHmmFit::BaumWelchAlgoInit(cBaumWelchInParam &theInParam)
                         myT += theInParam.mY[k].mSize  ;
         myT /= theInParam.mDimObs ;
         int* mySeq = new int[myT] ;
-        cOTVector myY(myT*theInParam.mDimObs) ;
+        cDVector myY(myT*theInParam.mDimObs) ;
         register uint   t = 0,
                                         i ;
                 for (k = 0 ; k < theInParam.mNSample ; k++)
@@ -143,7 +142,7 @@ void cHmmFit::BaumWelchAlgoInit(cBaumWelchInParam &theInParam)
                 }
 //              register uint j ;
                 
-        double myInitValue = 1.0L/(double)(theInParam.mNClass) ;
+        double myInitValue = 1.0/(double)(theInParam.mNClass) ;
         for (int ii = 0 ; i < this->mTransMatVector.size() ; i++)
                         mTransMatVector[i] = myInitValue ;
                 
@@ -187,7 +186,7 @@ register uint   t                                                               
                 {       mySum = 0.0 ;
                         for (j = 0 ; j < myParamEntree.mNClass ; j++)
                         {
-                        		myHMMFitCour.mTransMatVector[0][i][j] = unif_rand() ; // FIXME
+                                        myHMMFitCour.mTransMatVector[0][i][j] = unif_rand() ; // FIXME
                                 mySum += myHMMFitCour.mTransMatVector[0][i][j] ;
                         }
                         for (j = 0 ; j < myParamEntree.mNClass ; j++)
@@ -215,7 +214,7 @@ register uint   t                                                               
 }
 
 
-double cHmmFit::ComputeLLH(cBaumWelchInParam &theInParam, cOTMatrix* theProbaCond)
+double cHmmFit::ComputeLLH(cBaumWelchInParam &theInParam, cDMatrix* theProbaCond)
 {
         mDistrParam->ComputeCondProba(theInParam.mY, theInParam.mNSample, theProbaCond) ;
         ForwardBackward(theProbaCond, *this) ;
@@ -225,14 +224,14 @@ double  myLLH = 0.0 ;
         return myLLH ;
 }
 
-void cHmmFit::ComputeFunction(cBaumWelchInParam &theInParam, cOTVector& theValFunct, cOTVector& theh, cOTMatrix* theProbaCond, double theDelta)
+void cHmmFit::ComputeFunction(cBaumWelchInParam &theInParam, cDVector& theValFunct, cDVector& theh, cDMatrix* theProbaCond, double theDelta)
 {
 uint myNParam = GetNParam() ;
-        theValFunct = 0.0L ;
+        theValFunct = 0.0 ;
         
-cOTVector myVectInit(myNParam) ;
+cDVector myVectInit(myNParam) ;
         GetParam(myVectInit) ;
-cOTVector myVectCour ; 
+cDVector myVectCour ; 
         for (register uint n = 0 ; n <  myNParam  ; n++)
         {       theh[n] = MAX(fabs(myVectInit[n])*theDelta, theDelta*theDelta) ;
                 myVectCour = myVectInit ;
@@ -243,14 +242,14 @@ cOTVector myVectCour ;
 
 }
 
-void cHmmFit::ComputeFunction(cBaumWelchInParam &theInParam, cOTMatrix& theValFunct, cOTVector& theh, cOTMatrix* theProbaCond, double theDelta)
+void cHmmFit::ComputeFunction(cBaumWelchInParam &theInParam, cDMatrix& theValFunct, cDVector& theh, cDMatrix* theProbaCond, double theDelta)
 {
 uint myNParam = GetNParam() ;
-        theValFunct = 0.0L ;
+        theValFunct = 0.0 ;
         
-cOTVector myVectInit(myNParam) ;
+cDVector myVectInit(myNParam) ;
         GetParam(myVectInit) ;
-cOTVector myVectCour ; 
+cDVector myVectCour ; 
         for (register uint n = 0 ; n <  myNParam  ; n++)        
                         theh[n] = MAX(fabs(myVectInit[n])*theDelta, theDelta*theDelta) ;
         for (register uint n = 0 ; n < myNParam ; n++)
@@ -266,18 +265,18 @@ cOTVector myVectCour ;
 
 
 
-void cHmmFit::ComputeGradient(cBaumWelchInParam &theInParam, cOTVector& theGrad, double theDelta)
+void cHmmFit::ComputeGradient(cBaumWelchInParam &theInParam, cDVector& theGrad, double theDelta)
 {
 uint myNParam = GetNParam() ;
         theGrad.ReAlloc(myNParam) ;
-cOTMatrix* myProbaCond = new cOTMatrix[theInParam.mNSample] ; 
+cDMatrix* myProbaCond = new cDMatrix[theInParam.mNSample] ; 
         
         for (register uint n = 0 ; n < theInParam.mNSample ; n++)
                 myProbaCond[n].ReAlloc(theInParam.mNClass, theInParam.mY[n].mSize) ;
         
 double myLLHInit = ComputeLLH(theInParam, myProbaCond) ;
         theGrad = myLLHInit ;
-cOTVector       myValFunct(myNParam),
+cDVector       myValFunct(myNParam),
                         myh(myNParam) ;
         ComputeFunction(theInParam, myValFunct, myh, myProbaCond, theDelta) ;
         for (register uint n = 0 ; n < myNParam ; n++)
@@ -289,20 +288,20 @@ cOTVector       myValFunct(myNParam),
 }
 
 
-void cHmmFit::ComputeHessian(cBaumWelchInParam &theInParam, cOTMatrix& theHess, double theDelta)
+void cHmmFit::ComputeHessian(cBaumWelchInParam &theInParam, cDMatrix& theHess, double theDelta)
 {
 uint myNParam = GetNParam() ;
         theHess.ReAlloc(myNParam, myNParam) ;
-cOTMatrix* myProbaCond = new cOTMatrix[theInParam.mNSample] ; 
+cDMatrix* myProbaCond = new cDMatrix[theInParam.mNSample] ; 
         
         for (register uint n = 0 ; n < theInParam.mNSample ; n++)
                 myProbaCond[n].ReAlloc(theInParam.mNClass, theInParam.mY[n].mSize) ;
         
 double myLLHInit = ComputeLLH(theInParam, myProbaCond) ;
-cOTVector       myValFunctGrad(myNParam),
+cDVector       myValFunctGrad(myNParam),
                         myh(myNParam) ;
         ComputeFunction(theInParam, myValFunctGrad, myh, myProbaCond, theDelta) ;
-cOTMatrix myValFuncthess(myNParam, myNParam) ;
+cDMatrix myValFuncthess(myNParam, myNParam) ;
         ComputeFunction(theInParam, myValFuncthess, myh, myProbaCond, theDelta) ;
         for (register uint n = 0 ; n < myNParam ; n++)
                 for (register uint p = n ; p < myNParam ; p++)

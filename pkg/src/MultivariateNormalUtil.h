@@ -1,11 +1,10 @@
 /**************************************************************
- *** RHmm version 1.4.7                                     
+ *** RHmm version 1.5.0
  ***                                                         
  *** File: MultivariateNormalUtil.h 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2011/04/07                                     
  ***                                                         
  **************************************************************/
 
@@ -32,16 +31,10 @@
         typedef unsigned int uint ;
 #endif //int
 
-void SymetricInverseAndDet      (       cOTMatrix&      theMat,
-                                    double&         theDet,
-                                    cOTMatrix&      theInvMat
-                                ) ;
+void SymetricInverseAndDet(cDMatrix& theMat, double& theDet, cDMatrix& theInvMat) ;
 
-void MultivariateNormalDensity  (   cOTVector&      thex,
-                                                                        cOTVector&      theMu,
-                                    cOTMatrix&      theInvCov,
-                                    double          theDet,
-                                    double*         theDens
-                                ) ;
+void MultivariateNormalDensity(cDVector& thex, cDVector& theMu, cDMatrix& theInvCov, double theDet, double* theDens) ;
+
+void MultivariateNormalDensity(cDVector& thex, cDVector& theMu, cDMatrix& theInvCov, double theDet, cDVector& theDens) ;
 
 #endif //_MULTIVARIATENORMALUTIL_H_

@@ -1,11 +1,10 @@
 /**************************************************************
- *** RHmm version 1.4.7                                     
+ *** RHmm version 1.5.0
  ***                                                         
  *** File: cViterbi.h 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2011/04/07                                     
  ***                                                         
  **************************************************************/
 
@@ -19,7 +18,7 @@
 class cViterbi
 {       public :
                 uint            **mSeq          ;
-                cOTVector       mLogProb        ;
+                cDVector       mLogProb        ;
         public :
                 cViterbi(cInParam &theInParam) ;
                 ~cViterbi() ;

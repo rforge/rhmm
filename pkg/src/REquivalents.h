@@ -1,11 +1,10 @@
 /**************************************************************
- *** RHmm version 1.4.7                                     
+ *** RHmm version 1.5.0
  ***                                                         
  *** File: REquivalents.h 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2011/04/07                                     
  ***                                                         
  **************************************************************/
 
@@ -33,6 +32,6 @@ inline void GetRNGstate(void) { std::srand( (unsigned)time( NULL ) ); }
 inline double unif_rand(void) { return (double)std::rand()/(double)RAND_MAX ; }
 inline void PutRNGstate(void){}
 
-#endif _RDLL_
+#endif //_RDLL_
 
 #endif //_REQUIVALENTS_H_

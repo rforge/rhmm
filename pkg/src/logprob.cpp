@@ -1,11 +1,10 @@
 /**************************************************************
- *** RHmm version 1.4.7                                     
+ *** RHmm version 1.5.0
  ***                                                         
  *** File: logprob.cpp 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2011/04/07                                     
  ***                                                         
  **************************************************************/
 
@@ -14,14 +13,14 @@
 double eexp(const double theX)
 {
         if (theX <= LOGZERO)
-                return(0.0L) ;
+                return(0.0) ;
         else
                 return(exp(theX)) ;
 }
 
 double eln(const double theX)
 {
-        if (theX > 0.0L)
+        if (theX > 0.0)
                 return(log(theX)) ;
         else
                 return(LOGZERO) ;
@@ -40,9 +39,9 @@ double  myeLnX = eln(theX),
         }
         else
         {       if (myeLnX > myeLnY) 
-                        return(myeLnX + eln(1.0L+exp(myeLnY-myeLnX))) ;
+                        return(myeLnX + eln(1.0+exp(myeLnY-myeLnX))) ;
                 else
-                        return(myeLnY + eln(1.0L+exp(myeLnX-myeLnY))) ;
+                        return(myeLnY + eln(1.0+exp(myeLnX-myeLnY))) ;
         }
 }
 
@@ -57,7 +56,7 @@ double  myeLnX = MAX(theeLnX, theeLnY),
         if (myeLnY <= LOGZERO)
                 return(myeLnX) ;
         else
-                return(myeLnX + eln(1.0L+exp(myeLnY-myeLnX))) ;
+                return(myeLnX + eln(1.0+exp(myeLnY-myeLnX))) ;
 }
 
 

@@ -1,11 +1,10 @@
 /**************************************************************
- *** RHmm version 1.4.7                                     
+ *** RHmm version 1.5.0
  ***                                                         
  *** File: Kmeans.h 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>
- *** Date: 2011/04/07                                     
  ***                                                         
  **************************************************************/
 
@@ -22,8 +21,8 @@
 #endif //uint
 
 
-void mkmeans(cOTVector& theYt, uint theNClass, int* theSeq) ;
-void mkmeans(cOTVector& theYt, uint theNClass, uint theDimObs, int* theSeq) ;
+void mkmeans(cDVector& theYt, uint theNClass, int* theSeq) ;
+void mkmeans(cDVector& theYt, uint theNClass, uint theDimObs, int* theSeq) ;
 
 #endif //_RDLL_
 
