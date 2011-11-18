@@ -1,7 +1,7 @@
 /**************************************************************
- *** RHmm version 1.5.0
+ *** RHmm package
  ***                                                         
- *** File: logprob.cpp 
+ *** File: LogProb.cpp 
  ***                                                         
  *** Author: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr> 
  *** Author: Sebastian BAUER <sebastian.bauer@charite.de>

@@ -1,6 +1,6 @@
 Package: RHmm
-Version: 1.5.0
-Date: 2011-05-12
+Version: 1.5.1
+Date: 2011-11-17
 Title: Hidden Markov Models simulations and estimations
 Author: Ollivier TARAMASCO, Sebastian Bauer
 Maintainer: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr>, Sebastian
