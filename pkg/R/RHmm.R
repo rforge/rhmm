@@ -1384,7 +1384,7 @@ forwardBackward<-function(HMM, obs)
     HMM <- setStorageMode(HMM)
     maListe <- TransfListe(HMM$distribution, obs)
 
-    Res1 <- .Call("RLogforwardbackward", HMM, maListe$Zt)
+    Res1 <- .Call("Rforwardbackward", HMM, maListe$Zt)
     names(Res1) <- c("Alpha", "Beta", "Gamma", "Xsi", "Rho", "LLH")
     if (!is.list(obs))
     {   Res1$Alpha <- t(Res1$Alpha[[1]])
