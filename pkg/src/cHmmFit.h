@@ -20,6 +20,7 @@
 class cHmmFit : public cBaumWelch, public cHmm
 {       public :        
                 double  mBic    ;
+				double	mAic	;
                 uint    mNIter  ;
                 double  mTol    ;
                 double  mLLH    ;

@@ -1305,6 +1305,7 @@ summary.HMMFitClass <-function (object, ...)
     ans$model <- Model
     ans$LLH = object$LLH
     ans$BIC <- object$BIC
+    ans$AIC <- object$AIC
     if (is.null(object$asymptCov))
     {   cat(sprintf("Computing the asymptotic covariance matrix of estimates\n"))
         object$asymptCov <- asymptoticCovMat(object, object$obs)
@@ -1356,6 +1357,9 @@ print.summary.HMMFitClass <- function(x, ...)
 
     cat("BIC Criterion: ",
         format(round(x$BIC, 2)), "\n")
+
+    cat("AIC Criterion: ",
+        format(round(x$AIC, 2)), "\n")
 
     # Return Value:
 #    cat("\n")

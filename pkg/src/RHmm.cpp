@@ -156,36 +156,7 @@ cHmmFit myParamSortie = cHmmFit(myParamEntree) ;
                 myY[n].Delete() ;
         delete[] myY ;
 
-/*
-#ifdef _DEBOGAGE_
-SEXP myRes1 ;
-SEXP myAux1[6] ;
-uint ourNProtect = 0 ;
-        MESS("JE SUIS ICI 1\n") 
-        myParamSortie.Print() ;
-        SETVECTSEXP(myParamSortie.mInitProba, myAux1[0]) ;      
-        SETMATSEXP(myParamSortie.mTransMat, myAux1[1]) ;
-cDiscrete *myParam = dynamic_cast<cDiscrete *>(myParamSortie.mDistrParam) ;
-        if (myParam == NULL)
-                cOTError("Probleme de casting") ;
-        else
-                MESS("cDiscrete Fait\n") ;
-        SETLISTVECTSEXP(myParam->mProba, myNbClasses, myAux1[2]) ;
-        PROTECT(myAux1[5] = allocVector(REALSXP, 4)) ;
-        REAL(myAux1[5])[0] = myParamSortie.mLLH ;
-        REAL(myAux1[5])[1] = myParamSortie.mBic ;
-        REAL(myAux1[5])[2] = (double)( myParamSortie.mNIter) ;
-        REAL(myAux1[5])[3] =  myParamSortie.mTol ;
-        PROTECT(myRes1 = allocVector(VECSXP, 4)) ;
-        for (register uint i = 0 ; i < 3 ; i++)
-                SET_VECTOR_ELT(myRes1, i, myAux1[i]) ;
-        SET_VECTOR_ELT(myRes1, 3, myAux1[5]) ;
-        MESS("JE SUIS ICI 2\n") 
-        UNPROTECT(2 + ourNProtect) ;
-        MESS("JE SUIS ICI 3\n") 
-        return(myRes1);
-#endif //DEBOGAGE_
-*/
+
 SEXP myRes,
          myAux[6]       ;
 
@@ -228,11 +199,12 @@ myRUtil.SetVectSexp(myParamSortie.mInitProba, myAux[0]) ;
                 break ;
         }
 
-		PROTECT(myAux[5] = allocVector(REALSXP, 4)) ;
+		PROTECT(myAux[5] = allocVector(REALSXP, 5)) ;
         REAL(myAux[5])[0] = myParamSortie.mLLH ;
         REAL(myAux[5])[1] = myParamSortie.mBic ;
         REAL(myAux[5])[2] = (double)( myParamSortie.mNIter) ;
         REAL(myAux[5])[3] =  myParamSortie.mTol ;
+		REAL(myAux[5])[4] = myParamSortie.mAic ;
 
 	uint myNAlloc ;
         switch (myDistrType)
@@ -407,16 +379,14 @@ SEXP myAux[2] ;
 END_EXTERN_C
 
 BEG_EXTERN_C
-DECL_DLL_EXPORT SEXP Rforwardbackward   (       SEXP theHMM, 
-                                                                                        SEXP theYt
-                                                                                )
+DECL_DLL_EXPORT SEXP Rforwardbackward(SEXP theHMM, SEXP theYt)
 {
-distrDefinitionEnum             myDistrType     ;
-uint                                    myDimObs=1,
-                                                myNbClasses,
-                                                myNbProba=0,
-                                                myNbMixt=0      ;
-cRUtil                                  myRUtil                 ;
+distrDefinitionEnum myDistrType ;
+uint  myDimObs=1,
+      myNbClasses,
+      myNbProba=0,
+      myNbMixt=0 ;
+cRUtil myRUtil ;
 
 
 SEXP myDistSEXP ;
@@ -624,6 +594,22 @@ cDVector* myY = new cDVector[myNbSample] ;
 cHmm myHMM = cHmm(myDistrType, myNbClasses, myDimObs, myNbMixt, myNbProba) ;
         myRUtil.GetVectSexp(theHMM, fInitProba, myHMM.mInitProba) ;
         myRUtil.GetMatListSexp(theHMM, fTransMat, myHMM.mTransMatVector) ;
+
+#undef _DEBOGAGE_
+#ifdef _DEBOGAGE_
+        MESS("JE SUIS ICI 1\n") ;
+	uint myNRow = myHMM.mTransMatVector[0].GetNRows() ;
+	uint myNCol = myHMM.mTransMatVector[0].GetNCols() ;
+		for (register uint i = 0 ; i < myNRow ; i++)
+		{	for (register uint j = 0 ; j < myNCol ; j++)
+				Rprintf("%5.4f\t", myHMM.mTransMatVector[0][i][j]) ;
+			Rprintf("\n") ;
+		}
+        MESS("JE SUIS ICI 2\n") ;
+
+	
+#endif //DEBOGAGE_
+
 
         switch (myDistrType)
         {       case eNormalDistr :

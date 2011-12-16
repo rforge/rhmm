@@ -1050,7 +1050,7 @@ BaumWelch<-function(paramHMM, obs, paramAlgo)
     {   cat(sprintf("... Computing the asymptotic covariance matrix ...\n"))
         Res3 <- asymptoticCovMat(Res2, obs, paramAlgo$asymptMethod)
     }
-    Res <- list(HMM=Res2, LLH=Autres[1], BIC=Autres[2], nIter=as.integer(Autres[3]), relVariation=relVariation, convergence=convergence, asymptCov=Res3, obs=obs)
+    Res <- list(HMM=Res2, LLH=Autres[1], BIC=Autres[2], AIC=Autres[5], nIter=as.integer(Autres[3]), relVariation=relVariation, convergence=convergence, asymptCov=Res3, obs=obs)
 
     class(Res) <- "HMMFitClass"
     return(Res)
@@ -1363,6 +1363,7 @@ print.HMMFitClass <- function(x, ...)
    print(x$HMM, doNotAffiche=TRUE)
    cat("\nLog-likelihood: ",format(round(x$LLH, 2)), "\n", sep="")
    cat("BIC criterium: ",format(round(x$BIC, 2)), "\n", sep="")
+   cat("AIC criterium: ",format(round(x$AIC, 2)), "\n", sep="")
 }
 
 forwardBackward<-function(HMM, obs)
