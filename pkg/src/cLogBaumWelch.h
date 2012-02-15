@@ -13,7 +13,7 @@
 #pragma once
 #include "cInParam.h"
 #include "cHmm.h"
-#include "logprob.h"
+#include "LogProb.h"
 
 class cLogBaumWelch
 {       private :

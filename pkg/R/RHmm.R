@@ -1047,8 +1047,8 @@ BaumWelch<-function(paramHMM, obs, paramAlgo)
 
     Res3 <- NULL
     if ( (convergence) && (paramAlgo$asymptCov))
-    {   cat(sprintf("... Computing the asymptotic covariance matrix ...\n"))
-        Res3 <- asymptoticCovMat(Res2, obs, paramAlgo$asymptMethod)
+    {   #cat(sprintf("... Computing the asymptotic covariance matrix ...\n"))
+        Res3 <- asymptoticCov(Res2, obs)
     }
     Res <- list(HMM=Res2, LLH=Autres[1], BIC=Autres[2], AIC=Autres[5], nIter=as.integer(Autres[3]), relVariation=relVariation, convergence=convergence, asymptCov=Res3, obs=obs)
 
@@ -1056,7 +1056,7 @@ BaumWelch<-function(paramHMM, obs, paramAlgo)
     return(Res)
 }
 
-HMMFit <- function(obs, dis="NORMAL", nStates = 2, asymptCov=FALSE, asymptMethod=c('nlme', 'optim'), ... )
+HMMFit <- function(obs, dis="NORMAL", nStates = 2, asymptCov=FALSE, ... )
 {
     if (is.data.frame(obs))
     {   dimObs <- dim(obs)[2]
@@ -1132,7 +1132,7 @@ HMMFit <- function(obs, dis="NORMAL", nStates = 2, asymptCov=FALSE, asymptMethod
             if (is.list(args[[1]]))
             {   control <- args[[1]]
                 if (lextras != 2)
-                    Levels <- NULL # Pas de vecteur des niveaux entr�
+                    Levels <- NULL # Pas de vecteur des niveaux entres
                 else
                     Levels <- args[[2]]
             }
@@ -1286,15 +1286,8 @@ HMMFit <- function(obs, dis="NORMAL", nStates = 2, asymptCov=FALSE, asymptMethod
     {   stop('asymptCov must be a boolean (TRUE if the asymptotic covariance matrix must be computed)')
     }
 
-    if (is.null(asymptMethod))
-        asymptMethod <- 'nlme'
 
-     asymptMethod <- asymptMethod[1]
-
-    if (is.na(match(asymptMethod, c('nlme', 'optim'))))
-        stop("asymptMethod must be in 'nlme', 'optim'")
-
-    paramAlgo <- list(init=init, iter=iter, tol=tol, verbose=verbose, nInit=nInit, nIterInit=nIterInit, initPoint=initPoint, asymptCov=asymptCov, asymptMethod=asymptMethod[1])
+    paramAlgo <- list(init=init, iter=iter, tol=tol, verbose=verbose, nInit=nInit, nIterInit=nIterInit, initPoint=initPoint, asymptCov=asymptCov)
 
     class(paramAlgo) <- "paramAlgoBW"
     if (is.list(obs))
@@ -1366,7 +1359,7 @@ print.HMMFitClass <- function(x, ...)
    cat("AIC criterium: ",format(round(x$AIC, 2)), "\n", sep="")
 }
 
-forwardBackward<-function(HMM, obs)
+forwardBackward<-function(HMM, obs, logData = TRUE)
 {   if ( ( class(HMM) != "HMMFitClass" ) && (class(HMM) != "HMMClass") )
         stop("class(HMM) must be 'HMMClass' or 'HMMFitClass'\n")
     if (class(HMM) == "HMMFitClass")
@@ -1382,10 +1375,29 @@ forwardBackward<-function(HMM, obs)
             obs <- as.matrix(obs[,1:dimObs])
     }
 
+   if (is.list(obs))
+    {   Aux <- dim(obs[[1]])
+        if (is.null(Aux))
+        {    dimObs <- 1
+        }
+        else
+        {    dimObs <- Aux[2]
+        }
+        for (i in 1:length(obs))
+        {   if (is.data.frame(obs[[i]]))
+            {   if (dimObs > 1)
+                    obs[[i]] <- as.matrix(obs[[i]])
+                else
+                    obs[[i]] <- as.vector(obs[[i]])
+            }
+        }
+    }
+
     HMM <- setStorageMode(HMM)
     maListe <- TransfListe(HMM$distribution, obs)
-
-    Res1 <- .Call("Rforwardbackward", HMM, maListe$Zt)
+    logDataInt <- as.integer(1*logData)
+    storage.mode(logDataInt) <- "integer"
+    Res1 <- .Call("Rforwardbackward", HMM, maListe$Zt, logDataInt)
     names(Res1) <- c("Alpha", "Beta", "Gamma", "Xsi", "Rho", "LLH")
     if (!is.list(obs))
     {   Res1$Alpha <- t(Res1$Alpha[[1]])
@@ -1408,9 +1420,9 @@ forwardBackward<-function(HMM, obs)
     return(Res1)
 }
 
-forwardbackward<-function(HMM, obs)
+forwardbackward<-function(HMM, obs, logData=TRUE)
 {
-    return(forwardBackward(HMM, obs))
+    return(forwardBackward(HMM, obs, logData))
 }
 
 inc <- function(x)
