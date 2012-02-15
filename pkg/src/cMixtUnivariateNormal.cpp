@@ -68,10 +68,10 @@ void cMixtUnivariateNormal::ComputeCondProba(cDVector* theY, uint theNSample, cD
 
 void cMixtUnivariateNormal::ComputeDerivative(cDVector& theY, cDVector** theGrad, cDMatrix** theHess)
 {
-uint k = (mvNClass - 1)*(mvNClass + 1) ; // premier indice
 uint myT = theY.GetSize() ;
 	for (register uint t = 0 ; t < myT ; t++)
 	{
+	uint k = (mvNClass - 1)*(mvNClass + 1) ; // premier indice
 		for (register uint j = 0 ; j < mvNClass ; j++)
 		{	theGrad[j][t] = 0.0 ;
 			theHess[j][t] = 0.0 ;
