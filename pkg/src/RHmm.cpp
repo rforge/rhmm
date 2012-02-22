@@ -480,11 +480,8 @@ cBaumWelch myBaumWelch=cBaumWelch(myNbSample, myT, myNbClasses) ;
 	delete [] myProbaCond ;
 
 SEXP    myAux[7] ;
-uint*   myLigne = new uint[myNbSample] ;
 
 
-	for (register uint n = 0 ; n < myNbSample ; n++)
-		myLigne[n] = myNbClasses ;
 
 	myRUtil.SetListMatSexp(myBaumWelch.mAlpha, myNbSample,myAux[0]) ;
 	myRUtil.SetListMatSexp(myBaumWelch.mBeta, myNbSample, myAux[1]) ;
@@ -494,7 +491,6 @@ uint*   myLigne = new uint[myNbSample] ;
 	myRUtil.SetListVectSexp(myBaumWelch.mRho, myNbSample, myAux[5]) ;
 	myRUtil.SetListValSexp(myBaumWelch.mLogVrais, myAux[6]) ;
 
-	delete [] myLigne ;
 	delete [] myT ;
 SEXP myRes ;
 	PROTECT(myRes = allocVector(VECSXP, 7)) ;
