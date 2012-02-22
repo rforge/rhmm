@@ -30,6 +30,7 @@ cBaumWelch::cBaumWelch(uint theNSample, uint* theT, uint theNClass)
 	
 	mAlpha = new cDMatrix[mtNSample] ;
 	mBeta = new cDMatrix[mtNSample] ;
+	mDelta = new cDMatrix[mtNSample] ;
 	mGamma = new cDMatrix[mtNSample] ;
 	mXsi = new cDMatrix*[mtNSample] ;
 	mSumXsi = new cDMatrix[mtNSample] ;
@@ -37,6 +38,7 @@ cBaumWelch::cBaumWelch(uint theNSample, uint* theT, uint theNClass)
 	for (register uint n = 0 ; n < mtNSample ; n++)
 	{	mtT[n] = theT[n] ;
 		mAlpha[n].ReAlloc(theNClass, mtT[n]) ;
+		mDelta[n].ReAlloc(theNClass, mtT[n]) ;
 		mBeta[n].ReAlloc(theNClass, mtT[n]) ;
 		mGamma[n].ReAlloc(theNClass, mtT[n]) ;
 		mXsi[n] = new cDMatrix[mtT[n]] ;
@@ -54,6 +56,7 @@ cBaumWelch::cBaumWelch(const cInParam &theInParam)
 	{	mtT = NULL ;
 		mLogVrais.Delete() ;
 		mAlpha = NULL ;
+		mDelta = NULL ;
 		mBeta = NULL ;
 		mGamma = NULL ;
 		mXsi = NULL ;
@@ -65,6 +68,7 @@ cBaumWelch::cBaumWelch(const cInParam &theInParam)
 	
 	mAlpha = new cDMatrix[mtNSample] ;
 	mBeta = new cDMatrix[mtNSample] ;
+	mDelta = new cDMatrix[mtNSample] ;
 	mGamma = new cDMatrix[mtNSample] ;
 	mXsi = new cDMatrix*[mtNSample] ;
 	mSumXsi = new cDMatrix[mtNSample] ;
@@ -72,6 +76,7 @@ cBaumWelch::cBaumWelch(const cInParam &theInParam)
 	for (register uint n = 0 ; n < mtNSample ; n++)
 	{       mtT[n] = (theInParam.mY[n].mSize)/theInParam.mDimObs ;
 		mAlpha[n].ReAlloc(theInParam.mNClass, mtT[n]) ;
+		mDelta[n].ReAlloc(theInParam.mNClass, mtT[n]) ;
 		mBeta[n].ReAlloc(theInParam.mNClass, mtT[n]) ;
 		mGamma[n].ReAlloc(theInParam.mNClass, mtT[n]) ;
 		mXsi[n] = new cDMatrix[mtT[n]] ;
@@ -87,6 +92,7 @@ cBaumWelch::~cBaumWelch()
 	if (mtNSample > 0)
 	{	for (register uint n = 0 ; n < mtNSample ; n++)
 		{	mAlpha[n].Delete() ;
+			mDelta[n].Delete() ;
 			mBeta[n].Delete() ;
 			mGamma[n].Delete() ;
 			for (register uint t = 0 ; t < mtT[n] ; t++)
@@ -101,6 +107,7 @@ cBaumWelch::~cBaumWelch()
 		delete [] mSumXsi ;
 		delete [] mGamma ;
 		delete [] mBeta ;
+		delete [] mDelta ;
 		delete [] mAlpha ;
 	}
 }
@@ -122,8 +129,10 @@ double myLLH  ;
 			mRho[n][0] += mAlpha[n][i][0] ; 
 		}
 		for ( i = 0 ; i < myNClass ; i++)
-			mAlpha[n][i][0] /= mRho[n][0] ; // Normalisation
-	
+		{	mAlpha[n][i][0] /= mRho[n][0] ; // Normalisation
+			mDelta[n][i][0] = mAlpha[n][i][0] ;
+		}
+
 		myLLH = log(mRho[n][0]) ;
 
 	//forward
@@ -137,8 +146,10 @@ double myLLH  ;
 			mRho[n][t+1] += mAlpha[n][j][t+1] ;
 			}
 			for (j = 0 ; j < myNClass ; j++)
-				mAlpha[n][j][t+1] /= mRho[n][t+1] ;
-			
+			{	mAlpha[n][j][t+1] /= mRho[n][t+1] ;
+				mDelta[n][j][t+1] = mAlpha[n][j][t+1] ;
+			}
+
 			myLLH += log(mRho[n][t+1]) ;
 		}
 

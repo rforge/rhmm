@@ -26,6 +26,7 @@ class cBaumWelch
                         cDMatrix*   mGamma ;
                         cDMatrix**  mXsi ;
                         cDMatrix*   mSumXsi ;
+						cDMatrix*	mDelta ;
                         cDVector    mLogVrais ;
         public :
                 cBaumWelch(uint theNSample, uint* theT, uint theNClass) ;

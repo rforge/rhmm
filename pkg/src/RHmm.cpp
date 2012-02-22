@@ -479,7 +479,7 @@ cBaumWelch myBaumWelch=cBaumWelch(myNbSample, myT, myNbClasses) ;
 
 	delete [] myProbaCond ;
 
-SEXP    myAux[6] ;
+SEXP    myAux[7] ;
 uint*   myLigne = new uint[myNbSample] ;
 
 
@@ -488,16 +488,17 @@ uint*   myLigne = new uint[myNbSample] ;
 
 	myRUtil.SetListMatSexp(myBaumWelch.mAlpha, myNbSample,myAux[0]) ;
 	myRUtil.SetListMatSexp(myBaumWelch.mBeta, myNbSample, myAux[1]) ;
-	myRUtil.SetListMatSexp(myBaumWelch.mGamma, myNbSample, myAux[2]) ;
-	myRUtil.SetListListMatSexp(myBaumWelch.mXsi, myNbSample, myT, myAux[3]) ;
-	myRUtil.SetListVectSexp(myBaumWelch.mRho, myNbSample, myAux[4]) ;
-	myRUtil.SetListValSexp(myBaumWelch.mLogVrais, myAux[5]) ;
+	myRUtil.SetListMatSexp(myBaumWelch.mDelta, myNbSample, myAux[2]) ;
+	myRUtil.SetListMatSexp(myBaumWelch.mGamma, myNbSample, myAux[3]) ;
+	myRUtil.SetListListMatSexp(myBaumWelch.mXsi, myNbSample, myT, myAux[4]) ;
+	myRUtil.SetListVectSexp(myBaumWelch.mRho, myNbSample, myAux[5]) ;
+	myRUtil.SetListValSexp(myBaumWelch.mLogVrais, myAux[6]) ;
 
 	delete [] myLigne ;
 	delete [] myT ;
 SEXP myRes ;
-	PROTECT(myRes = allocVector(VECSXP, 6)) ;
-	for (register int i = 0 ; i < 6 ; i++)
+	PROTECT(myRes = allocVector(VECSXP, 7)) ;
+	for (register int i = 0 ; i < 7 ; i++)
 		SET_VECTOR_ELT(myRes, i, myAux[i]) ;
 	myRUtil.EndProtect() ;
 

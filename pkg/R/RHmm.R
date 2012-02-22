@@ -1396,10 +1396,11 @@ forwardBackward<-function(HMM, obs, logData = TRUE)
     logDataInt <- as.integer(1*logData)
     storage.mode(logDataInt) <- "integer"
     Res1 <- .Call("Rforwardbackward", HMM, maListe$Zt, logDataInt)
-    names(Res1) <- c("Alpha", "Beta", "Gamma", "Xsi", "Rho", "LLH")
+    names(Res1) <- c("Alpha", "Beta", "Delta", "Gamma", "Xsi", "Rho", "LLH")
     if (!is.list(obs))
     {   Res1$Alpha <- t(Res1$Alpha[[1]])
         Res1$Beta <- t(Res1$Beta[[1]])
+        Res1$Delta <- t(Res1$Delta[[1]])
         Res1$Gamma <- t(Res1$Gamma[[1]])
         Res1$Xsi <- Res1$Xsi[[1]]
         Res1$Xsi[[length(Res1$Xsi)]] <- NaN
@@ -1410,6 +1411,7 @@ forwardBackward<-function(HMM, obs, logData = TRUE)
     {   for (n in 1:length(obs))
         {   Res1$Alpha[[n]] <- t(Res1$Alpha[[n]])
             Res1$Beta[[n]] <- t(Res1$Beta[[n]])
+            Res1$Delta[[n]] <- t(Res1$Beta[[n]])
             Res1$Gamma[[n]] <- t(Res1$Gamma[[n]])
             Res1$Xsi[[n]][length(Res1$Xsi[[n]])] <- NaN
           }
