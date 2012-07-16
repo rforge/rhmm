@@ -53,18 +53,25 @@ void cDiscrete::Print()
 
 void cDiscrete::ComputeCondProba(cDVector* theY, uint theNSample, cDMatrix* theCondProba)
 {
-register uint   i,
-                                n,
-                                t       ;
+	uint   i, n, t;
 
-        for (n = 0 ; n < theNSample ; n++)
-        {
-                for (i = 0 ; i < mvNClass ; i++)
-                {
-                        for (t = 0 ; t < theY[n].mSize ; t++)
-                                theCondProba[n][i][t] = mProbaMatVector[t][i][(uint)theY[n][t]];
-                }
-        }
+	for (n = 0 ; n < theNSample ; n++)
+	{
+		for (i = 0 ; i < mvNClass ; i++)
+		{
+			for (t = 0 ; t < theY[n].mSize ; t++)
+            {
+				double y = theY[n][t];
+				double p;
+
+				/* Assign a probability of 0 for obviously non-existent states */
+				if (isnan(y) || y<0) { p = 0; }
+				else p = mProbaMatVector[t][i][(uint)y];
+
+				theCondProba[n][i][t] = p;
+            }
+		}
+	}
 }
 
 void cDiscrete::ComputeDerivative(cDVector& theY, cDVector** theGrad, cDMatrix** theHess)
