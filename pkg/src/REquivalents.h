@@ -25,13 +25,13 @@
     #define printf std::printf
     #define pow std::pow
     #define sqrt std::sqrt
-#endif __SUNPRO_CC
+#endif
 
 #define Rprintf printf
 inline void GetRNGstate(void) { std::srand( (unsigned)time( NULL ) ); }
 inline double unif_rand(void) { return (double)std::rand()/(double)RAND_MAX ; }
 inline void PutRNGstate(void){}
 
-#endif //_RDLL_
+#endif
 
-#endif //_REQUIVALENTS_H_
+#endif

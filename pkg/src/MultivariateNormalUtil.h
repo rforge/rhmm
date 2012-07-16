@@ -21,15 +21,15 @@
         #include <R.h>
         #include <Rinternals.h>
         #include <Rmath.h>
-#endif // _RDLL_
+#endif
 
 
 #ifndef SQRT_TWO_PI
         #define SQRT_TWO_PI     2.5066282746310002
-#endif //SQRT_TWO_PI
+#endif
 #ifndef uint
         typedef unsigned int uint ;
-#endif //int
+#endif
 
 extern void SymetricInverseAndDet(cDMatrix& theMat, double& theDet, cDMatrix& theInvMat) ;
 
@@ -45,4 +45,4 @@ extern void MultivariateNormalDensityDeriv(cDVector& thex, cDVector& theMu, cDMa
 
 extern void MultivariateNormalDensityDeriv(cDVector& thex, cDVector& theMu, cDMatrix& theCov, cDMatrix& theInvCov, double theDet, cDVector* theGrad, cDMatrix* theHess) ;
 
-#endif //_MULTIVARIATENORMALUTIL_H_
+#endif
