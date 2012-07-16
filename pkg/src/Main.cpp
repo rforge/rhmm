@@ -20,26 +20,38 @@ using namespace std;
 #define NB_SAMPLE 1
 #define NB_STATES 3
 #define NB_MIXT 3
+
 int main(void)
 {
-ifstream myFile ;
-cDVector* myRt = new cDVector[NB_SAMPLE] ;
-register uint n = 0 ;
-double myAux ;
-        myFile.open(FIC_NAME) ;
-        while (myFile)
-        {       myFile >> myAux ;               
-                n++ ;
-        }
-        n = (n-1)/(DIM_OBS*NB_SAMPLE) ;
-        myFile.close() ;
-        for (register uint j = 0 ; j < NB_SAMPLE ; j++)
-                myRt[j].ReAlloc(DIM_OBS*n) ;
-        std::fstream myFile1(FIC_NAME) ;
-        for (register uint i = 0 ; i < NB_SAMPLE ; i++)
-                for (register uint j = 0 ; j < n  ; j++)
-                        for (register uint k = 0 ; k < DIM_OBS ; k++)
-                                myFile1 >> myRt[i][j + k*n]  ;
+	ifstream myFile ;
+	cDVector* myRt = new cDVector[NB_SAMPLE] ;
+	uint n = 0 ;
+	double myAux ;
+
+	myFile.open(FIC_NAME);
+
+	if (myFile.fail())
+	{
+		std::cerr << "Unable to open " << FIC_NAME << std::endl;
+		return 1;
+	}
+
+	while (myFile)
+	{
+		myFile >> myAux ;
+		n++ ;
+	}
+    n = (n-1)/(DIM_OBS*NB_SAMPLE) ;
+    myFile.close() ;
+
+    for (uint j = 0 ; j < NB_SAMPLE ; j++)
+    	myRt[j].ReAlloc(DIM_OBS*n) ;
+
+    std::fstream myFile1(FIC_NAME) ;
+    for (register uint i = 0 ; i < NB_SAMPLE ; i++)
+    	for (register uint j = 0 ; j < n  ; j++)
+    		for (register uint k = 0 ; k < DIM_OBS ; k++)
+    			myFile1 >> myRt[i][j + k*n]  ;
         
 //      myRt[1] = myRt[0] ;
         myFile1.close() ;
