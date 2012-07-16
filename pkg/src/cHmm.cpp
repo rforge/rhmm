@@ -113,7 +113,7 @@ register uint   i, j, k;
 
         for (k = 0 ; k < mTransMatVector.size(); k++)
         {
-                Rprintf("\nMatrice de transition %u: \n", k) ;
+                Rprintf("\nTransition Matrix %u: \n", k) ;
 
                 for (i = 0 ; i < mInitProba.mSize ; i++)
                 {
