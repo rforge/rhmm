@@ -3,7 +3,8 @@ Version: 2.0.2
 Date: 2012-09-09
 Title: Hidden Markov Models simulations and estimations
 Author: Ollivier TARAMASCO, Sebastian Bauer
-Maintainer: Ollivier TARAMASCO <Ollivier.Taramasco@imag.frDepends: R (>= 2.10.0), MASS, nlme
+Maintainer: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr>
+Depends: R (>= 2.10.0), MASS, nlme
 Description: Discrete, univariate or multivariate gaussian, mixture of
         univariate or multivariate gaussian HMM functions for
         simulation and estimation.
