@@ -251,6 +251,7 @@ char *myStr = (char *)myString ;
 			myDistrType = eNormalDistr ;
 		else
 			myDistrType = eMultiNormalDistr ;
+		Rprintf("DimObs=%d\n", myDimObs) ;
 	}
 	else
 	{	if (strcmp(myStr, "DISCRETE") == 0)
@@ -270,7 +271,9 @@ char *myStr = (char *)myString ;
 	}
 uint    myNbSample = length(theYt) ;    
 uint*   myT = new uint[myNbSample]      ;
-//double        **myY   ;
+
+	Rprintf("ICI 1\n") ;
+	Rprintf("NSample=%d\n", myNbSample) ;
 cDVector* myY = new cDVector[myNbSample] ;
 	for (register uint n = 0 ; n < myNbSample ; n++)
 	{
@@ -280,6 +283,7 @@ cDVector* myY = new cDVector[myNbSample] ;
 		myY[n].ReAlloc(myT[n]*myDimObs) ;
 		myY[n]= REAL(myAux) ;
 	}
+	Rprintf("ICI 2\n") ;
 
 cHmm myHMM = cHmm(myDistrType, myNbClasses, myDimObs, myNbMixt, myNbProba) ;
 
@@ -337,18 +341,23 @@ cInParam myParamEntree(myNbSample, myDimObs, myY) ;
 	myParamEntree.mDistrType = myDistrType ;
 cViterbi myViterbi = cViterbi(myParamEntree) ;
 	myViterbi.ViterbiPath(myParamEntree, myHMM) ;
+		Rprintf("ICI 3\n") ;
 
 SEXP myAux[2] ;
 	myRUtil.SetListVectSexp(myViterbi.mSeq, myNbSample, myT, myAux[0]) ;
 	myRUtil.SetListValSexp(myViterbi.mLogProb, myAux[1]) ;
+		Rprintf("ICI 4\n") ;
 
 	SEXP myRes ;
 	PROTECT(myRes = allocVector(VECSXP, 2)) ;
 	for (register uint i = 0 ; i < 2 ; i++)
 		SET_VECTOR_ELT(myRes, i, myAux[i]) ;
+		Rprintf("ICI 5\n") ;
 	myRUtil.EndProtect() ;
 	UNPROTECT(1) ;
+		Rprintf("ICI 6\n") ;
 	return(myRes) ;
+	Rprintf("ICI 7\n") ;
 }
 END_EXTERN_C
 

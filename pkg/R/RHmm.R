@@ -1453,6 +1453,23 @@ viterbi<-function(HMM, obs)
         else
             obs <- as.matrix(obs[,1:dimObs])
     }
+    
+    if (is.list(obs))
+    {   nList <- length(obs)
+        obs1 <- rep(list(NULL), nList)
+        for (i in 1:nList)
+        {   obs2 <- obs[[i]]
+            if (is.data.frame(obs2))
+            {   dimObs <- dim(obs2)[2]
+                if (dimObs == 1)
+                    obs2 <- obs2[,1]
+                else
+                    obs2 <- as.matrix(obs2[,1:dimObs])
+            }
+            obs1[[i]] <- obs2
+        }
+        obs <- obs1
+    }
 
     maListe <- TransfListe(HMM$distribution, obs)
     HMM <- setStorageMode(HMM)
@@ -1691,10 +1708,10 @@ plotSerie.distributionClass <- function(object, vit, obs, color="black", ...)
 
 
 
-HMMPlotSerie <- function(obs, states, dates = NULL, dis = "NORMAL", color="green")
+HMMPlotSerie <- function(obs, states, dates = NULL, dis = "NORMAL", color="green", oneFig=FALSE)
 {
     if ( (class(states) !="viterbiClass") && (!is_numeric_vector(states)) && (!is_list_numeric_vector(states)))
-        stop("vit must be a viterbiClass object, a numeric vector or a list of numeric vector.\n")
+        stop("states must be a viterbiClass object, a numeric vector or a list of numeric vector.\n")
     if (class(states) == "viterbiClass")
         states <- states$states
 
@@ -1746,36 +1763,73 @@ HMMPlotSerie <- function(obs, states, dates = NULL, dis = "NORMAL", color="green
         }
     }
     #x11()
-    nScreens <- floor(nStates/3)
-    if (nScreens * 3 - nStates != 0)
-    {   nScreens <- nScreens+1
-    }
-    k<-1
     if (is.null(dates))
     {   xx <- seq(1,length(Aux))
     }
     else
     {   xx <- dates
     }
-    while (k <= nStates)
-    {   par(bg="white")
-        split.screen(c(min(3, nStates),1))
-        i<-1
-        while ((i <= 3) && (i <= nStates) && (k <= nStates))
-        {   screen(i)
-            z <- TransformeListe(distribution, Aux)
-            y <- (z$Zt[[1]])*(states==k)
-            if (dis != 'DISCRETE')
-                plot(xx, y, col=color, type='l', xlab="", ylab="Serie", lwd=1)
-            else
-                plot(xx, y+1, col=color, type='l', xlab="", ylab="Serie", lwd=1)
-            titre <- sprintf("Serie for state %d", k)
-            k <- k + 1
-            i <- i + 1
-            title(main=titre)
+    if (!oneFig)
+    {   nScreens <- floor(nStates/3)
+        if (nScreens * 3 - nStates != 0)
+        {   nScreens <- nScreens+1
         }
-        if (k <= nStates)
-            windows()
-        invisible(close.screen(all.screens = TRUE))
+        k<-1
+         while (k <= nStates)
+        {   par(bg="white")
+            split.screen(c(min(3, nStates),1))
+            i<-1
+            while ((i <= 3) && (i <= nStates) && (k <= nStates))
+            {   screen(i)
+                z <- TransformeListe(distribution, Aux)
+                y <- (z$Zt[[1]])*(states==k)
+                if (dis != 'DISCRETE')
+                    plot(xx, y, col=color, type='l', xlab="", ylab="Serie", lwd=1)
+                else
+                    plot(xx, y+1, col=color, type='l', xlab="", ylab="Serie", lwd=1)
+                titre <- sprintf("Serie for state %d", k)
+                k <- k + 1
+                i <- i + 1
+                title(main=titre)
+            }
+            if (k <= nStates)
+                windows()
+            invisible(close.screen(all.screens = TRUE))
+        }
     }
+    else
+    {
+        coul <- c("blue", "red", "green", "yellow", "grey", "pink", "orange", "purple", "turquoise", "tomatoe")
+        k <- 1
+        kc <- 1
+        titre <- ""
+        z <- TransformeListe(distribution, Aux)
+        y <- z$Zt[[1]]
+        ymin <- min(y)
+        ymax <- max(y)
+        if (dis == 'DISCRETE')
+        {   ymin <- ymin + 1
+            ymax <- ymax + 1
+        }
+        ylim <- c(ymin, ymax)
+        plot(xx, y, col='black', type='n', ylim=ylim, xlab="", ylab="Series")
+        while ( k <= nStates)
+        {   y <- (z$Zt[[1]])*(states==k)
+            if (dis != 'DISCRETE')
+                lines(xx, y, col=coul[kc], type='l', xlab="", ylab="Serie", lwd=1)
+            else
+                lines(xx, y+1, col=coul[kc], type='l', xlab="", ylab="Serie", lwd=1)
+            titre <- sprintf("%sState %d (%s)", titre, k, coul[kc])
+            if (k < nStates)
+            {   titre <- sprintf("%s - ", titre)
+            }
+            k <- k + 1
+            kc <- kc + 1
+            if (kc == 11)
+                kc <- 1
+        }    
+        lines(xx, rep(0, length(xx)), col='black', lwd=1) 
+        title(main=titre)
+    }
+           
 }

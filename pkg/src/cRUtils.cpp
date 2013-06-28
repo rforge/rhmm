@@ -512,7 +512,6 @@ void cRUtil::SetListVectSexp(cDMatrix& theVal, SEXP &theSEXP)
                SetVectSexp(theVal[i], theVal.mNCol, myAux) ;
                SET_VECTOR_ELT(theSEXP, i, myAux) ;
         }
-
 }
 
 /*
