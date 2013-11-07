@@ -1568,7 +1568,7 @@ graphicDiag.univariateNormalClass <- function(object, vit, obs, color="green")
         }
         invisible(close.screen(all.screens = TRUE))
         if (k <= nStates)
-            windows()
+            dev.new()
     }
 }
 
@@ -1614,7 +1614,7 @@ graphicDiag.mixtureUnivariateNormalClass <- function(object, vit, obs, color="gr
         }
         invisible(close.screen(all.screens = TRUE))
         if (k <= nStates)
-            windows()
+            dev.new()
     }
 }
 
@@ -1655,7 +1655,7 @@ graphicDiag.discreteClass <- function(object, vit, obs, color="green")
         }
         invisible(close.screen(all.screens = TRUE))
         if (k <= nStates)
-            windows()
+            dev.new()
     }
 }
 
@@ -1793,7 +1793,7 @@ HMMPlotSerie <- function(obs, states, dates = NULL, dis = "NORMAL", color="green
                 title(main=titre)
             }
             if (k <= nStates)
-                windows()
+                dev.new()
             invisible(close.screen(all.screens = TRUE))
         }
     }
