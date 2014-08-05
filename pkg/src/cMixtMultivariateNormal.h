@@ -24,13 +24,13 @@ class cMixtMultivariateNormal : public cDistribution
                 cDVector*      mp              ;
         public :
                 cMixtMultivariateNormal(uint theNClass = 0, uint theNMixt = 1, uint theDimObs=1) ;
-				cMixtMultivariateNormal(cDistribution& theSrc) ;
+                                cMixtMultivariateNormal(cDistribution& theSrc) ;
                 virtual ~cMixtMultivariateNormal() ;
                 void ComputeCondProba(cDVector* theY, uint theNSample, cDMatrix* theCondProba)  ;
                 void ComputeDerivative(cDVector& theY, cDVector** theGrad, cDMatrix** theHess) ;
-				void ComputeCov(cDMatrix& theCov) ;
-				cDVector GetDistrNumParam(const cDVector& theNumDistrParam, uint& theNextInd) ;
-				void UpdateParameters(cInParam& theInParam, cBaumWelch& theBaumWelch, cDMatrix* theCondProba=NULL)  ;
+                                void ComputeCov(cDMatrix& theCov) ;
+                                cDVector GetDistrNumParam(const cDVector& theNumDistrParam, uint& theNextInd) ;
+                                void UpdateParameters(cInParam& theInParam, cBaumWelch& theBaumWelch, cDMatrix* theCondProba=NULL)  ;
                 void InitParameters(cBaumWelchInParam &theInParam) ;
                 void Print() ;
                 void CopyDistr(cDistribution* theSrc) ;

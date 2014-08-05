@@ -15,43 +15,33 @@
 
 using namespace std;
 
-#define FIC_NAME   "Xirisx.txt" /* "Norm.txt"  "n1d_3s.txt"  "Geyser.txt" "data_mixture.txt"  "DISCRETEb.txt" "DISCRETE.txt"  "SimulMultiMixt.txt"*/
-#define DIM_OBS 4
-#define NB_SAMPLE 1
-#define NB_STATES 3
+#define FIC_NAME     "chrm.txt" /* "Cac40.txt" "n2d_2s.txt" "n3d2s.txt"  "data_mixture.txt" "Meteo.txt" "n3s.txt" "Geyser.txt"  "m_2d_2s.txt" "Weather2.txt" "Weather.txt" "Xirisx.txt" "n1d_3s.txt"    "DISCRETEb.txt" "DISCRETE.txt"  "SimulMultiMixt.txt" "Norm.txt"  */
+#define DIM_OBS 1
+#define NB_SAMPLE 1 /* 5*/
+#define NB_STATES 2
 #define NB_MIXT 3
+#define NB_PROBA 2
 
 int main(void)
 {
-	ifstream myFile ;
-	cDVector* myRt = new cDVector[NB_SAMPLE] ;
-	uint n = 0 ;
-	double myAux ;
-
-	myFile.open(FIC_NAME);
-
-	if (myFile.fail())
-	{
-		std::cerr << "Unable to open " << FIC_NAME << std::endl;
-		return 1;
-	}
-
-	while (myFile)
-	{
-		myFile >> myAux ;
-		n++ ;
-	}
-    n = (n-1)/(DIM_OBS*NB_SAMPLE) ;
-    myFile.close() ;
-
-    for (uint j = 0 ; j < NB_SAMPLE ; j++)
-    	myRt[j].ReAlloc(DIM_OBS*n) ;
-
-    std::fstream myFile1(FIC_NAME) ;
-    for (register uint i = 0 ; i < NB_SAMPLE ; i++)
-    	for (register uint j = 0 ; j < n  ; j++)
-    		for (register uint k = 0 ; k < DIM_OBS ; k++)
-    			myFile1 >> myRt[i][j + k*n]  ;
+ifstream myFile ;
+cDVector* myRt = new cDVector[NB_SAMPLE] ;
+register uint n = 0 ;
+double myAux ;
+        myFile.open(FIC_NAME) ;
+        while (myFile)
+        {       myFile >> myAux ;               
+                n++ ;
+        }
+        n = (n-1)/(DIM_OBS*NB_SAMPLE) ;
+        myFile.close() ;
+        for (register uint j = 0 ; j < NB_SAMPLE ; j++)
+                myRt[j].ReAlloc(DIM_OBS*n) ;
+        std::fstream myFile1(FIC_NAME) ;
+        for (register uint i = 0 ; i < NB_SAMPLE ; i++)
+                for (register uint j = 0 ; j < n  ; j++)
+                        for (register uint k = 0 ; k < DIM_OBS ; k++)
+                                myFile1 >> myRt[i][j + k*n]  ;
         
 //      myRt[1] = myRt[0] ;
         myFile1.close() ;
@@ -4483,4 +4473,4 @@ FILE: SimulMultiMixt.txt
 3001.35 2999.44
 -----------------------------
 */
-#endif
+#endif _RDLL_

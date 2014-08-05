@@ -17,22 +17,22 @@
 
 class cBaumWelch
 {       protected :
-                        uint	mtNSample ;
+                        uint    mtNSample ;
                         uint*   mtT ;
         public :                                                
                         cDMatrix*   mAlpha ;
                         cDMatrix*   mBeta ;
-                        cDVector*	mRho ;
+                        cDVector*       mRho ;
                         cDMatrix*   mGamma ;
                         cDMatrix**  mXsi ;
                         cDMatrix*   mSumXsi ;
-						cDMatrix*	mDelta ;
+                                                cDMatrix*       mDelta ;
                         cDVector    mLogVrais ;
         public :
                 cBaumWelch(uint theNSample, uint* theT, uint theNClass) ;
                 cBaumWelch(const cInParam &theInParam) ;
                 void ForwardBackward(cDMatrix* theCondProba, cHmm& theHMM) ;
-				void OutForwardBackward(cDMatrix* theCondProba, cHmm& theHMM, bool theLogData=true) ;
+                                void OutForwardBackward(cDMatrix* theCondProba, cHmm& theHMM, bool theLogData=true) ;
                 uint GetSampleSize(uint theN){ return mtT[theN] ;}
                 virtual ~cBaumWelch() ;
 } ;

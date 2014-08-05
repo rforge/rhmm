@@ -105,51 +105,51 @@ cDVector* myGradNorm = new cDVector[myT] ;
 cDMatrix* myHessNorm = new cDMatrix[myT] ;
 cDVector myDens(myT), myLastDens(myT);
 
-	for (register uint t = 0 ; t < myT ; t++)
-	{	myGradNorm[t].ReAlloc(myNNormParam) ;
-		myHessNorm[t].ReAlloc(myNNormParam, myNNormParam) ;
-	}
+        for (register uint t = 0 ; t < myT ; t++)
+        {       myGradNorm[t].ReAlloc(myNNormParam) ;
+                myHessNorm[t].ReAlloc(myNNormParam, myNNormParam) ;
+        }
 
-	for (register uint j = 0 ; j < mvNClass ; j++)
-	{
-		for (register uint t = 0 ; t < myT ; t++)
-		{	theGrad[j][t] = 0.0 ;
-			theHess[j][t] = 0.0 ;
-		}
+        for (register uint j = 0 ; j < mvNClass ; j++)
+        {
+                for (register uint t = 0 ; t < myT ; t++)
+                {       theGrad[j][t] = 0.0 ;
+                        theHess[j][t] = 0.0 ;
+                }
 
-	cDMatrix myInvCov(mvDimObs, mvDimObs) ;
-	double myDeterminant ;
-	uint k = (mvNClass - 1)*(mvNClass + 1) + j*myNParam ;
-		
-		LapackInvAndDet(mCov[j][mvNMixt-1], myInvCov, myDeterminant) ;
-		MultivariateNormalDensity(theY, mMean[j][mvNMixt-1], myInvCov, myDeterminant, myLastDens) ;	
-		for (register uint l = 0 ; l < mvNMixt ; l++)
-		{	LapackInvAndDet(mCov[j][l], myInvCov, myDeterminant) ;
-			MultivariateNormalDensity(theY, mMean[j][l], myInvCov, myDeterminant, myDens) ;
-			MultivariateNormalDensityDeriv(theY, mMean[j][l], mCov[j][l], myInvCov, myDeterminant, myDens, myGradNorm, myHessNorm) ;
-			for (register uint t = 0 ; t < myT ; t++)
-			{	SetSubVector(mp[j][l]*myGradNorm[t], k, theGrad[j][t]) ;
-			cDMatrix myAuxMat = mp[j][l]*myHessNorm[t] ;	
-				SetSubMatrix(myAuxMat, k, k, theHess[j][t]) ;
-			
-				if (l < mvNMixt - 1)
-				{	theGrad[j][t][k+myNNormParam] = myDens[t] - myLastDens[t] ;
-					for (register uint p = 0 ; p < myNNormParam ; p++)
-						theHess[j][t][k+myNNormParam][p+k] = theHess[j][t][p+k][k+myNNormParam] = myGradNorm[t][p] ;
-				}					
-			}
-			k += myNNormParam ;
-			if (l < mvNMixt - 1)
-				k++ ;
-		}
-	}
+        cDMatrix myInvCov(mvDimObs, mvDimObs) ;
+        double myDeterminant ;
+        uint k = (mvNClass - 1)*(mvNClass + 1) + j*myNParam ;
+                
+                LapackInvAndDet(mCov[j][mvNMixt-1], myInvCov, myDeterminant) ;
+                MultivariateNormalDensity(theY, mMean[j][mvNMixt-1], myInvCov, myDeterminant, myLastDens) ;     
+                for (register uint l = 0 ; l < mvNMixt ; l++)
+                {       LapackInvAndDet(mCov[j][l], myInvCov, myDeterminant) ;
+                        MultivariateNormalDensity(theY, mMean[j][l], myInvCov, myDeterminant, myDens) ;
+                        MultivariateNormalDensityDeriv(theY, mMean[j][l], mCov[j][l], myInvCov, myDeterminant, myDens, myGradNorm, myHessNorm) ;
+                        for (register uint t = 0 ; t < myT ; t++)
+                        {       SetSubVector(mp[j][l]*myGradNorm[t], k, theGrad[j][t]) ;
+                        cDMatrix myAuxMat = mp[j][l]*myHessNorm[t] ;    
+                                SetSubMatrix(myAuxMat, k, k, theHess[j][t]) ;
+                        
+                                if (l < mvNMixt - 1)
+                                {       theGrad[j][t][k+myNNormParam] = myDens[t] - myLastDens[t] ;
+                                        for (register uint p = 0 ; p < myNNormParam ; p++)
+                                                theHess[j][t][k+myNNormParam][p+k] = theHess[j][t][p+k][k+myNNormParam] = myGradNorm[t][p] ;
+                                }                                       
+                        }
+                        k += myNNormParam ;
+                        if (l < mvNMixt - 1)
+                                k++ ;
+                }
+        }
 
-	for (register uint t = 0 ; t < myT ; t++)
-	{	myGradNorm[t].Delete() ;
-		myHessNorm[t].Delete() ;
-	}
-	delete [] myGradNorm ;
-	delete [] myHessNorm ;
+        for (register uint t = 0 ; t < myT ; t++)
+        {       myGradNorm[t].Delete() ;
+                myHessNorm[t].Delete() ;
+        }
+        delete [] myGradNorm ;
+        delete [] myHessNorm ;
 
 }
 
@@ -161,15 +161,15 @@ uint myNFreeMixt = (myNNormParam + 1)*mvNMixt - 1 ;
 uint mySizeCour = theCov.GetNCols() ;
 cDVector myU(mySizeCour, 0.0) ;
 
-	for (register uint n = 0 ; n < mvNClass ; n++)
-	{
-		for (register uint i = myBegIndex + myNNormParam ; i < myBegIndex + myNFreeMixt ; i+=myNNormParam+1)
-			myU[i] = -1.0 ;
-		theCov = AddOneVariable(theCov, myU) ;
-		mySizeCour++ ;
-		myU.ReAlloc(mySizeCour, 0.0) ;
-		myBegIndex += myNFreeMixt ;
-	}
+        for (register uint n = 0 ; n < mvNClass ; n++)
+        {
+                for (register uint i = myBegIndex + myNNormParam ; i < myBegIndex + myNFreeMixt ; i+=myNNormParam+1)
+                        myU[i] = -1.0 ;
+                theCov = AddOneVariable(theCov, myU) ;
+                mySizeCour++ ;
+                myU.ReAlloc(mySizeCour, 0.0) ;
+                myBegIndex += myNFreeMixt ;
+        }
 
 }
 
@@ -180,14 +180,14 @@ uint myNFreeParam =(myNNormParam + 1)*mvNMixt - 1 ;
 cDVector myNumDistrParam ;
 cDVector myNumMixt(myNFreeParam) ;
 uint myIndCour = 0 ;
-	for (register uint j = 0 ; j < mvNClass ; j++)
-	{	GetSubVector(theNumDistrParam, myIndCour, myNFreeParam, myNumMixt) ;
-		myNumDistrParam = cat(myNumDistrParam, myNumMixt) ;
-		myNumDistrParam = cat(myNumDistrParam, (double)theNextInd) ;
-		theNextInd++ ;
-		myIndCour += myNFreeParam ;
-	}
-	return myNumDistrParam ;
+        for (register uint j = 0 ; j < mvNClass ; j++)
+        {       GetSubVector(theNumDistrParam, myIndCour, myNFreeParam, myNumMixt) ;
+                myNumDistrParam = cat(myNumDistrParam, myNumMixt) ;
+                myNumDistrParam = cat(myNumDistrParam, (double)theNextInd) ;
+                theNextInd++ ;
+                myIndCour += myNFreeParam ;
+        }
+        return myNumDistrParam ;
 }
 
 void cMixtMultivariateNormal::UpdateParameters(cInParam& theInParam, cBaumWelch& theBaumWelch, cDMatrix* theCondProba)
@@ -240,8 +240,8 @@ double*         myDet = new double[mvNMixt] ;
                         mp[i][l] = mySumGammail / mySumGammai ;
                         mMean[i][l] = myMoy/mySumGammail ;
                         for (register int m = 0 ; m < (int)mvDimObs-1 ; m++)
-                                for (register int l = m+1 ; l < (int)mvDimObs ; l++)
-                                        myCov[l][m] = myCov[m][l] ;
+                                for (register int p = m+1 ; l < (int)mvDimObs ; p++)
+                                        myCov[p][m] = myCov[m][p] ;
                         mCov[i][l] = myCov/mySumGammail ;
                         mCov[i][l] -= mMean[i][l] * Transpose(mMean[i][l]) ;
                 }
@@ -308,25 +308,25 @@ double mys = 0.0 ;
 void cMixtMultivariateNormal::CopyDistr(cDistribution* theSrc)
 {
 cMixtMultivariateNormal* mySrc = dynamic_cast<cMixtMultivariateNormal *>(theSrc) ;
-	if (mySrc)
-	{	mvNClass = mySrc->mvNClass ;
-		mvDimObs = mySrc->mvDimObs ;
-		mvNMixt = mySrc->mvNMixt ;
-		for (register uint i = 0 ; i < mvNClass ; i++)
-		{	for (register uint l = 0 ; l < mvNMixt ; l++)
-			{	mMean[i][l] = mySrc->mMean[i][l] ;
-				mCov[i][l] = mySrc->mCov[i][l] ;
-			}
-			mp[i] = mySrc->mp[i] ;
-		}
-	}
-	else
-		cOTError("Wrong distribution in cMixtMultivariateNormal") ;
+        if (mySrc)
+        {       mvNClass = mySrc->mvNClass ;
+                mvDimObs = mySrc->mvDimObs ;
+                mvNMixt = mySrc->mvNMixt ;
+                for (register uint i = 0 ; i < mvNClass ; i++)
+                {       for (register uint l = 0 ; l < mvNMixt ; l++)
+                        {       mMean[i][l] = mySrc->mMean[i][l] ;
+                                mCov[i][l] = mySrc->mCov[i][l] ;
+                        }
+                        mp[i] = mySrc->mp[i] ;
+                }
+        }
+        else
+                cOTError("Wrong distribution in cMixtMultivariateNormal") ;
 }
 
 cMixtMultivariateNormal::cMixtMultivariateNormal(cDistribution& theSrc)
 {
-	CopyDistr(&theSrc) ;
+        CopyDistr(&theSrc) ;
 }
 
 void cMixtMultivariateNormal::Print()
@@ -355,8 +355,8 @@ register uint k = theDeb ;
                 {       for (register uint m = 0 ; m < mvDimObs ; m++)
                                 theParam[k++] = mMean[n][p][m] ;
                         for (register uint m = 0 ; m < mvDimObs ; m++)
-                                for (register uint n = m ; n < mvDimObs ; n++)
-                                        theParam[k++] = mCov[n][p][m][n] ;
+                                for (register uint l = m ; l < mvDimObs ; l++)
+                                        theParam[k++] = mCov[n][p][m][l] ;
                         if (p < mvNMixt-1)
                                 theParam[k++] = mp[n][p] ;
                 }

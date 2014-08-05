@@ -20,20 +20,20 @@ class cDiscrete : public cDistribution
                 cCyclicVector<cDMatrix>        mProbaMatVector;
         public :
                 cDiscrete(uint theNClass, uint theNProba) ;
-				cDiscrete(cDistribution& theSrc) ;
+                                cDiscrete(cDistribution& theSrc) ;
                 virtual ~cDiscrete() ;
                 void ComputeCondProba(cDVector* theY, uint theNSample, cDMatrix* theCondProba)  ;
                 void ComputeDerivative(cDVector& theY, cDVector** theGrad, cDMatrix** theHess) ;
-				void ComputeCov(cDMatrix& theCov) ;
-				cDVector GetDistrNumParam(const cDVector& theNumDistrParam, uint& theNextInd) ;
-				void UpdateParameters(cInParam& theInParam, cBaumWelch& theBaumWelch, cDMatrix* theCondProba=NULL)  ;
+                                void ComputeCov(cDMatrix& theCov) ;
+                                cDVector GetDistrNumParam(const cDVector& theNumDistrParam, uint& theNextInd) ;
+                                void UpdateParameters(cInParam& theInParam, cBaumWelch& theBaumWelch, cDMatrix* theCondProba=NULL)  ;
                 void InitParameters(cBaumWelchInParam &theInParam) ;
                 void Print() ;
                 uint GetNProba(void) ;
                 void GetParam(uint theDeb, cDVector& theParam) ;
                 void SetParam(uint theDeb, cDVector& theParam) ;
                 uint GetNParam(void){ return GetNProba() ; } ;
-				uint GetNFreeParam(void) { return  GetNProba() - 1 ; } ;
+                                uint GetNFreeParam(void) { return  GetNProba() - 1 ; } ;
                 void CopyDistr(cDistribution *theSrc) ;
 } ;
 

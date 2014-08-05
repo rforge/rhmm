@@ -159,7 +159,7 @@ uint myNClass = theHMM.mInitProba.mSize ;
                 
                 // Calcul des Gamma et LogVrais
                 // erreur ? mLogVrais[n] = LOGZERO ;
-				mLogVrais[n] = mLogRho[n][myT-1] ;
+                                mLogVrais[n] = mLogRho[n][myT-1] ;
                 for (t = 0 ; t < myT ; t++)
                 {       mySum = LOGZERO ;
                         for (i = 0 ; i < myNClass ; i++)

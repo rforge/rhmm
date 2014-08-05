@@ -24,12 +24,12 @@ class cMultivariateNormal : public cDistribution
         public :
                 cMultivariateNormal(uint theNClass = 0, uint theDimObs = 1) ;
                 cMultivariateNormal(cDistribution& theSrc) ;
-				virtual ~cMultivariateNormal() ;
+                                virtual ~cMultivariateNormal() ;
                 void ComputeCondProba(cDVector* theY, uint theNSample, cDMatrix* theCondProba) ;
                 void ComputeDerivative(cDVector& theY, cDVector** theGrad, cDMatrix** theHess) ;
-				void ComputeCov(cDMatrix& theCov) ;
-				cDVector GetDistrNumParam(const cDVector& theNumDistrParam, uint& theNextInd) ;
-				void UpdateParameters(cInParam& theInParam, cBaumWelch& theBaumWelch, cDMatrix* theCondProba=NULL) ;
+                                void ComputeCov(cDMatrix& theCov) ;
+                                cDVector GetDistrNumParam(const cDVector& theNumDistrParam, uint& theNextInd) ;
+                                void UpdateParameters(cInParam& theInParam, cBaumWelch& theBaumWelch, cDMatrix* theCondProba=NULL) ;
                 void InitParameters(cBaumWelchInParam &theInParam) ;
                 void Print() ;
                 void GetParam(uint theDeb, cDVector& theParam) ;

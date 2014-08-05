@@ -44,25 +44,25 @@ void cUnivariateNormal::ComputeDerivative(cDVector& theY, cDVector** theGrad, cD
 {
 uint myNStates = mMean.GetSize() ;
 uint myT = theY.GetSize() ;
-	for (register uint t = 0 ; t < myT ; t++)
-	{
-	uint k = (myNStates - 1)*(myNStates + 1) ; // premier indice
-		for (register uint j = 0 ; j < myNStates ; j++)
-		{	theGrad[j][t] = 0.0 ;
-			theHess[j][t] = 0.0 ;
-		double mySigma = sqrt(mVar[j]) ;
-		double myAux = (theY[t] - mMean[j])/mySigma ;
-		double myAux2 = myAux*myAux ;
-		double myDensity = exp(-myAux2/2.0)/(SQRT_TWO_PI*mySigma) ;
-			theGrad[j][t][k] =  myAux/mySigma*myDensity ;
-		double myAux3 = (myAux2-1)/mVar[j]*myDensity ;
-			theGrad[j][t][k+1] = myAux3/2.0 ;
-			theHess[j][t][k][k] = myAux3 ;
-			theHess[j][t][k][k+1] = theHess[j][t][k+1][k] = (myAux*(myAux2-3.0))/(2.0*mySigma)*myDensity ;
-			theHess[j][t][k+1][k+1] = (myAux2*myAux2*-6*myAux2 + 3)/(4.0*mVar[j]*mVar[j])*myDensity ;
-			k += 2 ;
-		}
-	}
+        for (register uint t = 0 ; t < myT ; t++)
+        {
+        uint k = (myNStates - 1)*(myNStates + 1) ; // premier indice
+                for (register uint j = 0 ; j < myNStates ; j++)
+                {       theGrad[j][t] = 0.0 ;
+                        theHess[j][t] = 0.0 ;
+                double mySigma = sqrt(mVar[j]) ;
+                double myAux = (theY[t] - mMean[j])/mySigma ;
+                double myAux2 = myAux*myAux ;
+                double myDensity = exp(-myAux2/2.0)/(SQRT_TWO_PI*mySigma) ;
+                        theGrad[j][t][k] =  myAux/mySigma*myDensity ;
+                double myAux3 = (myAux2-1)/mVar[j]*myDensity ;
+                        theGrad[j][t][k+1] = myAux3/2.0 ;
+                        theHess[j][t][k][k] = myAux3 ;
+                        theHess[j][t][k][k+1] = theHess[j][t][k+1][k] = (myAux*(myAux2-3.0))/(2.0*mySigma)*myDensity ;
+                        theHess[j][t][k+1][k+1] = (myAux2*myAux2*-6*myAux2 + 3)/(4.0*mVar[j]*mVar[j])*myDensity ;
+                        k += 2 ;
+                }
+        }
 }
 
 void cUnivariateNormal::ComputeCov(cDMatrix& theCov)
@@ -71,7 +71,7 @@ void cUnivariateNormal::ComputeCov(cDMatrix& theCov)
 
 cDVector cUnivariateNormal::GetDistrNumParam(const cDVector& theNumDistrParam, uint& theIndCour) 
 {
-		return theNumDistrParam ;
+                return theNumDistrParam ;
 }
 
 void cUnivariateNormal::UpdateParameters(cInParam& theInParam, cBaumWelch& theBaumWelch, cDMatrix* theCondProba)
@@ -172,17 +172,17 @@ void cUnivariateNormal::Print()
 void cUnivariateNormal::CopyDistr(cDistribution* theSrc)
 {
 cUnivariateNormal* mySrc = dynamic_cast<cUnivariateNormal *>(theSrc) ;
-	if(mySrc)
-	{	mMean = mySrc->mMean ;
+        if(mySrc)
+        {       mMean = mySrc->mMean ;
         mVar = mySrc->mVar ;
-	}
-	else
-		cOTError("Wrong distribution in cUnivariateNormal") ;
+        }
+        else
+                cOTError("Wrong distribution in cUnivariateNormal") ;
 }
 
 cUnivariateNormal::cUnivariateNormal(cDistribution& theSrc)
 {
-	CopyDistr(&theSrc) ;
+        CopyDistr(&theSrc) ;
 }
 
 void cUnivariateNormal::GetParam(uint theDeb, cDVector& theParam)

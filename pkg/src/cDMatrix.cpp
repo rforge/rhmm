@@ -153,7 +153,7 @@ uint cDMatrix::GetNCols(void) const
 
 double* cDMatrix::GetCol (uint theIndex)
 {
-double* myTemp = new double(mvNRow) ;
+double* myTemp = new double[mvNRow] ;
         for(uint i = 0 ; i < mvNRow ; i++) 
                 myTemp[i] = mvRow[i][theIndex] ;
         return myTemp ;
@@ -513,10 +513,10 @@ cDMatrix myAuxMat1 = Diag(myInvEigenValue), myAuxMat2 = Transpose(myEigenVector)
 cDMatrix myAuxMat = myAuxMat1 * myAuxMat2 ;
         theInvMatrix = theInvMatrix * myAuxMat ;
         
-        delete myAP ;
-        delete myW ;
-        delete myZ ;
-        delete myWork ;
+        delete[] myAP ;
+        delete[] myW ;
+        delete[] myZ ;
+        delete[] myWork ;
 }
 
 double LapackDet(cDMatrix& theMatrix)
@@ -546,10 +546,10 @@ double myDet ;
         {	myDet *= myW[i] ;
         }
 	}        
-    delete myAP ;
-    delete myW ;
-    delete myZ ;
-    delete myWork ;
+    delete[] myAP ;
+    delete[] myW ;
+    delete[] myZ ;
+    delete[] myWork ;
 
 	return myDet ;
 }
