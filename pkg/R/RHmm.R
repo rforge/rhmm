@@ -9,6 +9,9 @@
  ###############################################################
 
 tol <- .Machine$double.eps
+library(MASS)
+library(nlme)
+
 min_eigen_value <- function(x)
 {
     return(min(eigen(x)$values))
@@ -334,8 +337,8 @@ distributionSet <- function(dis, ...)
     if (is.na(match(dis, c('NORMAL', 'MIXTURE', 'DISCRETE'))))
         stop("dis must be in 'NORMAL', 'MIXTURE', 'DISCRETE'\n")
     args <- list(...)
-    extras <- match.call(expand.dots = FALSE)$... # pour r�cup�rer les noms
     mcall <- list(as.name("toto"))
+    extras <- match.call(expand.dots = FALSE)$... # pour recupererer les noms
     lextras <- length(extras)
     for (i in 1:lextras)
     {   mcall <- c(mcall, args[i])
@@ -428,11 +431,13 @@ distributionSet <- function(dis, ...)
                     }
                 }
             }
-           value <- (eval(as.call(mcall)))
+            value <- eval(as.call(mcall))
             if (is.character(value))
-            stop(value)
+            {    stop(value)
+            }
             else
-            return(value)
+            {    return(value)
+            }
          }
         else
             stop("wrong number of parameters.\n")
@@ -1453,7 +1458,7 @@ viterbi<-function(HMM, obs)
         else
             obs <- as.matrix(obs[,1:dimObs])
     }
-    
+
     if (is.list(obs))
     {   nList <- length(obs)
         obs1 <- rep(list(NULL), nList)
@@ -1490,80 +1495,116 @@ viterbi<-function(HMM, obs)
     return(Res)
 }
 
-graphicDiag <- function(object, vit, obs, color="green", ...) UseMethod("graphicDiag")
+argValue <- function(argList, argName, default)
+{
+    argListNames <- names(argList)
+    Ind <- match(argName, argListNames)
+    if (is.na(Ind))
+    {   return(default)
+    }
+    else
+    {   return(argList[Ind])
+    }
+}
 
-graphicDiag.default <- function(object, vit, obs, color="green", ...)
-{   cat("Not yet implemented for this kind of distribution\n")
+myDoCall <- function(fun, arg, defaultDotArg, dotArg)
+{
+    N1 <- length(defaultDotArg)
+    defaultDotArgNames <- names(defaultDotArg)
+    for (i in 1:N1)
+    {   defaultDotArg[i] <- argValue(dotArg, defaultDotArgNames[i], defaultDotArg[i])
+    }
+    N2 <- length(dotArg)
+    dotArgNames <- names(dotArg)
+
+    if (N2 > 0)
+    {   for (i in 1:N2)
+        {   Ind <- match(dotArgNames[i], defaultDotArgNames)
+            if (is.na(Ind))
+            {
+                defaultDotArg <- c(defaultDotArg, dotArg[i])
+            }
+        }
+    }
+    do.call(fun, c(arg, defaultDotArg))
+}
+
+GraphicDiag <- function(object, vit, obs, color = "green", ...) UseMethod("GraphicDiag")
+
+GraphicDiag.default <- function(object, vit, obs, color = "green", ...) {
+    cat("Not yet implemented for this kind of distribution\n")
     return(invisible(0))
 }
 
-graphicDiag.HMMFitClass <- function(object, vit, obs, color="green", ...)
-{   graphicDiag(object$HMM$distribution, vit, obs, color)
+GraphicDiag.HMMFitClass <- function(object, vit, obs, color = "green", ...) {
+    GraphicDiag(object$HMM$distribution, vit, obs, color)
 }
 
-graphicDiag.HMMClass <- function(object, vit, obs, color="green", ...)
-{   graphicDiag(object$distribution, vit, obs, color)
+GraphicDiag.HMMClass <- function(object, vit, obs, color = "green", ...) {
+    GraphicDiag(object$distribution, vit, obs, color)
 }
 
-graphicDiag.distributionClass <- function(object, vit, obs, color="green", ...)
-{
+GraphicDiag.distributionClass <- function(object, vit, obs, color = "green",
+    ...) {
     if (is.na(match(color, colours())))
         stop(sprintf("unknown %s color\n", color))
-      #x11()
-    if (is.list(obs))
-    {   if (!is.list(vit$states))
+    # x11()
+    if (is.list(obs)) {
+        if (!is.list(vit$states))
             return("incompatibilty beetween 'vit' and 'obs' parameters\n")
         if (length(vit$states) != length(obs))
             return("incompatibilty beetween 'vit' and 'obs' parameters\n")
         states <- NULL
         Aux <- NULL
-        for (n in 1:length(vit$states))
-        {   states <- c(states, vit$states[[n]])
+        for (n in 1:length(vit$states)) {
+            states <- c(states, vit$states[[n]])
             Aux <- c(Aux, obs[[n]])
         }
         obs <- Aux
         vit$states <- states
     }
 
-    NextMethod(generic="graphicDiag", object=object)
+    NextMethod(generic = "GraphicDiag", object = object)
 }
 
-graphicDiag.univariateNormalClass <- function(object, vit, obs, color="green")
-{
+GraphicDiag.univariateNormalClass <- function(object, vit, obs, color = "green") {
 
-    #x11()
-     nStates <- max(vit$states)
-     nScreens <- floor(nStates/3)
-    if (nScreens * 3 - nStates != 0)
-    {   nScreens <- nScreens+1
+    # x11()
+    nStates <- max(vit$states)
+    nScreens <- floor(nStates/4)
+    if (nScreens * 4 - nStates != 0) {
+        nScreens <- nScreens + 1
     }
-    k<-1
-    while (k <= nStates)
-    {   split.screen(c(min(3, nStates),1))
-        par(bg="white")
-        i<-1
-        while ((i <= 3) && (i <= nStates) && (k <= nStates))
-        {   screen(i)
-            y <- obs[vit$states==k]
+    k <- 1
+    while (k <= nStates) {
+        split.screen(c(2, 1))
+        split.screen(c(1, 2), screen = 1)
+        split.screen(c(1, 2), screen = 2)
+        par(bg = "white")
+        i <- 3
+        while ((i <= 6) && (k <= nStates)) {
+            screen(i)
+            y <- obs[vit$states == k]
             m <- object$mean[k]
             sig <- sqrt(object$var[k])
-            from <- m-3*sig
-            to <- m+ 3*sig
-            x0 <- seq(from, to, (to-from)/512)
-            y0 <- dnorm(x0, mean=m, sd=sig)
-            z <- density(y, from=from, to=to)
-            if (max(z$y) > max(y0))
-            {   plot(z$x, z$y, col=color, type='l', xlab="", ylab="Density", lwd=2)
+            from <- m - 3 * sig
+            to <- m + 3 * sig
+            x0 <- seq(from, to, (to - from)/512)
+            y0 <- dnorm(x0, mean = m, sd = sig)
+            z <- density(y, from = from, to = to)
+            if (max(z$y) > max(y0)) {
+                plot(z$x, z$y, col = color, type = "l", xlab = "", ylab = "Density",
+                  lwd = 2)
                 lines(x0, y0)
+            } else {
+                plot(x0, y0, type = "l", xlab = "", ylab = "Density")
+                lines(z$x, z$y, col = color, lwd = 2)
             }
-            else
-            {   plot(x0, y0, type='l', xlab="", ylab="Density")
-                    lines(z$x, z$y, col=color, lwd=2)
-            }
-            sub <- sprintf("Estimated Density (%s) - Normal density with estimated parameters (black)\n", color)
+            sub <- sprintf("Estimated Density (%s) \n Normal density (black)\n",
+                color)
             titre <- sprintf("Graphic diagnostic for state %d", k)
             k <- k + 1
-            title(main=titre, sub=sub)
+            title(main = titre, sub = sub)
             i <- i + 1
         }
         invisible(close.screen(all.screens = TRUE))
@@ -1572,43 +1613,45 @@ graphicDiag.univariateNormalClass <- function(object, vit, obs, color="green")
     }
 }
 
-graphicDiag.mixtureUnivariateNormalClass <- function(object, vit, obs, color="green")
-{
- #   x11()
+GraphicDiag.mixtureUnivariateNormalClass <- function(object, vit, obs, color = "green") {
+    # x11()
     nStates <- max(vit$states)
-    nScreens <- floor(nStates/3)
-    if (nScreens * 3 - nStates != 0)
-    {   nScreens <- nScreens+1
+    nScreens <- floor(nStates/4)
+    if (nScreens * 4 - nStates != 0) {
+        nScreens <- nScreens + 1
     }
-    k<-1
-    while (k <= nStates)
-    {   split.screen(c(min(3, nStates),1))
-        par(bg="white")
-        i<-1
-        while ((i <= 3) && (i <= nStates) && (k <= nStates))
-        {   screen(i)
-            y <- obs[vit$states==k]
+    k <- 1
+    while (k <= nStates) {
+        split.screen(c(2, 1))
+        split.screen(c(1, 2), screen = 1)
+        split.screen(c(1, 2), screen = 2)
+        par(bg = "white")
+        i <- 3
+        while ((i <= 6) && (k <= nStates)) {
+            screen(i)
+            y <- obs[vit$states == k]
             m <- object$mean[[k]]
             var <- object$var[[k]]
             prop <- object$proportion[[k]]
             xbarre <- mean(y)
             sig <- sd(y)
-            from <- xbarre-3*sig
-            to <- xbarre + 3*sig
-            x0 <- seq(from, to, (to-from)/512)
-            y0 <- dmixt(x0, mean=m, var=var, prop=prop)
-            z <- density(y, from=from, to=to)
-            if (max(z$y) > max(y0))
-            {   plot(z$x, z$y, col=color, type='l', xlab="", ylab="Density", lwd=2)
+            from <- xbarre - 3 * sig
+            to <- xbarre + 3 * sig
+            x0 <- seq(from, to, (to - from)/512)
+            y0 <- dmixt(x0, mean = m, var = var, prop = prop)
+            z <- density(y, from = from, to = to)
+            if (max(z$y) > max(y0)) {
+                plot(z$x, z$y, col = color, type = "l", xlab = "", ylab = "Density",
+                  lwd = 2)
                 lines(x0, y0)
+            } else {
+                plot(x0, y0, type = "l", xlab = "", ylab = "Density")
+                lines(z$x, z$y, col = color, lwd = 2)
             }
-            else
-            {   plot(x0, y0, type='l', xlab="", ylab="Density")
-                lines(z$x, z$y, col=color, lwd=2)
-            }
-            sub <- sprintf("Estimated Density (%s) - Mixture of univariate normal density with estimated parameters (black)\n", color)
+            sub <- sprintf("Estimated Density (%s) \n Mixture of univariate normal density (black)\n",
+                color)
             titre <- sprintf("Graphic diagnostic for state %d", k)
-            title(main=titre, sub=sub)
+            title(main = titre, sub = sub)
             i <- i + 1
             k <- k + 1
         }
@@ -1618,38 +1661,38 @@ graphicDiag.mixtureUnivariateNormalClass <- function(object, vit, obs, color="gr
     }
 }
 
-graphicDiag.discreteClass <- function(object, vit, obs, color="green")
-{
+GraphicDiag.discreteClass <- function(object, vit, obs, color = "green") {
     nStates <- max(vit$states)
-    nScreens <- floor(nStates/3)
-    if (nScreens * 3 - nStates != 0)
-    {   nScreens <- nScreens+1
+    nScreens <- floor(nStates/4)
+    if (nScreens * 4 - nStates != 0) {
+        nScreens <- nScreens + 1
     }
-    k<-1
-    while (k <= nStates)
-    {   split.screen(c(min(3, nStates),1))
-        par(bg="white")
-        i<-1
-        while ((i <= 3) && (i <= nStates) && (k <= nStates))
-        {   screen(i)
-            y <- obs[vit$states==k]
+    k <- 1
+    while (k <= nStates) {
+        split.screen(c(2, 1))
+        split.screen(c(1, 2), screen = 1)
+        split.screen(c(1, 2), screen = 2)
+        par(bg = "white")
+        i <- 3
+        while ((i <= 6) && (k <= nStates)) {
+            screen(i)
+            y <- obs[vit$states == k]
             ny <- length(y)
-            y <- table(y) / ny
+            y <- table(y)/ny
             y0 <- object$proba[[k]]
 
-            if (max(y) > max(y0))
-            {   plot(y, col=color, xlab="", ylab="Probability", lwd=2)
-                lines(y0, type="p", lwd=3)
-            }
-            else
-            {   plot(y, col=color, xlab="", ylab="Probability", lwd=2, type="n")
-                lines(y0, type='p', lwd=3)
-                lines(y, col=color, lwd=2, type="h")
+            if (max(y) > max(y0)) {
+                plot(y, col = color, xlab = "", ylab = "Probability", lwd = 2)
+                lines(y0, type = "p", lwd = 3)
+            } else {
+                plot(y, col = color, xlab = "", ylab = "Probability", lwd = 2, type = "n")
+                lines(y0, type = "p", lwd = 3)
+                lines(y, col = color, lwd = 2, type = "h")
             }
 
-            sub <- sprintf("Frequency (%s) - Estimated parameters (black)\n", color)
+            sub <- sprintf("Frequency (%s) \n Estimated parameters (black)\n", color)
             titre <- sprintf("Graphic diagnostic for state %d", k)
-            title(main=titre, sub=sub)
+            title(main = titre, sub = sub)
             k <- k + 1
             i <- i + 1
         }
@@ -1659,23 +1702,23 @@ graphicDiag.discreteClass <- function(object, vit, obs, color="green")
     }
 }
 
-HMMGraphicDiag <- function(vit, HMM, obs, color="green")
-{   if (class(vit) !="viterbiClass")
+HMMGraphicDiag <- function(vit, HMM, obs, color = "green") {
+    if (class(vit) != "viterbiClass")
         stop("vit must be a viterbiClass object. See viterbi\n")
-    if ( (class(HMM) != "HMMClass") && (class(HMM) != "HMMFitClass") && is.na(match("distributionClass", class(HMM))) )
+    if ((class(HMM) != "HMMClass") && (class(HMM) != "HMMFitClass") && is.na(match("distributionClass",
+        class(HMM))))
         stop("distribution must be a distributionClass, HMMClass or a HMMFitClass object\n")
 
-    if (is.data.frame(obs))
-    {   dimObs <- dim(obs)[2]
+    if (is.data.frame(obs)) {
+        dimObs <- dim(obs)[2]
         if (dimObs == 1)
-            obs <- obs[,1]
-        else
-            obs <- as.matrix(obs[,1:dimObs])
+            obs <- obs[, 1] else obs <- as.matrix(obs[, 1:dimObs])
     }
 
-    graphicDiag(HMM, vit, obs, color)
+    GraphicDiag(HMM, vit, obs, color)
 
 }
+
 
 PlotSerie <- function(object, vit, obs, color="black", ...) UseMethod("PlotSerie")
 PlotSerie.default <- function(object, vit, obs, color="black", ...)
@@ -1684,7 +1727,7 @@ PlotSerie.default <- function(object, vit, obs, color="black", ...)
 }
 
 plotSerie.distributionClass <- function(object, vit, obs, color="black", ...)
-{
+{   args <- list(...)
     if (is.na(match(color, colours())))
         stop(sprintf("unknown %s color\n", color))
       #x11()
@@ -1703,12 +1746,11 @@ plotSerie.distributionClass <- function(object, vit, obs, color="black", ...)
         vit$states <- states
     }
 
-    NextMethod(generic="plotSerie", object=object)
+    NextMethod(generic="plotSerie", object=object, args)
 }
 
 
-
-HMMPlotSerie <- function(obs, states, dates = NULL, dis = "NORMAL", color="green", oneFig=FALSE)
+HMMPlotSerie <- function(obs, states, dates = NULL, dis = "NORMAL", color="green", oneFig=FALSE, ...)
 {
     if ( (class(states) !="viterbiClass") && (!is_numeric_vector(states)) && (!is_list_numeric_vector(states)))
         stop("states must be a viterbiClass object, a numeric vector or a list of numeric vector.\n")
@@ -1742,7 +1784,7 @@ HMMPlotSerie <- function(obs, states, dates = NULL, dis = "NORMAL", color="green
 
     if (!is.null(dim(obs)))
         if (dim(obs)[2] > 1)
-            stop("Not yet implemented for this kind of distribution\n")
+            stop("Not yet implemented for multivariate distribution\n")
 
     nStates <- max(states)
     if (dis == 'NORMAL')
@@ -1762,7 +1804,8 @@ HMMPlotSerie <- function(obs, states, dates = NULL, dis = "NORMAL", color="green
 
         }
     }
-    #x11()
+    dotArgs <- list(...)
+    defaultDotArgs <- list(xlab="", ylab="Serie", lwd=1,  col=color)
     if (is.null(dates))
     {   xx <- seq(1,length(Aux))
     }
@@ -1775,6 +1818,7 @@ HMMPlotSerie <- function(obs, states, dates = NULL, dis = "NORMAL", color="green
         {   nScreens <- nScreens+1
         }
         k<-1
+        defaultDotArgs$type='l'
          while (k <= nStates)
         {   par(bg="white")
             split.screen(c(min(3, nStates),1))
@@ -1784,9 +1828,14 @@ HMMPlotSerie <- function(obs, states, dates = NULL, dis = "NORMAL", color="green
                 z <- TransformeListe(distribution, Aux)
                 y <- (z$Zt[[1]])*(states==k)
                 if (dis != 'DISCRETE')
-                    plot(xx, y, col=color, type='l', xlab="", ylab="Serie", lwd=1)
+                {   args <- list(x=xx, y=y)
+                    myDoCall("plot", args, defaultDotArgs, dotArgs)
+                }
                 else
-                    plot(xx, y+1, col=color, type='l', xlab="", ylab="Serie", lwd=1)
+                {   args <- list(x=xx, y=y+1)
+                    myDoCall("plot", args, defaultDotArgs, dotArgs)
+
+                 }
                 titre <- sprintf("Serie for state %d", k)
                 k <- k + 1
                 i <- i + 1
@@ -1799,7 +1848,7 @@ HMMPlotSerie <- function(obs, states, dates = NULL, dis = "NORMAL", color="green
     }
     else
     {
-        coul <- c("blue", "red", "green", "yellow", "grey", "pink", "orange", "purple", "turquoise", "tomatoe")
+       coul <- c("blue", "red", "green", "yellow", "grey", "pink", "orange", "purple", "turquoise", "tomatoe")
         k <- 1
         kc <- 1
         titre <- ""
@@ -1812,13 +1861,24 @@ HMMPlotSerie <- function(obs, states, dates = NULL, dis = "NORMAL", color="green
             ymax <- ymax + 1
         }
         ylim <- c(ymin, ymax)
-        plot(xx, y, col='black', type='n', ylim=ylim, xlab="", ylab="Series")
-        while ( k <= nStates)
+        defaultDotArgs <- c(defaultDotArgs, list(ylim=ylim))
+        defaultDotArgs$type='n'
+        args <- list(x=xx, y=y)
+        myDoCall("plot", args, defaultDotArgs, dotArgs)
+        defaultDotArgs$type='l'
+
+         while ( k <= nStates)
         {   y <- (z$Zt[[1]])*(states==k)
             if (dis != 'DISCRETE')
-                lines(xx, y, col=coul[kc], type='l', xlab="", ylab="Serie", lwd=1)
+            {   defaultDotArgs$col <- coul[kc]
+                args <- list(x=xx, y=y)
+                myDoCall("lines", args, defaultDotArgs, dotArgs)
+             }
             else
-                lines(xx, y+1, col=coul[kc], type='l', xlab="", ylab="Serie", lwd=1)
+            {   defaultDotArgs$col <- coul[kc]
+                args <- list(x=xx, y=y+1)
+                myDoCall("lines", args, defaultDotArgs, dotArgs)
+            }
             titre <- sprintf("%sState %d (%s)", titre, k, coul[kc])
             if (k < nStates)
             {   titre <- sprintf("%s - ", titre)
@@ -1827,9 +1887,13 @@ HMMPlotSerie <- function(obs, states, dates = NULL, dis = "NORMAL", color="green
             kc <- kc + 1
             if (kc == 11)
                 kc <- 1
-        }    
-        lines(xx, rep(0, length(xx)), col='black', lwd=1) 
-        title(main=titre)
+        }
+        lines(xx, rep(0, length(xx)), col='black', lwd=1)
+        if (sum(names(dotArgs)== "main") == 0)
+        {   title(main=titre)
+        }
+        else
+        {   title(main=dotArgs$main)
+        }
     }
-           
 }
