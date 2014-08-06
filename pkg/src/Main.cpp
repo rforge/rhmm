@@ -21,121 +21,200 @@ using namespace std;
 #define NB_STATES 2
 #define NB_MIXT 3
 #define NB_PROBA 2
-
 int main(void)
 {
+/*
+cMixtMultivariateNormal myMixt(2,2,2) ;
+double	myMeanD11[2] = {10, 0},
+		myMeanD12[2] = {0, -5},
+		myMeanD21[2] = {15, 15},
+		myMeanD22[2] = {-7, -7},
+		myCovD11[4] = {1, 1.6, 1.6, 4},
+		myCovD12[4] = {4, -3, -3, 9},
+		myCovD21[4] = {4, 1, 1, 1},
+		myCovD22[4] = {1, -2.1, -2.1, 9},
+		mypD1[2] = {0.2, 0.8},
+		mypD2[2] = {0.7, 0.3};
+cDVector myMean11(2, myMeanD11), myMean12(2, myMeanD12), myMean21(2, myMeanD21), myMean22(2, myMeanD22) ;
+cDMatrix myCov11(2,2, myCovD11), myCov12(2,2, myCovD12), myCov21(2,2, myCovD21), myCov22(2,2, myCovD22) ;
+cDVector myp1(2, mypD1), myp2(2, mypD2) ;
+
+
+	myMixt.mMean[0][0] = myMean11;
+	myMixt.mMean[0][1] = myMean12 ;
+	myMixt.mMean[1][0] = myMean21 ;
+	myMixt.mMean[1][1] = myMean22 ;
+	myMixt.mCov[0][0] = myCov11;
+	myMixt.mCov[0][1] = myCov12 ;
+	myMixt.mCov[1][0] = myCov21 ;
+	myMixt.mCov[1][1] = myCov22 ;
+	myMixt.mp[0] = myp1 ;
+	myMixt.mp[1] = myp2 ;
+	myMixt.Print() ;
+
+cDVector myY = Zeros(2) ;
+cDVector** myGrad = new cDVector*[2] ;
+cDMatrix** myHess = new cDMatrix*[2] ;
+	for (register uint j = 0 ; j < 2 ; j++)
+	{	myGrad[j] = new cDVector[1] ;
+		myGrad[j][0].ReAlloc(25) ;
+		myHess[j] = new cDMatrix[1] ;
+		myHess[j][0].ReAlloc(25, 25) ;
+	}
+	myMixt.ComputeDerivative(myY, myGrad, myHess) ;
+	for (register uint j = 0 ; j < 2 ; j++)
+	{
+		cout << "Grad[" << j <<"] : " << endl << myGrad[j][0] << endl ;
+		cout << "Hess[" << j <<"] : " << endl << myHess[j][0] << endl ;
+	}
+	return 0 ;
+*/
+
 ifstream myFile ;
 cDVector* myRt = new cDVector[NB_SAMPLE] ;
 register uint n = 0 ;
+uint myT[NB_SAMPLE] ;
 double myAux ;
-        myFile.open(FIC_NAME) ;
-        while (myFile)
-        {       myFile >> myAux ;               
-                n++ ;
-        }
-        n = (n-1)/(DIM_OBS*NB_SAMPLE) ;
-        myFile.close() ;
-        for (register uint j = 0 ; j < NB_SAMPLE ; j++)
-                myRt[j].ReAlloc(DIM_OBS*n) ;
-        std::fstream myFile1(FIC_NAME) ;
-        for (register uint i = 0 ; i < NB_SAMPLE ; i++)
-                for (register uint j = 0 ; j < n  ; j++)
-                        for (register uint k = 0 ; k < DIM_OBS ; k++)
-                                myFile1 >> myRt[i][j + k*n]  ;
-        
-//      myRt[1] = myRt[0] ;
-        myFile1.close() ;
+	myFile.open(FIC_NAME) ;
+	if ((int)NB_SAMPLE == 1)
+	{	while (myFile)
+		{	for (register int l = 0 ; l < DIM_OBS ; l++)
+				myFile >> myAux ;		
+			n++ ;
+		}
+		n = (n-1)/DIM_OBS ;
+		myT[0] = n-1 ;
+	}
+	else
+	{
+	uint i, j = 1 ;
+		while (myFile)
+		{	myFile >> i ;
+			for (register uint l = 0 ; l < DIM_OBS ; l++)
+				myFile >> myAux ;
+			if (i == j)
+				n++ ;
+			else
+			{	myT[j-1] = n+1 ;
+				n = 0 ;
+				j++ ;
+			}
+		}
+		myT[j-1] = n ;
+		//for (j = 0 ; j < NB_SAMPLE ; j++)
+		//	myT[j] = myT[j]/(DIM_OBS) ;
+		myT[0]-- ;
+	}
 
-/*cDVector* myRt1 = new cDVector[1] ;
-        myRt1[0].ReAlloc(n) ;
-        for (register uint i = 0 ; i < n ; i++)
-                myRt1[0][i] = myRt[0][i(*+n*)] - 1;
-*/
+	
+	myFile.close() ;
+double myMin = 1e+100, myMax=-1e+100 ;
+	if ((int)NB_SAMPLE == 1)
+		myRt[0].ReAlloc(DIM_OBS*n) ;
+	else
+		for (register uint j = 0 ; j < NB_SAMPLE ; j++)
+			myRt[j].ReAlloc(myT[j]*DIM_OBS) ;
+	std::fstream myFile1(FIC_NAME) ;
+	if ((int)NB_SAMPLE == 1)
+	{	for (register uint j = 0 ; j < n  ; j++)
+			for (register uint k = 0 ; k < DIM_OBS ; k++)
+			{	myFile1 >> myRt[0][j + k*n]  ;
+				myMin = MIN(myMin, myRt[0][j + k*n]) ;
+				myMax = MAX(myMin, myRt[0][j + k*n]) ;
+			}
+	}
+	else
+	{	uint myAux1 ;
+		for (register uint i = 0 ; i < NB_SAMPLE ; i++)
+			for (register uint j = 0 ; j < myT[i]  ; j++)
+			{	myFile1 >> myAux1 ;
+				for (register uint k = 0 ; k < DIM_OBS ; k++)
+					myFile1 >>  myRt[i][j + k*myT[i]]  ;
+			}
+	}
+
+	myFile1.close() ;
+	cout << "MIN : " << myMin << endl << "MAX : " << myMax << endl ;
+
 
 //cHmm MyHMM(eNormalDistr, 2) ;
 uint myDimObs = DIM_OBS ;
 
-//cBaumWelchInParam myParam=cBaumWelchInParam(NB_SAMPLE, myDimObs, myRt, eNormalDistr, NB_STATES) ;
-//cBaumWelchInParam myParam=cBaumWelchInParam(1, myDimObs, myRt1, eDiscreteDistr, 3, 0, 10) ;
-//cBaumWelchInParam myParam=cBaumWelchInParam(NB_SAMPLE, myDimObs, myRt, eMixtUniNormalDistr, 2, 3) ;
-//cBaumWelchInParam myParam=cBaumWelchInParam(NB_SAMPLE, myDimObs, myRt, eMultiNormalDistr, 3) ;
-cBaumWelchInParam myParam=cBaumWelchInParam(NB_SAMPLE, myDimObs,  myRt, eMixtMultiNormalDistr, NB_STATES, NB_MIXT) ;
+cBaumWelchInParam myParam=cBaumWelchInParam(NB_SAMPLE, myDimObs, myRt, eNormalDistr, NB_STATES) ;
+//cBaumWelchInParam myParam=cBaumWelchInParam(NB_SAMPLE,myDimObs, myRt, eDiscreteDistr, NB_STATES, 0, NB_PROBA) ;
+//cBaumWelchInParam myParam=cBaumWelchInParam(1, myDimObs, myRt, eDiscreteDistr, 2, 0, 2) ;
+//cBaumWelchInParam myParam=cBaumWelchInParam(NB_SAMPLE, myDimObs, myRt, eMixtUniNormalDistr, NB_STATES, NB_MIXT) ;
+//cBaumWelchInParam myParam=cBaumWelchInParam(NB_SAMPLE, myDimObs, myRt, eMultiNormalDistr, NB_STATES) ;
+//cBaumWelchInParam myParam=cBaumWelchInParam(NB_SAMPLE, myDimObs,  myRt, eMixtMultiNormalDistr, NB_STATES, NB_MIXT) ;
 
-/*cHmm myHMM(eDiscreteDistr, 2) ;
-        myHMM.mInitProba[0] = myHMM.mInitProba[1] = 0.5L ;
-        myHMM.mTransMat[0][0]=0.95L ;
-        myHMM.mTransMat[0][1]=0.05L ;
-        myHMM.mTransMat[1][0]=0.10L ;
-        myHMM.mTransMat[1][1]=0.90L ;
-
-cDiscrete myDistrParam(2, 6) ;
-        for (register int j = 0 ; j < 6 ; j++)
-        {       myDistrParam.mProba[0][j] = 1.0L/6.0L ;
-                myDistrParam.mProba[1][j] = 1.0L/10.0L ;
-        }
-        myDistrParam.mProba[1][5] = 1.0L/2.0L ;
-        myHMM.mDistrParam = &myDistrParam ;
-        
-*/
-        myParam.Print() ;
-        myParam.mVerbose = 2 ;
-        myParam.mNInitIter = 5 ;
-        myParam.mNMaxIterInit = 5 ;
-        myParam.mNMaxIter = 500 ;
+	myParam.mVerbose = 3 ;
+	myParam.mNInitIter = 10 ;
+	myParam.mNMaxIterInit = 10 ;
+	myParam.mNMaxIter = 3000 ;
 
 
 cHmmFit myHMMFit(myParam) ;
-        myHMMFit.BaumWelchAlgoInit(myParam) ;
-        myHMMFit.BaumWelchAlgo(myParam) ;
-        myHMMFit.Print() ;
-/*
-cDMatrix*       myProbaCond = new cDMatrix[myParam.mNSample] ; 
-        
-        for (register uint n = 0 ; n < myParam.mNSample ; n++)
-        {       
-        uint mySize = myParam.mY[n].mSize/myParam.mDimObs ;
-                myProbaCond[n].ReAlloc(myParam.mNClass, mySize) ;
-        }
-        myHMMFit.mDistrParam->ComputeCondProba(myParam.mY, myParam.mNSample, myProbaCond) ;
-        myHMMFit.ForwardBackward(myProbaCond, myHMMFit) ;
-        cout << *(myHMMFit.mRho) ;
 
-*/
+
+	myHMMFit.BaumWelchAlgoInit(myParam) ;
+	myHMMFit.BaumWelchAlgo(myParam) ;
+
+	myHMMFit.Print() ;
+
 cViterbi myViterbi(myParam) ;
-        myViterbi.ViterbiPath(myParam, myHMMFit) ;
-//      myViterbi.ViterbiPath(myParam, myHMM) ;
-        for (register uint n = 0 ; n < myParam.mNSample ; n++)
-                for (register uint i = 0 ; i < myParam.mY[n].mSize ; i++)
-                        std::cout << myViterbi.mSeq[n][i] << std::endl ;
-/*
-cDVector myGrad ;
-        myHMMFit.ComputeGradient(myParam, myGrad, 1e-2) ;
-        std::cout << "Gradient : \n" ;
-        std::cout << myGrad ;
+	myViterbi.ViterbiPath(myParam, myHMMFit) ;
 
-cDMatrix myHess ;
-        myHMMFit.ComputeHessian(myParam, myHess,1e-5) ;
-        std::cout << "Hessian : \n" ;
-        std::cout << myHess ;
 
-cDMatrix        myI,
-                        myJ,
-                        myInvJ,
-                        myCov   ;
 
-        myI = myGrad*transpose(myGrad) ;
-        myJ = myHess ;
-        myJ /= -(double)n ;
-        myInvJ = inv(myJ) ;
-        myCov = myInvJ ;
-        myCov /= (double)n ;
-        myCov = myInvJ * myI ;
-        myCov *= myInvJ ;
-        std::cout << "Cov : \n" ;
-        std::cout << myCov ;
+cDMatrix* myProbaCond = new cDMatrix[NB_SAMPLE] ;
 
-*/
-        return 0 ;
+	for (register uint q = 0 ; q < NB_SAMPLE ; q++)
+		myProbaCond[q].ReAlloc(NB_STATES, myT[q]) ;
+
+	myHMMFit.mDistrParam->ComputeCondProba(myRt, NB_SAMPLE, myProbaCond) ;
+
+cBaumWelch myBaumWelch=cBaumWelch(NB_SAMPLE, myT, NB_STATES) ;
+
+	myBaumWelch.OutForwardBackward(myProbaCond, myHMMFit, NB_SAMPLE) ;
+
+	return(0) ;
+
+uint myNFreeParam = myHMMFit.GetNFreeParam() ;
+cDerivative myDerivative(myParam, myNFreeParam) ;
+	
+ 	myDerivative.ComputeDerivative(myHMMFit, myParam) ;
+
+ofstream myFileInfo("OutInfo.txt") ;
+
+//uint myT = myRt[0].GetSize() ;
+
+cDVector myScore(myNFreeParam) ;
+cDMatrix myInformation(myNFreeParam, myNFreeParam) ;
+	myDerivative.ComputeScoreAndInformation(myScore, myInformation) ;
+	cout << "Score : " << endl ;
+	cout << myScore << endl ;
+	cout << "Information : " << endl ;
+	cout << myInformation << endl ;
+
+
+cDMatrix myCov = Inv(myInformation) ;
+	cout << "Covariance :" << endl ;
+	cout << myCov << endl ;
+
+
+cDVector myStdError(myNFreeParam) ;
+	for (register uint i = 0 ; i < myNFreeParam ; i++)
+		myStdError[i] = sqrt(myCov[i][i]) ;
+	cout << "Ecart-types : " << endl << myStdError << endl ;
+
+cDMatrix myCov1 = myCov ;
+	myDerivative.ComputeCov(myHMMFit, myCov1) ;
+	cout << "Covariance 1 :" << endl ;
+	cout << myCov1 << endl ;
+
+
+	return 0 ;
+
 } 
 
 /*

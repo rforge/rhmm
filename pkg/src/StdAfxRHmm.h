@@ -33,4 +33,4 @@
 #include "REquivalents.h"
 #include "cDerivative.h"
 #include "RHmm.h"
-
+#include "Kmeans.h"

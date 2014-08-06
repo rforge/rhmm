@@ -9,6 +9,7 @@
  **************************************************************/
 
 #include "StdAfxRHmm.h"
+
 #ifdef _RDLL_
 /*
  *      Récupérer une seule valeur ï¿½ partir d'une liste SEXP à la place n° theNum

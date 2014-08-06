@@ -10,8 +10,6 @@
 
 #include "StdAfxRHmm.h"
 
-
-
 cMultivariateNormal::cMultivariateNormal(uint theNClass, uint theDimObs)
 {       MESS_CREAT("cMultivariateNormal")
         mvNClass = theNClass ;

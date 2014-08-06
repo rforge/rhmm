@@ -10,7 +10,6 @@
 
 #include "StdAfxRHmm.h"
 
-
 cBaumWelch::cBaumWelch(uint theNSample, uint* theT, uint theNClass)
 {       MESS_CREAT("cBaumWelch") 
         mtNSample = theNSample ;
