@@ -9,7 +9,7 @@
  ###############################################################
 
 tolMin <- .Machine$double.eps*100
-# Contraintes sur les paramètres
+# Parameter constraints
 eProba <- 1
 eVar <- 2
 eCor <- 3
