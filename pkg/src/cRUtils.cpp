@@ -35,7 +35,7 @@ SEXP myAux = VECTOR_ELT(theSEXP, theNum) ;
 void cRUtil::GetValSexp(SEXP theSEXP, uint theNum, char* theVal)
 {
 SEXP myAux = VECTOR_ELT(theSEXP, theNum) ;
-        sprintf(theVal, CHAR(STRING_ELT(myAux, 0))) ;
+        strcpy(theVal, CHAR(STRING_ELT(myAux, 0))) ;
 }
 void cRUtil::GetValSexp(SEXP theSEXP, uint theNum, SEXP &theVal)
 {
