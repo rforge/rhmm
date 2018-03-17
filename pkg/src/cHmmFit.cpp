@@ -131,8 +131,8 @@ uint myNFreeParam = GetNFreeParam()  ;
 void cHmmFit::BaumWelchAlgoInit(cBaumWelchInParam &theInParam)
 {
 #ifndef _RDLL_
-                if (theInParam.mInitType == eKMeans)
-                {          
+        if (theInParam.mInitType == eKMeans)
+        {
                 uint k ;
                 uint myT = 0 ;
                                 for (k = 0 ; k < theInParam.mNSample ; k++)
@@ -150,16 +150,16 @@ void cHmmFit::BaumWelchAlgoInit(cBaumWelchInParam &theInParam)
 //                        uint j ;
                                 
                 double myInitValue = 1.0/(double)(theInParam.mNClass) ;
-                for (int ii = 0 ; i < this->mTransMatVector.size() ; i++)
-                                                mTransMatVector[i] = myInitValue ;
+                for (i = 0 ; i < this->mTransMatVector.size() ; i++)
+                        mTransMatVector[i] = myInitValue ;
                                 
-                                mInitProba = 1.0/(double)(theInParam.mNClass) ;
+                mInitProba = 1.0/(double)(theInParam.mNClass) ;
                                 
-                                mDistrParam->InitParameters(theInParam) ;
-                                delete mySeq ;
-                                myY.Delete() ;
-                                return ;
-                }
+                mDistrParam->InitParameters(theInParam) ;
+                delete mySeq ;
+                myY.Delete() ;
+                return ;
+        }
 #else
                 GetRNGstate();
 #endif /* _RDLL_ */
