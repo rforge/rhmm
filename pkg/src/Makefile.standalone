@@ -28,7 +28,7 @@ SRCS =	\
 	cViterbi.cpp
 
 OBJS = $(patsubst %.cpp,%.o,$(SRCS))
-CXXFLAGS = `pkg-config --cflags libR` -Wall
+CXXFLAGS = `pkg-config --cflags libR` -Wall -ggdb
 
 all: Main
 
