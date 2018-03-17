@@ -24,7 +24,7 @@ cUnivariateNormal::~cUnivariateNormal()
 
 void cUnivariateNormal::ComputeCondProba(cDVector* theY, uint theNSample, cDMatrix* theCondProba)
 {
-register uint   i,
+uint   i,
                                 n,
                                 t                                               ;
 double                  myAux                                   ;
@@ -44,10 +44,10 @@ void cUnivariateNormal::ComputeDerivative(cDVector& theY, cDVector** theGrad, cD
 {
 uint myNStates = mMean.GetSize() ;
 uint myT = theY.GetSize() ;
-        for (register uint t = 0 ; t < myT ; t++)
+        for (uint t = 0 ; t < myT ; t++)
         {
         uint k = (myNStates - 1)*(myNStates + 1) ; // premier indice
-                for (register uint j = 0 ; j < myNStates ; j++)
+                for (uint j = 0 ; j < myNStates ; j++)
                 {       theGrad[j][t] = 0.0 ;
                         theHess[j][t] = 0.0 ;
                 double mySigma = sqrt(mVar[j]) ;
@@ -76,8 +76,8 @@ cDVector cUnivariateNormal::GetDistrNumParam(const cDVector& theNumDistrParam, u
 
 void cUnivariateNormal::UpdateParameters(cInParam& theInParam, cBaumWelch& theBaumWelch, cDMatrix* theCondProba)
 {       
-        for (register uint i = 0 ; i < theInParam.mNClass ; i++)
-        {       register uint   n,
+        for (uint i = 0 ; i < theInParam.mNClass ; i++)
+        {       uint   n,
                                                 t       ;
         double myDenominateur = 0.0 ;
                 for (n = 0 ; n < theInParam.mNSample ; n++)
@@ -101,7 +101,7 @@ void cUnivariateNormal::InitParameters(cBaumWelchInParam &theInParam)
         if (theInParam.mInitType == eKMeans)
         {
         uint myT = 0 ;
-        register uint   k       ;
+        uint   k       ;
                 for (k = 0 ; k < theInParam.mNSample ; k++)
                         myT += theInParam.mY[k].mSize ;
 
@@ -110,7 +110,7 @@ void cUnivariateNormal::InitParameters(cBaumWelchInParam &theInParam)
 
         cDVector myY(myT)      ;
 //              alloc_vecteur(myY, myT) ;
-        register uint   s = 0,
+        uint   s = 0,
                                         t               ;
                 for (k = 0 ; k < theInParam.mNSample ; k++)
                         for (t = 0 ; t < theInParam.mY[k].mSize ; t++)
@@ -143,8 +143,8 @@ double  myMoy = 0,
                 myVar = 0,
                 mystdev         ;
 double  mys = 0.0              ;               
-                for (register uint n = 0 ; n < theInParam.mNSample ; n++)
-                {       for (register uint t = 0 ; t < theInParam.mY[n].mSize  ; t++)
+                for (uint n = 0 ; n < theInParam.mNSample ; n++)
+                {       for (uint t = 0 ; t < theInParam.mY[n].mSize  ; t++)
                         {       myMoy = (mys*myMoy + theInParam.mY[n][t])/(mys+1) ;
                                 myVar = (mys*myVar + theInParam.mY[n][t]*theInParam.mY[n][t])/(mys+1) ;
                                 mys++ ;
@@ -152,7 +152,7 @@ double  mys = 0.0              ;
                 }
                 myVar -= myMoy*myMoy ;
                 mystdev = sqrt(myVar) ;
-                for (register uint i = 0 ; i < theInParam.mNClass ; i++)
+                for (uint i = 0 ; i < theInParam.mNClass ; i++)
                 {       mMean[i] =  -2*mystdev + myMoy + 2*mystdev * unif_rand() ;
                         mVar[i] = 0.5*myVar + 3*myVar * unif_rand() ;    ;
                 }
@@ -165,7 +165,7 @@ double  mys = 0.0              ;
 void cUnivariateNormal::Print()
 {
         Rprintf("Parametres\n") ;
-        for (register uint i = 0 ; i < mMean.mSize ; i++)
+        for (uint i = 0 ; i < mMean.mSize ; i++)
                 Rprintf("m[%d]=%lf\ts[%d]=%f\n", i, mMean[i], i, sqrt(mVar[i]));
 }
 
@@ -187,8 +187,8 @@ cUnivariateNormal::cUnivariateNormal(cDistribution& theSrc)
 
 void cUnivariateNormal::GetParam(uint theDeb, cDVector& theParam)
 {
-register uint k = theDeb ;
-        for (register uint n = 0 ; n < mMean.mSize ; n++)
+uint k = theDeb ;
+        for (uint n = 0 ; n < mMean.mSize ; n++)
         {       theParam[k++] = mMean[n] ;
                 theParam[k++] = mVar[n] ;
         }
@@ -196,8 +196,8 @@ register uint k = theDeb ;
 
 void cUnivariateNormal::SetParam(uint theDeb, cDVector& theParam)
 {
-register uint k = theDeb ;
-        for (register uint n = 0 ; n < mMean.mSize ; n++)
+uint k = theDeb ;
+        for (uint n = 0 ; n < mMean.mSize ; n++)
         {       mMean[n] = theParam[k++] ;
                 mVar[n] = theParam[k++] ;
         }

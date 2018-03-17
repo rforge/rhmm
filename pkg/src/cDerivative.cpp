@@ -22,16 +22,16 @@ cDerivative::cDerivative(uint theNSample, uint* theT, uint theNClass, uint theNF
         mScore = new cDVector[theNSample] ;
         mInformation = new cDMatrix[theNSample] ;
 
-        for (register uint n = 0 ; n < theNSample ; n++)
+        for (uint n = 0 ; n < theNSample ; n++)
     {   mPsi[n] = new cDVector*[mvNClass] ;
                 mOmega[n] = new cDMatrix*[mvNClass] ;
                 mScore[n].ReAlloc(mvNFreeParam) ;
                 mvT[n] = theT[n] ;
                 mInformation[n].ReAlloc(mvNFreeParam, mvNFreeParam) ;
-                for (register uint i = 0 ; i < mvNClass ; i++)
+                for (uint i = 0 ; i < mvNClass ; i++)
                 {       mPsi[n][i] = new cDVector[theT[n]] ;
                         mOmega[n][i] = new cDMatrix[theT[n]] ;
-                        for (register uint t = 0 ; t < mvT[n] ; t++)
+                        for (uint t = 0 ; t < mvT[n] ; t++)
                         {       mPsi[n][i][t].ReAlloc(mvNFreeParam, 0.0) ;
                                 mOmega[n][i][t].ReAlloc(mvNFreeParam, mvNFreeParam) ;
                         }
@@ -52,7 +52,7 @@ cDerivative::cDerivative(const cInParam &theInParam, uint theNFreeParam)
         mScore = new cDVector[mvNSample] ;
         mInformation = new cDMatrix[mvNSample] ;
 
-        for (register uint n = 0 ; n < mvNSample ; n++)
+        for (uint n = 0 ; n < mvNSample ; n++)
     {   
         uint myT = theInParam.mY[n].GetSize() / theInParam.mDimObs ;
                 mPsi[n] = new cDVector*[mvNClass] ;
@@ -60,10 +60,10 @@ cDerivative::cDerivative(const cInParam &theInParam, uint theNFreeParam)
                 mScore[n].ReAlloc(mvNFreeParam) ;
                 mvT[n] = myT ;
                 mInformation[n].ReAlloc(mvNFreeParam, mvNFreeParam) ;
-                for (register uint j = 0 ; j < mvNClass ; j++)
+                for (uint j = 0 ; j < mvNClass ; j++)
                 {       mPsi[n][j] = new cDVector[myT] ;
                         mOmega[n][j] = new cDMatrix[myT] ;      
-                        for (register uint t = 0 ; t < myT ; t++)
+                        for (uint t = 0 ; t < myT ; t++)
                         {       mPsi[n][j][t].ReAlloc(mvNFreeParam) ;
                                 mOmega[n][j][t].ReAlloc(mvNFreeParam, mvNFreeParam) ;
                         }
@@ -74,9 +74,9 @@ cDerivative::cDerivative(const cInParam &theInParam, uint theNFreeParam)
 
 cDerivative::~cDerivative()
 {
-        for (register uint n = 0 ; n < mvNSample ; n++)
-        {       for (register uint j = 0 ; j < mvNClass ; j++)
-                {       for (register uint t = 0 ; t < mvT[n] ; t++)
+        for (uint n = 0 ; n < mvNSample ; n++)
+        {       for (uint j = 0 ; j < mvNClass ; j++)
+                {       for (uint t = 0 ; t < mvT[n] ; t++)
                         {       mPsi[n][j][t].Delete() ;
                                 mOmega[n][j][t].Delete() ;
                         }
@@ -99,7 +99,7 @@ void cDerivative::ComputeDerivative(cHmm& theHmm, cInParam& theInParam)
 {
 cDMatrix* myCondProba = new cDMatrix[theInParam.mNSample] ; 
                 
-        for (register uint n = 0 ; n < mvNSample ; n++)
+        for (uint n = 0 ; n < mvNSample ; n++)
         {          
         uint mySize = theInParam.mY[n].mSize/theInParam.mDimObs ;
                 myCondProba[n].ReAlloc(theInParam.mNClass, mySize) ;
@@ -110,14 +110,14 @@ cDMatrix* myLambda = new cDMatrix[theInParam.mNSample] ;
 cDVector* mySumLambda = new cDVector[theInParam.mNSample] ;
         
         // CALCUL DES LAMBDAs
-        for (register uint n = 0 ; n < mvNSample ; n++)
+        for (uint n = 0 ; n < mvNSample ; n++)
         {
                 mySumLambda[n].ReAlloc(mvT[n]) ;
                 myLambda[n].ReAlloc(mvNClass, mvT[n]) ;
         
         // t = 0 
                 mySumLambda[n][0] = 0.0 ;
-                for (register uint j = 0 ; j < mvNClass ; j++)
+                for (uint j = 0 ; j < mvNClass ; j++)
                 {
                         myLambda[n][j][0] = theHmm.mInitProba[j] * myCondProba[n][j][0] ;
                         mySumLambda[n][0] += myLambda[n][j][0] ;
@@ -125,12 +125,12 @@ cDVector* mySumLambda = new cDVector[theInParam.mNSample] ;
 
         // t > 0
         uint myT = theInParam.mY[n].GetSize() / theInParam.mDimObs ;
-                for (register uint t = 1 ; t < myT ; t++)
+                for (uint t = 1 ; t < myT ; t++)
                 {       mySumLambda[n][t] = 0.0 ;
-                        for (register uint j = 0 ; j < mvNClass ; j++)
+                        for (uint j = 0 ; j < mvNClass ; j++)
                         {       
                         double myAux = 0.0 ;
-                                for (register uint i = 0 ; i < mvNClass ; i++)
+                                for (uint i = 0 ; i < mvNClass ; i++)
                                         myAux += myLambda[n][i][t-1]*theHmm.mTransMatVector[t][i][j] ;
                                 myLambda[n][j][t] = myAux * myCondProba[n][j][t]/mySumLambda[n][t-1] ;
                                 mySumLambda[n][t] += myLambda[n][j][t] ;
@@ -143,24 +143,24 @@ cDVector** myGradTransMat = new cDVector*[mvNClass] ;
 cDVector** myGradCondProba = new cDVector*[mvNClass] ;
 cDMatrix** myHessCondProba = new cDMatrix*[mvNClass] ;
 
-        for (register uint n = 0 ; n < mvNClass ; n++)
+        for (uint n = 0 ; n < mvNClass ; n++)
         {       myGradInitProb[n].ReAlloc(mvNFreeParam, 0.0L) ;
                 myGradTransMat[n] = new cDVector[mvNClass] ;
-                for (register uint i = 0 ; i < mvNClass ; i++)
+                for (uint i = 0 ; i < mvNClass ; i++)
                         myGradTransMat[n][i].ReAlloc(mvNFreeParam, 0.0L) ;
         }
 
         /* Dérivées probabilités initiales */
 uint myNFreeClass = mvNClass - 1 ;
-        for (register uint s = 0 ; s < myNFreeClass ; s++)
+        for (uint s = 0 ; s < myNFreeClass ; s++)
         {       myGradInitProb[s][s] = 1.0L ;
                 myGradInitProb[myNFreeClass][s] = -1.0L ;
         }
         
         /* Dérivées matrice de transition */
 uint myBegIndex = myNFreeClass  ;
-        for (register uint i = 0 ; i < mvNClass ; i++)
-        {       for (register uint j = 0 ; j < myNFreeClass  ; j++)
+        for (uint i = 0 ; i < mvNClass ; i++)
+        {       for (uint j = 0 ; j < myNFreeClass  ; j++)
                 {       myGradTransMat[i][j][j+myBegIndex] = 1.0L ;
                         myGradTransMat[i][myNFreeClass][j+myBegIndex] = -1.0L ;
                 }
@@ -169,10 +169,10 @@ uint myBegIndex = myNFreeClass  ;
 
         for (register uint n = 0 ; n < mvNSample ; n++) // Boucle sur le nombre d'échantillon
         {
-                for (register uint j = 0 ; j < mvNClass ; j++)
+                for (uint j = 0 ; j < mvNClass ; j++)
                 {       myGradCondProba[j] = new cDVector[mvT[n]] ;
                         myHessCondProba[j] = new cDMatrix[mvT[n]] ;
-                        for (register uint t = 0 ; t < mvT[n] ; t++)
+                        for (uint t = 0 ; t < mvT[n] ; t++)
                         {       myGradCondProba[j][t].ReAlloc(mvNFreeParam) ;
                                 myHessCondProba[j][t].ReAlloc(mvNFreeParam, mvNFreeParam) ;
                         }
@@ -180,7 +180,7 @@ uint myBegIndex = myNFreeClass  ;
                 theHmm.mDistrParam->ComputeDerivative(theInParam.mY[n], myGradCondProba, myHessCondProba) ;
         /* t = 0 */
 
-                for (register uint j = 0 ; j < mvNClass ; j++)
+                for (uint j = 0 ; j < mvNClass ; j++)
                 {
                         mPsi[n][j][0] = theHmm.mInitProba[j] * myGradCondProba[j][0] + myCondProba[n][j][0] * myGradInitProb[j] ;
                         mOmega[n][j][0] = theHmm.mInitProba[j] * myHessCondProba[j][0] + myGradCondProba[j][0] * Transpose(myGradInitProb[j]) 
@@ -190,11 +190,11 @@ uint myBegIndex = myNFreeClass  ;
         /* t > 0 */
         uint myT = mvT[n] ;
 
-                for (register uint t = 1 ; t < myT ; t++)
-                {       for (register uint j = 0 ; j < mvNClass ; j++)
+                for (uint t = 1 ; t < myT ; t++)
+                {       for (uint j = 0 ; j < mvNClass ; j++)
                         {       mPsi[n][j][t] = 0.0 ;
                                 mOmega[n][j][t] = 0.0 ;
-                                for ( register uint i = 0 ; i < mvNClass ; i++)
+                                for (uint i = 0 ; i < mvNClass ; i++)
                                 {
                                 cDVector myVect1 = myCondProba[n][j][t] * theHmm.mTransMatVector[t][i][j] * mPsi[n][i][t-1] ;
                                 cDVector myVect2 = myLambda[n][i][t-1] * theHmm.mTransMatVector[t][i][j] * myGradCondProba[j][t]  ;
@@ -215,7 +215,7 @@ uint myBegIndex = myNFreeClass  ;
                 } /* for t */
                 mScore[n] = 0.0 ;
                 mInformation[n] = 0.0 ;
-                for ( register uint j = 0 ; j < mvNClass ; j++)
+                for (uint j = 0 ; j < mvNClass ; j++)
                 {       mScore[n] += mPsi[n][j][myT-1] ;
                         mInformation[n] -= mOmega[n][j][myT-1] ;
                 }
@@ -223,8 +223,8 @@ uint myBegIndex = myNFreeClass  ;
                 mInformation[n] /= mySumLambda[n][myT-1] ;
                 mInformation[n] += mScore[n] * Transpose(mScore[n]) ;
 
-                for (register uint p = 0 ; p < mvNClass ; p++)
-                {       for (register uint t = 0 ; t < mvT[n] ; t++)
+                for (uint p = 0 ; p < mvNClass ; p++)
+                {       for (uint t = 0 ; t < mvT[n] ; t++)
                         {       myGradCondProba[p][t].Delete() ;
                                 myHessCondProba[p][t].Delete() ;
                         }
@@ -234,14 +234,14 @@ uint myBegIndex = myNFreeClass  ;
 
         } /* for n */
 
-        for (register uint n = 0 ; n < mvNClass ; n++)
+        for (uint n = 0 ; n < mvNClass ; n++)
         {       myGradInitProb[n].Delete() ;
-                for (register uint j = 0 ; j < mvNClass ; j++)
+                for (uint j = 0 ; j < mvNClass ; j++)
                         myGradTransMat[n][j].Delete() ;
                 delete [] myGradTransMat[n] ;
         }
 
-        for (register uint n = 0 ; n < mvNSample ; n++)
+        for (uint n = 0 ; n < mvNSample ; n++)
         {       myLambda[n].Delete() ;
                 mySumLambda[n].Delete() ;
         }
@@ -259,7 +259,7 @@ void cDerivative::ComputeScoreAndInformation(cDVector& theScore, cDMatrix& theIn
         theScore = 0.0 ;
         theInformation = 0.0 ;
 uint myT = 0 ;
-        for (register uint n = 0 ; n < mvNSample ; n++)
+        for (uint n = 0 ; n < mvNSample ; n++)
         {       myT += mvT[n] ;
                 theScore += mvT[n]*mScore[n] ;
                 theInformation +=  mvT[n]*mInformation[n] ;
@@ -284,17 +284,17 @@ cDVector myU(mvNFreeParam) ;
 
 // initProb
         myU = 0.0 ;
-        for (register uint i = 0 ; i < myNFreeClass ; i++)
+        for (uint i = 0 ; i < myNFreeClass ; i++)
                 myU[i] = -1.0 ;
         theCov = AddOneVariable(theCov, myU) ;
         mySizeCour = mvNFreeParam + 1 ;
 // transMat
 uint myBeg = 0 ;        
-        for (register uint n = 0 ; n < mvNClass ; n++)
+        for (uint n = 0 ; n < mvNClass ; n++)
         {
                 myU.ReAlloc(mySizeCour, 0.0) ;
                 myBeg += myNFreeClass ;
-                for (register uint i = myBeg ; i < myBeg+myNFreeClass ; i++)
+                for (uint i = myBeg ; i < myBeg+myNFreeClass ; i++)
                         myU[i] = -1.0 ;
                 theCov = AddOneVariable(theCov, myU) ;
                 mySizeCour++ ;
@@ -311,7 +311,7 @@ uint myIndCour ;
 uint myNextInd = mvNFreeParam ;
 cDVector myResNum ;
 
-        for (register uint j = 0 ; j < mvNFreeParam ; j++)
+        for (uint j = 0 ; j < mvNFreeParam ; j++)
                 myParamNum[j] = j ;
         // initProba
         myIndCour = 0 ;
@@ -319,7 +319,7 @@ cDVector myResNum ;
         myResNum = cat(myNFreeClassVect, (double)myNextInd) ;
         myNextInd++ ;
         // transMat
-        for (register uint i = 0 ; i < mvNClass ; i++)
+        for (uint i = 0 ; i < mvNClass ; i++)
         {       myIndCour += myNFreeClass ;
                 GetSubVector(myParamNum, myIndCour, myNFreeClass, myNFreeClassVect) ;
                 myResNum = cat(myResNum, myNFreeClassVect) ;
@@ -334,7 +334,7 @@ cDVector myParamNumDistrAll = theHmm.mDistrParam->GetDistrNumParam(myParamNumDis
         myResNum = cat(myResNum, myParamNumDistrAll) ;
 
 cDMatrix myCov = theCov ;
-        for (register uint i = 0 ; i < myNParam ; i++)
-                for (register uint j = 0 ; j < myNParam ; j++)
+        for (uint i = 0 ; i < myNParam ; i++)
+                for (uint j = 0 ; j < myNParam ; j++)
                         theCov[i][j] = myCov[(int)myResNum[i]][(int)myResNum[j]] ;
 }

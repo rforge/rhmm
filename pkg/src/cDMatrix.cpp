@@ -275,14 +275,14 @@ uint n ;
 	if ( (n = theMat.GetNCols()) == 1 )
 	{	
 	cDVector myVect(n) ;
-		for ( register uint i = 0 ; i < n ; i++)
+		for (uint i = 0 ; i < n ; i++)
 			myVect[i] = theMat[i][0] ;
 		return myVect ;
 	}
 	else
 	{	
 	cDVector myVect(n) ;
-		for ( register uint i = 0 ; i < n ; i++)
+		for (uint i = 0 ; i < n ; i++)
 			myVect[i] = theMat[0][1] ;
 		return myVect ;
 	}
@@ -408,7 +408,7 @@ double AsDouble(const cDMatrix& theMat)
 cDMatrix Identity(uint theN)
 {
 cDMatrix myTempMatrix(theN, theN) ;
-        for (register uint i=0 ; i < theN ; i++)
+        for (uint i=0 ; i < theN ; i++)
                 myTempMatrix[i][i] = 1.0L ;
         return myTempMatrix ;
 }
@@ -417,7 +417,7 @@ cDMatrix Diag(cDVector& theVect)
 {
 uint mySize = theVect.GetSize() ;
 cDMatrix myTempMatrix(mySize, mySize) ;
-        for (register uint i = 0 ; i <mySize ; i++)
+        for (uint i = 0 ; i <mySize ; i++)
                 myTempMatrix[i][i] = theVect[i] ;
 
         return myTempMatrix ;
@@ -446,8 +446,8 @@ void GetSubMatrix(cDMatrix& theSrcMatrix, uint theNRow, uint theNCol, cDMatrix& 
 		throw cOTError("Wrong matrix size in GetSubMatrix") ;
 	theDestMatrix.ReAlloc(theNRow, theNCol) ;
 	
-	for (register uint i = 0 ; i < theNRow ; i++)
-		for (register uint j = 0 ; j < theNCol ; j++)
+	for (uint i = 0 ; i < theNRow ; i++)
+		for (uint j = 0 ; j < theNCol ; j++)
 			theDestMatrix[i][j] = theSrcMatrix[i][j] ;
 }
 
@@ -459,8 +459,8 @@ uint myNCols = theSrcMatrix.GetNCols() ;
 	if ( (theDestMatrix.GetNRows()  < myNRows + theFirstRow) || (theDestMatrix.GetNCols() < myNCols + theFirstCol) )
 		throw cOTError("Wrong matrix size in SetSubMatrix") ;
 
-	for (register uint i = 0 ; i < myNRows ; i++)
-		for (register uint j = 0 ; j < myNCols ; j++)
+	for (uint i = 0 ; i < myNRows ; i++)
+		for (uint j = 0 ; j < myNCols ; j++)
 			theDestMatrix[i+theFirstRow][j+theFirstCol] = theSrcMatrix[i][j] ;
 }
 
@@ -474,7 +474,7 @@ uint mySize = theColRow.GetSize() ;
 cDMatrix mySrcMatrix = theMat ;
 	theMat.ReAlloc(mySize, mySize) ;
 	SetSubMatrix(mySrcMatrix, 0, 0, theMat) ;
-	for (register uint i = 0 ; i < mySize  ; i++)
+	for (uint i = 0 ; i < mySize  ; i++)
 		theMat[i][mySize-1] = theMat[mySize-1][i] = theColRow[i] ;
 }
 
@@ -490,8 +490,8 @@ int myInfo,
         myN = (int)(myNCol),
         myldz = (int)(myNCol) ;
 
-        for (register int i = 0 ; i < myN ; i++)
-                for (register int j = i ; j < myldz ; j++)
+        for (int i = 0 ; i < myN ; i++)
+                for (int j = i ; j < myldz ; j++)
                         myAP[i+(j+1)*j/2]  = theMatrix[i][j] ;
 
         F77_NAME(dspev)("V", "U", &myN, myAP, myW, myZ, &myldz, myWork, &myInfo) ;
@@ -502,10 +502,10 @@ int myInfo,
 cDVector myInvEigenValue = cDVector(myNCol) ;
 
 cDMatrix myEigenVector(myNCol, myNCol) ;
-        for (register uint i = 0 ; i < myNCol ; i++)
+        for (uint i = 0 ; i < myNCol ; i++)
         {       theDet *= myW[i] ;
                 myInvEigenValue[i] = 1.0 /myW[i] ;
-                for (register int j = 0 ; j < myN ; j++)
+                for (int j = 0 ; j < myN ; j++)
                         myEigenVector[i][j] = myZ[i + j*myN] ;
         }
         theInvMatrix =  myEigenVector ;
@@ -531,8 +531,8 @@ int myInfo,
     myN = (int)(myNCol),
     myldz = (int)(myNCol) ;
 
-	for (register int i = 0 ; i < myN ; i++)
-		for (register int j = i ; j < myldz ; j++)
+	for (int i = 0 ; i < myN ; i++)
+		for (int j = i ; j < myldz ; j++)
 			myAP[i+(j+1)*j/2]  = theMatrix[i][j] ;
 
     F77_NAME(dspev)("V", "U", &myN, myAP, myW, myZ, &myldz, myWork, &myInfo) ;
@@ -542,7 +542,7 @@ double myDet ;
 		myDet = 0.0 ;
 	else
 	{	myDet = 1.0L ;
-        for (register uint i = 0 ; i < myNCol ; i++)
+        for (uint i = 0 ; i < myNCol ; i++)
         {	myDet *= myW[i] ;
         }
 	}        
