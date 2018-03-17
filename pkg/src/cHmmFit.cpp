@@ -147,8 +147,7 @@ void cHmmFit::BaumWelchAlgoInit(cBaumWelchInParam &theInParam)
                                                 for (i = 0 ; i < myTT ; i++)
                                                                 myY[t++] = theInParam.mY[k][i] ;
                                 }
-//                        uint j ;
-                                
+
                 double myInitValue = 1.0/(double)(theInParam.mNClass) ;
                 for (i = 0 ; i < this->mTransMatVector.size() ; i++)
                         mTransMatVector[i] = myInitValue ;
@@ -311,6 +310,4 @@ cDMatrix myValFuncthess(myNParam, myNParam) ;
 
                 for (uint n = 0 ; n < theInParam.mNSample ; n++)
                                 myProbaCond[n].Delete() ;
-//        delete myProbaCond ;
-
 }
