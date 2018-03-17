@@ -150,14 +150,14 @@ cDMatrix** myHessCondProba = new cDMatrix*[mvNClass] ;
                         myGradTransMat[n][i].ReAlloc(mvNFreeParam, 0.0L) ;
         }
 
-        /* Dérivées probabilités initiales */
+        /* Derive initial probabilities */
 uint myNFreeClass = mvNClass - 1 ;
         for (uint s = 0 ; s < myNFreeClass ; s++)
         {       myGradInitProb[s][s] = 1.0L ;
                 myGradInitProb[myNFreeClass][s] = -1.0L ;
         }
         
-        /* Dérivées matrice de transition */
+        /* Derive transition matrix */
 uint myBegIndex = myNFreeClass  ;
         for (uint i = 0 ; i < mvNClass ; i++)
         {       for (uint j = 0 ; j < myNFreeClass  ; j++)
@@ -167,7 +167,7 @@ uint myBegIndex = myNFreeClass  ;
                 myBegIndex += myNFreeClass ;
         }
 
-        for (register uint n = 0 ; n < mvNSample ; n++) // Boucle sur le nombre d'échantillon
+        for (uint n = 0 ; n < mvNSample ; n++) /* Sample loop */
         {
                 for (uint j = 0 ; j < mvNClass ; j++)
                 {       myGradCondProba[j] = new cDVector[mvT[n]] ;
