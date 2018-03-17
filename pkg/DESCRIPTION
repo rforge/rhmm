@@ -1,5 +1,5 @@
 Package: RHmm
-Version: 2.1.5
+Version: 2.1.6
 Date: 2018-03-17
 Title: Hidden Markov Models Simulations and Estimations
 Authors@R: c(person("Ollivier TARAMASCO", "Developer", role = c("aut", "cre"), email = "Ollivier.Taramasco@imag.fr"), person("Sebastian BAUER", "Developer", role = "aut"))

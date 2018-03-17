@@ -61,7 +61,7 @@ int myIter = 0 ;
                         {       myNbObs[i] = 0 ;
                                 myKmeans[i] = 0.0 ;
                         }
-                        for (t = 0 ; t < (int)myT ; t++)
+                        for (t = 0 ; t < myT ; t++)
                         {       i = theSeq[t] ;
                                 myKmeans[i] = ((double)myNbObs[i] * myKmeans[i] + theYt[t]) / (double)(myNbObs[i] + 1) ;
                                 myNbObs[i]++ ;
@@ -142,7 +142,7 @@ int myIter = 0 ;
                                 for (i = 0 ; i < theDimObs ; i++)
                                         myKmeans[k][i] = 0.0 ;
                         }
-                        for (t = 0 ; t < (int)myT ; t++)
+                        for (t = 0 ; t < myT ; t++)
                         {       k = theSeq[t] ;
                                 for (i = 0  ; i < theDimObs ; i++)
                                         myKmeans[k][i] = ((double)myNbObs[k] * myKmeans[k][i] + theYt[t+myT*i]) / (double)(myNbObs[k] + 1) ;
