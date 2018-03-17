@@ -1,10 +1,8 @@
 Package: RHmm
-Version: 2.1.3
+Version: 2.1.4
 Date: 2018-03-17
-Title: Hidden Markov Models simulations and estimations
+Title: Hidden Markov Models Simulations and Estimations
 Authors@R: c(person("Ollivier TARAMASCO", "Developer", role = c("aut", "cre"), email = "Ollivier.Taramasco@imag.fr"), person("Sebastian BAUER", "Developer", role = "aut"))
-Author: Ollivier TARAMASCO, Sebastian BAUER
-Maintainer: Ollivier TARAMASCO <Ollivier.Taramasco@imag.fr>
 Depends: R (>= 2.10.0), MASS, nlme
 Description: Discrete, univariate or multivariate gaussian, mixture of
         univariate or multivariate gaussian HMM functions for
