@@ -76,6 +76,11 @@ uint n = 0 ;
 uint myT[NB_SAMPLE] ;
 double myAux ;
 	myFile.open(FIC_NAME) ;
+	if (myFile.fail())
+	{
+	        cerr << "Opening " << FIC_NAME << " failed" << endl;
+	        return 1;
+	}
 	if ((int)NB_SAMPLE == 1)
 	{	while (myFile)
 		{	for (int l = 0 ; l < DIM_OBS ; l++)
