@@ -12,12 +12,15 @@
 
 cOTError::cOTError(const char *theMess)
 {
-        if (theMess != (char *)NULL) 
-#ifndef _RDLL_
-                        std::cout << theMess << std::endl ;
-                        exit(0) ;
-#else
-                        error(theMess) ;
-#endif //_RDLL_
+        if (!theMess)
+        {
+                theMess = "Unknown error";
+        }
 
+#ifndef _RDLL_
+        std::cerr << theMess << std::endl;
+        exit(0);
+#else
+        error(theMess);
+#endif //_RDLL_
 }
