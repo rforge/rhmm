@@ -1,0 +1,39 @@
+#
+# Standalone makefile
+#
+
+SRCS =	\
+	Kmeans.cpp \
+	LogProb.cpp \
+	Main.cpp \
+	MultivariateNormalUtil.cpp \
+	RHmm.cpp \
+	SamplesUtil.cpp \
+	StatUtil.cpp \
+	cBaumWelch.cpp \
+	cBaumWelchInParam.cpp  \
+	cDMatrix.cpp \
+	cDVector.cpp \
+	cDiscrete.cpp  \
+	cHmm.cpp  \
+	cHmmFit.cpp  \
+	cInParam.cpp  \
+	cLogBaumWelch.cpp       \
+	cMixtMultivariateNormal.cpp \
+	cMixtUnivariateNormal.cpp  \
+	cMultivariateNormal.cpp \
+	cOTError.cpp \
+	cRUtils.cpp \
+	cUnivariateNormal.cpp \
+	cViterbi.cpp
+
+OBJS = $(patsubst %.cpp,%.o,$(SRCS))
+CXXFLAGS = `pkg-config --cflags libR` -Wall
+
+all: Main
+
+Main:$(OBJS)
+	g++ $(OBJS) -o Main  `pkg-config --libs libR` -llapack
+
+clean:
+	rm -Rf $(OBJS)
