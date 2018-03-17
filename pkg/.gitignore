@@ -4,4 +4,5 @@
 /.project
 /.settings
 
+src/Main
 src/RHmm.so
