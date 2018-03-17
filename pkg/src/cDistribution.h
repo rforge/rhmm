@@ -15,6 +15,9 @@
 #include "cBaumWelchInParam.h"
 #include "cBaumWelch.h"
 
+/**
+ * Interface for all distribution classes.
+ */
 class cDistribution  
 {       public :
                 virtual void ComputeCondProba(cDVector* theY, uint theNSample, cDMatrix* theCondProba)=0 ;
